@@ -1,0 +1,42 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/menu_button_margin"
+    android:background="@color/Linen"
+    tools:context=".AboutActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/about_margin_space"
+        android:layout_marginRight="@dimen/about_margin_space"
+        android:layout_marginTop="@dimen/about_margin_space"
+        android:text="@string/about_mainactivity_text"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="@dimen/about_text_size"/>
+
+
+    <Button
+        android:id="@+id/IMEI_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/menu_button_margin"
+        android:padding="@dimen/menu_button_padding"
+        android:background="@color/Khaki"
+        android:text="@string/IMEI_label"/>
+
+    <ImageView
+        android:id="@+id/image_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:src="@drawable/about_image">
+    </ImageView>
+
+</LinearLayout>

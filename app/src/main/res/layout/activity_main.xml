@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/menu_button_margin"
+    android:background="@color/Linen"
+    tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/about_mainactivity_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/menu_button_margin"
+        android:padding="@dimen/menu_button_padding"
+        android:background="@color/Khaki"
+        android:text="@string/about_mainactivity_label" />
+
+    <Button
+        android:id="@+id/game_enter_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/menu_button_margin"
+        android:padding="@dimen/menu_button_padding"
+        android:background="@color/Khaki"
+        android:text="@string/game_enter_label" />
+
+    <Button
+        android:id="@+id/generate_error_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/menu_button_margin"
+        android:padding="@dimen/menu_button_padding"
+        android:background="@color/Khaki"
+        android:text="@string/generate_error_label" />
+
+    <Button
+        android:id="@+id/quit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/menu_button_margin"
+        android:padding="@dimen/menu_button_padding"
+        android:background="@color/Khaki"
+        android:text="@string/quit_label" />
+
+</LinearLayout>
