@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
+import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.View;
 
@@ -26,6 +27,8 @@ public class AboutActivity extends Activity implements View.OnClickListener {
     private AlertDialog mDialog;
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
     private static TelephonyManager mngr;
+    private static String x;
+    private AlertDialog.Builder builder;
 
 
     @Override
@@ -34,21 +37,25 @@ public class AboutActivity extends Activity implements View.OnClickListener {
         getActionBar().setTitle("About me");
         setContentView(R.layout.activity_about);
         View v = findViewById(R.id.IMEI_button);
+        builder = new AlertDialog.Builder(AboutActivity.this);
+
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(AboutActivity.this);
                 // int permissionCheck = ContextCompat.checkSelfPermission(AboutActivity.this,
                 //   Manifest.permission.READ_PHONE_STATE);
                 checkPermissions();
+
                 //  try {
                 //    Thread.sleep(1500);
                 //} catch (InterruptedException e) {
                 //  e.printStackTrace();
                 //}
-                mngr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                builder.setMessage(mngr.getDeviceId());
 
+
+
+                mngr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                builder.setMessage( mngr.getDeviceId());
                 builder.setCancelable(false);
                 builder.setPositiveButton(R.string.ok_label,
                         new DialogInterface.OnClickListener() {
@@ -59,41 +66,48 @@ public class AboutActivity extends Activity implements View.OnClickListener {
 
                         });
                 mDialog = builder.show();
+
             }
+
+
         });
+
+
+
     }
 
     protected void checkPermissions() {
 
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(AboutActivity.this,
-                Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED)
+    // Here, thisActivity is the current activity
+    if (ContextCompat.checkSelfPermission(AboutActivity.this,
+            Manifest.permission.READ_PHONE_STATE)
+            != PackageManager.PERMISSION_GRANTED)
 
-        {
+    {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(AboutActivity.this,
-                    Manifest.permission.READ_PHONE_STATE)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+        // Should we show an explanation?
+        if (ActivityCompat.shouldShowRequestPermissionRationale(AboutActivity.this,
+                Manifest.permission.READ_PHONE_STATE)) {
+            // Show an explanation to the user *asynchronously* -- don't block
+            // this thread waiting for the user's response! After the user
+            // sees the explanation, try again to request the permission.
+        } else {
 
-            } else {
+            // No explanation needed, we can request the permission.
+            ActivityCompat.requestPermissions(AboutActivity.this,
+                    new String[]{Manifest.permission.READ_PHONE_STATE},
+                    MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
 
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(AboutActivity.this,
-                        new String[]{Manifest.permission.READ_PHONE_STATE},
-                        MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
         }
 
     }
+
+
+}
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {

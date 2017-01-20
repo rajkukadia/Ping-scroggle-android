@@ -1,42 +1,29 @@
 package edu.neu.madcourse.raj__kukadia;
-//import android.app.ActionBar;
+
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-//import android.view.LayoutInflater;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
 
 import java.util.HashMap;
-
-
-
-
-//import android.view.ViewGroup;
-//import android.widget.Button;
-
-
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
 
     private static HashMap<Integer, View> viewMap = new HashMap<Integer, View>();
 
-    public MainActivity(){
+    public MainActivity() {
 
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      // requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
         getActionBar().setTitle("Raj Kukadia");
         setContentView(R.layout.activity_main);
-        //getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
-
         //new MainActivity();
         setHashMap();
         setListner(viewMap);
@@ -53,9 +40,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         viewMap.put(4, v);
 
     }
+
     protected void setListner(HashMap view) {
         View v = (View) view.get(1);
-        v.setOnClickListener(new View.OnClickListener(){
+        v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AboutActivity.class);
@@ -63,7 +51,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         });
         v = (View) view.get(2);
-        v.setOnClickListener(new View.OnClickListener(){
+        v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, UT3MainActivity.class);
@@ -71,14 +59,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         });
         v = (View) view.get(3);
-        v.setOnClickListener(new View.OnClickListener(){
+        v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int x = 1/0;
+                int x = 1 / 0;
             }
         });
         v = (View) view.get(4);
-        v.setOnClickListener(new View.OnClickListener(){
+        v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.exit(0);
