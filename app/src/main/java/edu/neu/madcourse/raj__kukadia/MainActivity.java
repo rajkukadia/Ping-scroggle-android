@@ -14,10 +14,10 @@ import java.util.HashMap;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
+
     public static boolean permission = true;
     private static HashMap<Integer, View> viewMap = new HashMap<Integer, View>();
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
-
     public MainActivity() {
 
     }
@@ -34,27 +34,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     }
 
-    private void checkPermissions() {
+    protected void checkPermissions() {
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    Manifest.permission.READ_PHONE_STATE)) {
-                //nothing
-
-            } else {
-
+                !=PackageManager.PERMISSION_GRANTED){
 
                 ActivityCompat.requestPermissions(MainActivity.this,
                         new String[]{Manifest.permission.READ_PHONE_STATE},
                         MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
-
-            }
-
         }
 
-    }
+   }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -115,7 +105,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.exit(0);
+              System.exit(0);
             }
         });
     }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 
 public class AboutActivity extends Activity implements View.OnClickListener {
@@ -29,20 +30,31 @@ public class AboutActivity extends Activity implements View.OnClickListener {
                 if(MainActivity.permission) {
                     mngr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
                     builder.setMessage(mngr.getDeviceId());
+                    builder.setCancelable(false);
+                    builder.setPositiveButton(R.string.ok_label,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // nothing
+                                }
+
+                            });
+                    mDialog = builder.show();
                 }
                 else{
                     builder.setMessage("You did not give the permit");
-                }
-                builder.setCancelable(false);
-                builder.setPositiveButton(R.string.ok_label,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // nothing
-                            }
+                    builder.setCancelable(false);
+                    builder.setPositiveButton(R.string.ok_label,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // nothing
+                                }
 
-                        });
-                mDialog = builder.show();
+                            });
+                    mDialog = builder.show();
+                }
+
 
             }
 
