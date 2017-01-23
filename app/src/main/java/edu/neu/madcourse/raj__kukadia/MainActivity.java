@@ -7,13 +7,14 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 
 import java.util.HashMap;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-
+    public static boolean permission = true;
     private static HashMap<Integer, View> viewMap = new HashMap<Integer, View>();
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
 
@@ -65,6 +66,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
                 } else {
+                    permission = false;
                 }
 
             }

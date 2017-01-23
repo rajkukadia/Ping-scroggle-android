@@ -26,9 +26,13 @@ public class AboutActivity extends Activity implements View.OnClickListener {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                mngr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                builder.setMessage(mngr.getDeviceId());
+                if(MainActivity.permission) {
+                    mngr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                    builder.setMessage(mngr.getDeviceId());
+                }
+                else{
+                    builder.setMessage("You did not give the permit");
+                }
                 builder.setCancelable(false);
                 builder.setPositiveButton(R.string.ok_label,
                         new DialogInterface.OnClickListener() {
