@@ -20,7 +20,7 @@ public class GameActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setTitle("Ultimate Tic Tac Toe");
+        //getActionBar().setTitle("Ultimate Tic Tac Toe");
         setContentView(R.layout.activity_game);
         mGameFragment = (GameFragment) getFragmentManager()
                 .findFragmentById(R.id.fragment_game);

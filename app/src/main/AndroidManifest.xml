@@ -9,17 +9,20 @@
         android:allowBackup="true"
         android:icon="@mipmap/gameicon"
         android:label="NUMAD17S-RajKukadia"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:supportsRtl="true">
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AboutActivity"/>
-        <activity android:name=".UT3MainActivity"/>
-        <activity android:name=".GameActivity"/>
+        <activity android:name=".AboutActivity"
+        android:theme="@style/AppTheme"/>
+        <activity android:name=".UT3MainActivity"
+            android:theme="@style/NoTitle"/>
+        <activity android:name=".GameActivity"
+            android:theme="@style/NoTitle"/>
 
     </application>
 

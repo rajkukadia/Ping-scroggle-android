@@ -12,6 +12,15 @@
     </style>
 
 
+    <style name="NoTitle" parent="android:Theme.Holo.Light.NoActionBar">
+
+
+        <!-- Customize your theme here. "Theme.AppCompat.Light.DarkActionBar"-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <!--
     Base application theme.
     <style name="AppTheme"

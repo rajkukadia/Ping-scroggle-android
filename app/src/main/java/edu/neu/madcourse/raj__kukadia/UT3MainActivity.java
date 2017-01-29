@@ -11,7 +11,7 @@ public class UT3MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setTitle("Ultimate Tic Tac Toe");
+        //getActionBar().setTitle("Ultimate Tic Tac Toe");
         setContentView(R.layout.activity_main_ut3);
     }
 
