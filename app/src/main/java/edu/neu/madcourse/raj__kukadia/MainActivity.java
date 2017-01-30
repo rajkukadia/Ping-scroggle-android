@@ -74,6 +74,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         viewMap.put(3, v);
         v = findViewById(R.id.quit_button);
         viewMap.put(4, v);
+        v=findViewById(R.id.dict_button);
+        viewMap.put(5, v);
 
     }
 
@@ -106,6 +108,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View v) {
               System.exit(0);
+            }
+        });
+        v = (View) view.get(5);
+        v.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DictionaryAssignment3.class);
+                startActivity(intent);
             }
         });
     }

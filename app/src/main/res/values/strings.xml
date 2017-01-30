@@ -25,6 +25,9 @@
     <string name="new_game_label">New Game</string>
     <string name="about_title">About Ultimate Tic Tac Toe</string>
     <string name="about_label">About</string>
+    <string name="dict_label">Dictionary</string>
+    <string name="search_label">Search</string>
+    <string name="save_label">Save</string>
     <string name="about_text">\
 This game is played just like
 regular Tic Tac Toe with one difference: to win a tile

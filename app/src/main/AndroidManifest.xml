@@ -23,6 +23,8 @@
             android:theme="@style/NoTitle"/>
         <activity android:name=".GameActivity"
             android:theme="@style/NoTitle"/>
+        <activity android:name=".DictionaryAssignment3"
+            android:theme="@style/AppTheme"/>
 
     </application>
 
