@@ -10,6 +10,14 @@
     android:background="@color/Linen"
     tools:context=".DictionaryAssignment3">
 
+
+    <EditText
+        android:id="@+id/searchtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <requestFocus></requestFocus>
+    </EditText>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,14 +25,14 @@
         android:text="@string/search_label"/>
 
 
-    <Button
-        android:id="@+id/about_mainactivity_button"
+    <EditText
+        android:id="@+id/anstext"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/menu_button_margin"
-        android:padding="@dimen/menu_button_padding"
-        android:background="@color/Khaki"
-        android:text="@string/save_label" />
+        android:layout_height="match_parent"
+
+        />
+
+
 
 
 

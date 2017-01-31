@@ -2,15 +2,74 @@ package edu.neu.madcourse.raj__kukadia;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class DictionaryAssignment3 extends Activity{
 
+    private static int  x = 0;
+    private char[] ans = new char[15];
+    private static final String DEFAULT = "N/A";
+    private char [] textInput = new char[15];
+    private EditText mytext;
+    private EditText result;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().setTitle("Dictionary");
         setContentView(R.layout.activity_dictionary_ass3);
+        setDictListener();
 
     }
+    private void setDictListener() {
+
+        result = (EditText) findViewById(R.id.anstext);
+        mytext = (EditText) findViewById(R.id.searchtext);
+        mytext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+
+                SharedPreferences sp = getSharedPreferences("MyDictionary", Context.MODE_PRIVATE);
+
+                for(int i =1;i<=5;i++) {
+                    String value = sp.getString(String.valueOf(i), DEFAULT);
+
+                    if (s.toString().equalsIgnoreCase(value)) {
+                        result.append(value+" ");
+                    }
+                    Log.d("hello ", value);
+                }
+                //x++;
+
+            }
+        });
+
+
+    }
+
+
 }

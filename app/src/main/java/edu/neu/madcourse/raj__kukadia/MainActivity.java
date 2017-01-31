@@ -2,19 +2,27 @@ package edu.neu.madcourse.raj__kukadia;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-
+    private EditText mytext;
     public static boolean permission = true;
     private static HashMap<Integer, View> viewMap = new HashMap<Integer, View>();
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
@@ -30,7 +38,35 @@ public class MainActivity extends Activity implements View.OnClickListener {
         getActionBar().setTitle("Raj Kukadia");
         setContentView(R.layout.activity_main);
         setHashMap();
+        loadDictionary();
         setListner(viewMap);
+
+    }
+
+    protected void loadDictionary(){
+        SharedPreferences sp = getSharedPreferences("MyDictionary", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        InputStream is = getResources().openRawResource(R.raw.wordlist);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String line;
+       // String entireFile = "";
+        try {
+            int i = 1;
+           while( (line = br.readLine())!=null) {  // <--------- place readLine() inside loop
+               editor.putString(String.valueOf(i), line);
+             //  Log.d("came", "here");
+               editor.commit();
+
+               i++;
+           }
+               //  entireFile += (line + "\n"); // <---------- add each line to entireFile
+
+            Toast.makeText(this, "Dictionary loaded successfully", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+      //  mytext.setText(entireFile+" "); // <------- assign entireFile to TextView
 
     }
 
