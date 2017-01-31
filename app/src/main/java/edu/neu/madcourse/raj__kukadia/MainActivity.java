@@ -22,10 +22,12 @@ import java.util.HashMap;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
+    private int i = 1;
     private EditText mytext;
     public static boolean permission = true;
     private static HashMap<Integer, View> viewMap = new HashMap<Integer, View>();
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
+    public static HashMap<Integer,String> dictMap = new HashMap<Integer, String>();
     public MainActivity() {
 
     }
@@ -44,23 +46,27 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     protected void loadDictionary(){
-        SharedPreferences sp = getSharedPreferences("MyDictionary", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
+        //SharedPreferences sp = getSharedPreferences("MyDictionary", Context.MODE_PRIVATE);
+        //SharedPreferences.Editor editor = sp.edit();
         InputStream is = getResources().openRawResource(R.raw.wordlist);
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String line;
        // String entireFile = "";
         try {
-            int i = 1;
+
            while( (line = br.readLine())!=null) {  // <--------- place readLine() inside loop
-               editor.putString(String.valueOf(i), line);
+               dictMap.put(i, line);
+               if(line.startsWith("b")){
+                   Log.d("B starts here",String.valueOf(i));
+               }
              //  Log.d("came", "here");
-               editor.commit();
+               //editor.commit();
 
                i++;
            }
                //  entireFile += (line + "\n"); // <---------- add each line to entireFile
-
+            Log.d("Number of words are", String.valueOf(dictMap.size()));
+            Log.d("last", String.valueOf(dictMap.get(dictMap.size())));
             Toast.makeText(this, "Dictionary loaded successfully", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -152,6 +158,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DictionaryAssignment3.class);
+               // intent.putExtra("dictMap", dictMap);
                 startActivity(intent);
             }
         });
