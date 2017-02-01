@@ -28,7 +28,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public static boolean permission = true;
     private static HashMap<Integer, View> viewMap = new HashMap<Integer, View>();
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
-    public static HashMap<Integer,String> dictMap = new HashMap<Integer, String>();
+    public static HashMap<String, String> dictMap = new HashMap<String, String>();
+
     public MainActivity() {
 
     }
@@ -41,11 +42,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         getActionBar().setTitle("Raj Kukadia");
         setContentView(R.layout.activity_main);
         setHashMap();
-        if(firstTime){
+        if (firstTime) {
             firstTime = false;
-        loadDictionary();}
+            loadDictionary();
+        }
         setListner(viewMap);
-
     }
 
     @Override
@@ -54,48 +55,33 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     }
 
-    protected void loadDictionary(){
-        //SharedPreferences sp = getSharedPreferences("MyDictionary", Context.MODE_PRIVATE);
-        //SharedPreferences.Editor editor = sp.edit();
+    protected void loadDictionary() {
         InputStream is = getResources().openRawResource(R.raw.wordlist);
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String line;
-       // String entireFile = "";
         try {
 
-           while( (line = br.readLine())!=null) {  // <--------- place readLine() inside loop
-               dictMap.put(i, line);
-               if(line.startsWith("b")){
-                   Log.d("B starts here",String.valueOf(i));
-               }
-             //  Log.d("came", "here");
-               //editor.commit();
-
-               i++;
-           }
-               //  entireFile += (line + "\n"); // <---------- add each line to entireFile
-            Log.d("Number of words are", String.valueOf(dictMap.size()));
-            Log.d("last", String.valueOf(dictMap.get(dictMap.size())));
+            while ((line = br.readLine()) != null) {
+                dictMap.put(line, line);
+            }
             Toast.makeText(this, "Dictionary loaded successfully", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
-      //  mytext.setText(entireFile+" "); // <------- assign entireFile to TextView
-
     }
 
     protected void checkPermissions() {
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.READ_PHONE_STATE)
-                !=PackageManager.PERMISSION_GRANTED){
+                != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.READ_PHONE_STATE},
-                        MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.READ_PHONE_STATE},
+                    MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
         }
 
-   }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -125,7 +111,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         viewMap.put(3, v);
         v = findViewById(R.id.quit_button);
         viewMap.put(4, v);
-        v=findViewById(R.id.dict_button);
+        v = findViewById(R.id.dict_button);
         viewMap.put(5, v);
 
     }
@@ -164,12 +150,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         });
         v = (View) view.get(5);
-        v.setOnClickListener(new View.OnClickListener(){
+        v.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DictionaryAssignment3.class);
-               // intent.putExtra("dictMap", dictMap);
                 startActivity(intent);
             }
         });
