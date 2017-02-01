@@ -24,6 +24,7 @@
         <activity android:name=".GameActivity"
             android:theme="@style/NoTitle"/>
         <activity android:name=".DictionaryAssignment3"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme"/>
 
     </application>

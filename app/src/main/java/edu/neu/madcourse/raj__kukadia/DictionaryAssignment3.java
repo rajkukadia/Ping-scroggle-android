@@ -1,11 +1,13 @@
 package edu.neu.madcourse.raj__kukadia;
 
-
+import android.support.v4.app.NavUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -365,12 +367,10 @@ View clearButton = findViewById(R.id.button_clear);
 
     View returnButton = findViewById(R.id.button_return);
     returnButton.setOnClickListener(new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(DictionaryAssignment3.this, MainActivity.class);
-
-
-            startActivity(intent);
+            navigateUpTo(getParentActivityIntent());
 
         }
     });

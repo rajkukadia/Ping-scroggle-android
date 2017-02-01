@@ -158,7 +158,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              System.exit(0);
+                onDestroy();
+                System.exit(0);
+
             }
         });
         v = (View) view.get(5);
