@@ -45,6 +45,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     }
 
+
     protected void loadDictionary(){
         //SharedPreferences sp = getSharedPreferences("MyDictionary", Context.MODE_PRIVATE);
         //SharedPreferences.Editor editor = sp.edit();

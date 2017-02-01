@@ -3,6 +3,7 @@ package edu.neu.madcourse.raj__kukadia;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -38,6 +39,7 @@ public class DictionaryAssignment3 extends Activity{
         setContentView(R.layout.activity_dictionary_ass3);
 
         setDictListener();
+        setButtonListeners();
 
     }
     private void setDictListener() {
@@ -69,7 +71,7 @@ public class DictionaryAssignment3 extends Activity{
                            while (MainActivity.dictMap.get(i).startsWith("a")) {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
 
                                }
                                i++;
@@ -82,7 +84,7 @@ public class DictionaryAssignment3 extends Activity{
                            while (MainActivity.dictMap.get(i).charAt(0)<='b') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
@@ -94,7 +96,7 @@ public class DictionaryAssignment3 extends Activity{
                            while (MainActivity.dictMap.get(i).charAt(0)<='c') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
@@ -105,7 +107,7 @@ public class DictionaryAssignment3 extends Activity{
                                String value = MainActivity.dictMap.get(i);
 
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
@@ -115,217 +117,217 @@ public class DictionaryAssignment3 extends Activity{
                            while (MainActivity.dictMap.get(i).charAt(0)<='e') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'f': {
-                           while (MainActivity.dictMap.get(i).startsWith("f")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='f'){
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'g': {
-                           while (MainActivity.dictMap.get(i).startsWith("g")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='g') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'h': {
-                           while (MainActivity.dictMap.get(i).startsWith("h")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='h') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'i': {
-                           while (MainActivity.dictMap.get(i).startsWith("i")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='i') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'j': {
-                           while (MainActivity.dictMap.get(i).startsWith("j")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='j') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'k': {
-                           while (MainActivity.dictMap.get(i).startsWith("k")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='k') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'l': {
-                           while (MainActivity.dictMap.get(i).startsWith("l")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='l') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'm': {
-                           while (MainActivity.dictMap.get(i).startsWith("m")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='m') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'n': {
-                           while (MainActivity.dictMap.get(i).startsWith("n")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='n') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'o': {
-                           while (MainActivity.dictMap.get(i).startsWith("o")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='o') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'p': {
-                           while (MainActivity.dictMap.get(i).startsWith("p")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='p') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'q': {
-                           while (MainActivity.dictMap.get(i).startsWith("q")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='q') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'r': {
-                           while (MainActivity.dictMap.get(i).startsWith("r")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='r') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 's': {
-                           while (MainActivity.dictMap.get(i).startsWith("s")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='s') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 't': {
-                           while (MainActivity.dictMap.get(i).startsWith("t")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='t') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'u': {
-                           while (MainActivity.dictMap.get(i).startsWith("u")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='u') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'v': {
-                           while (MainActivity.dictMap.get(i).startsWith("v")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='v') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'w': {
-                           while (MainActivity.dictMap.get(i).startsWith("w")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='w') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'x': {
-                           while (MainActivity.dictMap.get(i).startsWith("x")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='x') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'y': {
-                           while (MainActivity.dictMap.get(i).startsWith("y")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='y') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
                        }
                        break;
                        case 'z': {
-                           while (MainActivity.dictMap.get(i).startsWith("z")) {
+                           while (MainActivity.dictMap.get(i).charAt(0)<='z') {
                                String value = MainActivity.dictMap.get(i);
                                if (s.toString().equalsIgnoreCase(value)) {
-                                   result.append(value + " ");
+                                   result.append(value + "\n");
                                }
                                i++;
                            }
@@ -351,6 +353,28 @@ public class DictionaryAssignment3 extends Activity{
 
 
     }
+private void setButtonListeners(){
+View clearButton = findViewById(R.id.button_clear);
+    clearButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            result.setText("");
+            mytext.setText("");
+        }
+    });
 
+    View returnButton = findViewById(R.id.button_return);
+    returnButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(DictionaryAssignment3.this, MainActivity.class);
+
+            startActivity(intent);
+
+        }
+    });
+
+
+}
 
 }
