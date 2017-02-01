@@ -369,6 +369,7 @@ View clearButton = findViewById(R.id.button_clear);
         public void onClick(View v) {
             Intent intent = new Intent(DictionaryAssignment3.this, MainActivity.class);
 
+
             startActivity(intent);
 
         }

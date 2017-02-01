@@ -30,6 +30,7 @@
     <string name="save_label">Save</string>
     <string name="return_label">Return</string>
     <string name="clear_label">Clear</string>
+    <string name="ack_label">Acknowledgement</string>
     <string name="about_text">\
 This game is played just like
 regular Tic Tac Toe with one difference: to win a tile

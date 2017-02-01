@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
+    private static Boolean firstTime = true;
     private int i = 1;
     private EditText mytext;
     public static boolean permission = true;
@@ -40,11 +41,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
         getActionBar().setTitle("Raj Kukadia");
         setContentView(R.layout.activity_main);
         setHashMap();
-        loadDictionary();
+        if(firstTime){
+            firstTime = false;
+        loadDictionary();}
         setListner(viewMap);
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
     protected void loadDictionary(){
         //SharedPreferences sp = getSharedPreferences("MyDictionary", Context.MODE_PRIVATE);

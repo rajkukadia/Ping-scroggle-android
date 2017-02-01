@@ -47,4 +47,14 @@
         android:padding="@dimen/menu_button_padding"
         android:text="@string/return_label"/>
 
+    <Button
+        android:id="@+id/button_ack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/menu_button_margin"
+        android:background="@color/Khaki"
+        android:padding="@dimen/menu_button_padding"
+        android:text="@string/ack_label"/>
+
+
 </LinearLayout>
