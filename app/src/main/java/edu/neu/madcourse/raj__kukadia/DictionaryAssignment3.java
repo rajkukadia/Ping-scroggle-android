@@ -44,7 +44,7 @@ public class DictionaryAssignment3 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setTitle("Dictionary");
+        getActionBar().setTitle("Test Dictionary");
         setContentView(R.layout.activity_dictionary_ass3);
         setDictListener();
         setButtonListeners();
@@ -101,6 +101,16 @@ public class DictionaryAssignment3 extends Activity {
             public void onClick(View v) {
                 navigateUpTo(getParentActivityIntent());
 
+            }
+        });
+
+        View ackButton = findViewById(R.id.button_ack);
+        ackButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DictionaryAssignment3.this, AcknowledgementAssignment3.class);
+                startActivity(intent);
             }
         });
     }

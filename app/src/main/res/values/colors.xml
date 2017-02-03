@@ -5,8 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="Magenta">#FF00FF</color>
     <color name="LightPink">#FFB6C1</color>
-    <color name="Linen">#e7cffd</color>
-    <color name="Khaki">#bc74ff</color>
+    <color name="Linen">#FAF0E6</color>
+    <color name="Khaki">#F0E68C</color>
     <!-- Game-->
     <color name="field_color">#b5cee0</color>
     <color name="border_color">#7f7f7f</color>
