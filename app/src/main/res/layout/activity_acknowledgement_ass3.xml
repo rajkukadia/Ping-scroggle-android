@@ -7,32 +7,39 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:layout_margin="@dimen/menu_button_margin"
-    android:background="@color/Linen"
-    android:scrollIndicators="right"
-    android:scrollbars="vertical"
     tools:context=".AcknowledgementAssignment3">
-
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textStyle="bold"
         android:text="@string/ack_content_label"
         android:textSize="32sp"
         >
 
     </TextView>
-
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/ack_info_label"
         android:gravity="center"
+        android:textStyle="italic"
+        android:layout_gravity="center"
+        android:textSize="25sp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="200sp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="200sp"
+
         android:textSize="20sp"
         android:text="@string/ack_details_label_one"
         >
-
     </TextView>
-
+    </ScrollView>
 
 
     <TextView
@@ -40,20 +47,22 @@
         android:layout_height="wrap_content"
         android:text="@string/references"
         android:gravity="center"
+        android:textStyle="italic"
         android:layout_gravity="center"
         android:textSize="25sp"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"/>
-
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="20sp"
+        android:layout_height="200sp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="200sp"
 
+        android:textSize="20sp"
         android:text="@string/ack_details_label_two"
         >
 
     </TextView>
-
+    </ScrollView>
 
 </LinearLayout>

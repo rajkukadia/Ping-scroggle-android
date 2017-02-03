@@ -31,6 +31,7 @@
     <string name="return_label">Return</string>
     <string name="clear_label">Clear</string>
     <string name="ack_label">Acknowledgement</string>
+    <string name="ack_info_label">Info</string>
     <string name="about_text">\
 This game is played just like
 regular Tic Tac Toe with one difference: to win a tile
@@ -44,11 +45,11 @@ both sides in the larger game.
     <string name="ack_content_label">
         <title>ACKNOWLEDGEMENT \n</title>
     </string>
-    <string name="references">References \n</string>
+    <string name="references">References </string>
 <string name="ack_details_label_one">
-   <p>I have loaded the entire dictionary in a hashmap in string format using put(); method and fetching using get(key);
-    method. I have loaded the dictionary in the Main Activity itself so that the app runs smoother from there on. I am going
-    to try to run load my dictionary on another UI thread. Also, I am working on encoding the dictionary to binary files.
+   <p>> I have loaded the entire dictionary in a hashmap in string format using put(); method and fetching using get(key);
+    method. \n \n> I have loaded the dictionary in the Main Activity itself so that the app runs smoother from there on. I am going
+    to try to load my dictionary on another thread. \n\n > Also, I am working on encoding the dictionary to binary files.
 \n\n</p>
 
 
@@ -58,9 +59,9 @@ both sides in the larger game.
 
     <p>
 
-    Code for TicTacToe: Hello, Android text by Ed Burnette \n
-    Code for requesting run time permission: https://developer.android.com/training/permissions/requesting.html \n
-    App icon: Google Images \n
+    Code for TicTacToe: Hello, Android text by Ed Burnette \n \n
+    Code for requesting run time permission: https://developer.android.com/training/permissions/requesting.html \n \n
+    App icon: Google Images \n \n
 </p>
 
 
