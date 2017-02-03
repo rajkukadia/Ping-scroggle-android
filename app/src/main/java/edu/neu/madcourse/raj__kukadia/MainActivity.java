@@ -42,11 +42,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         getActionBar().setTitle("Raj Kukadia");
         setContentView(R.layout.activity_main);
         setHashMap();
+
         if (firstTime) {
             firstTime = false;
             loadDictionary();
         }
+
         setListner(viewMap);
+
     }
 
     @Override
@@ -64,6 +67,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             while ((line = br.readLine()) != null) {
                 dictMap.put(line, line);
             }
+            Boolean ans = dictMap.containsKey("ahh");
+            Log.d("as is", String.valueOf(ans));
             Toast.makeText(this, "Dictionary loaded successfully", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
 

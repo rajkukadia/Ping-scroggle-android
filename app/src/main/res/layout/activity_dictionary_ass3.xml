@@ -28,7 +28,9 @@
     <EditText
         android:id="@+id/anstext"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="200dp"
+        android:scrollIndicators="right"
+        />
     <Button
         android:id="@+id/button_clear"
         android:layout_width="match_parent"

@@ -46,7 +46,6 @@ public class DictionaryAssignment3 extends Activity {
         super.onCreate(savedInstanceState);
         getActionBar().setTitle("Dictionary");
         setContentView(R.layout.activity_dictionary_ass3);
-
         setDictListener();
         setButtonListeners();
 
@@ -74,6 +73,7 @@ public class DictionaryAssignment3 extends Activity {
                 if (s.toString().equalsIgnoreCase(MainActivity.dictMap.get(s.toString()))) {
                     beep();
                     result.append(s.toString() + "\n");
+
                 }
             }
         });
