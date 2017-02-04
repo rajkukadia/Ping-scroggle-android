@@ -36,11 +36,14 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"/>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200sp">
+        android:layout_height="200sp"
+        android:visibility="visible"
+        android:scrollIndicators="right"
+        android:scrollbarFadeDuration="45000"
+        >
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="200sp"
-
         android:textSize="20sp"
         android:text="@string/ack_details_label_one"
         >
@@ -59,7 +62,8 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"/>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200sp">
+        android:layout_height="200sp"
+        android:scrollbarFadeDuration="45000">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="200sp"

@@ -22,6 +22,8 @@ import java.util.HashMap;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
+    private int threedigit, fourdigit,fivedigit,sixdigit,sevendigit,edigit,ndigit,tendigit,elevendigit,tewlvedigit,thirteendigit,fourteendigit,fifteendifit,abovefifteen = 0;
+
     private static Boolean firstTime = true;
     private int i = 1;
     private EditText mytext;
@@ -65,10 +67,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         try {
 
             while ((line = br.readLine()) != null) {
+
+
                 dictMap.put(line, line);
             }
-            Boolean ans = dictMap.containsKey("ahh");
-            Log.d("as is", String.valueOf(ans));
+
             Toast.makeText(this, "Dictionary loaded successfully", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
 
