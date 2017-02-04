@@ -8,7 +8,13 @@
     android:orientation="vertical"
     android:layout_margin="@dimen/menu_button_margin"
     tools:context=".AcknowledgementAssignment3">
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,5 +70,6 @@
 
     </TextView>
     </ScrollView>
-
+    </LinearLayout>
+</ScrollView>
 </LinearLayout>

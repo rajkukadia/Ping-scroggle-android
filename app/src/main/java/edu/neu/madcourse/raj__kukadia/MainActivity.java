@@ -151,7 +151,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             public void onClick(View v) {
                 onDestroy();
                 System.exit(0);
-
             }
         });
         v = (View) view.get(5);

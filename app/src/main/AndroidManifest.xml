@@ -10,25 +10,32 @@
         android:icon="@mipmap/gameicon"
         android:label="NUMAD17S-RajKukadia"
         android:supportsRtl="true">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AboutActivity"
-        android:theme="@style/AppTheme"/>
-        <activity android:name=".UT3MainActivity"
-            android:theme="@style/NoTitle"/>
-        <activity android:name=".GameActivity"
-            android:theme="@style/NoTitle"/>
-        <activity android:name=".DictionaryAssignment3"
+        <activity
+            android:name=".AboutActivity"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".AcknowledgementAssignment3"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UT3MainActivity"
+            android:theme="@style/NoTitle" />
+        <activity
+            android:name=".GameActivity"
+            android:theme="@style/NoTitle" />
+        <activity
+            android:name=".DictionaryAssignment3"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AcknowledgementAssignment3"
             android:parentActivityName=".DictionaryAssignment3"
-            android:theme="@style/NoTitle"/>
+            android:theme="@style/NoTitle" />
 
     </application>
 

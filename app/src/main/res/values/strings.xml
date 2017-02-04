@@ -45,11 +45,11 @@ both sides in the larger game.
     <string name="ack_content_label">
         <title>ACKNOWLEDGEMENT \n</title>
     </string>
-    <string name="references">References </string>
+    <string name="references">\n\nReferences </string>
 <string name="ack_details_label_one">
    <p>> I have loaded the entire dictionary in a hashmap in string format using put(); method and fetching using get(key);
     method. \n \n> I have loaded the dictionary in the Main Activity itself so that the app runs smoother from there on. I am going
-    to try to load my dictionary on another thread. \n\n > Also, I am working on encoding the dictionary to binary files.
+    to try to load my dictionary on another thread. \n\n > Also, I am working on encoding the dictionary to Int, Double and Long formats.
 \n\n</p>
 
 
@@ -62,6 +62,7 @@ both sides in the larger game.
     Code for TicTacToe: Hello, Android text by Ed Burnette \n \n
     Code for requesting run time permission: https://developer.android.com/training/permissions/requesting.html \n \n
     App icon: Google Images \n \n
+    Sound: http://www.tannerhelland.com/music-directory/
 </p>
 
 
