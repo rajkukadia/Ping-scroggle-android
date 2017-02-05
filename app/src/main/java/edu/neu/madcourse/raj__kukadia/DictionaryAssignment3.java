@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import static android.R.attr.actionProviderClass;
+import static android.R.attr.editTextBackground;
 import static android.R.attr.value;
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -40,6 +41,8 @@ public class DictionaryAssignment3 extends Activity {
     private char[] textInput = new char[15];
     private EditText mytext;
     private EditText result;
+            private char letter[];
+    private long MyCharacter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +71,89 @@ public class DictionaryAssignment3 extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                MainActivity.dictMap.get("a");
+               String enteredString =  s.toString();
+               int enteredStringLength = enteredString.length();
+               letter = enteredString.toCharArray();
+                switch(enteredStringLength){
+                    case 3: {
+                       try{
+                        MyCharacter = 0;
 
-                if (s.toString().equalsIgnoreCase(MainActivity.dictMap.get(s.toString()))) {
-                    beep();
-                    result.append(s.toString() + "\n");
+                        for(int l= 0; l<enteredString.length();l++){
+                            MyCharacter=MyCharacter<<5;
+                            MyCharacter+=MainActivity.letterMap.get(letter[l]);
+                        }
+
+
+                           if (MyCharacter == MainActivity.threeWords.get(MyCharacter)) {
+                               beep();
+                               result.append(s.toString() + "\n");
+
+
+                           }
+                       }catch (NullPointerException e){
+
+                       }
+
+                        MyCharacter = 0;
+                        break;
+                    }
+
+                    case 4:{
+                        MyCharacter = 0;
+
+                        for(int l= 0; l<enteredString.length();l++){
+                            MyCharacter=MyCharacter<<5;
+                            MyCharacter+=MainActivity.letterMap.get(letter[l]);
+                        }
+
+                        try {
+                            if ((int) MyCharacter == MainActivity.fourWords.get((int) MyCharacter)) {
+                                beep();
+                                result.append(s.toString() + "\n");
+
+
+                            }
+                        }catch (NullPointerException e){
+
+                        }
+
+                        MyCharacter = 0;
+                        break;
+                    }
+
+                    case 5:{
+                        MyCharacter = 0;
+
+                        for(int l= 0; l<enteredString.length();l++){
+                            MyCharacter=MyCharacter<<5;
+                            MyCharacter+=MainActivity.letterMap.get(letter[l]);
+                        }
+
+                        try {
+                            if ((int) MyCharacter == MainActivity.fiveWords.get((int) MyCharacter)) {
+                                beep();
+                                result.append(s.toString() + "\n");
+
+
+                            }
+                        }catch (NullPointerException e){
+
+                        }
+
+                        MyCharacter = 0;
+                        break;
+                    }
 
                 }
+
+               // MainActivity.dictMap.get("a");
+
+              //  if (s.toString().equalsIgnoreCase(MainActivity.dictMap.get(s.toString()))) {
+                //    beep();
+                  //  result.append(s.toString() + "\n");
+
+                //}
             }
         });
     }

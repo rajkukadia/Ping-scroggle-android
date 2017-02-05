@@ -21,7 +21,7 @@
         android:gravity="center"
         android:textStyle="bold"
         android:text="@string/ack_content_label"
-        android:textSize="32sp"
+        android:textSize="22sp"
         >
 
     </TextView>
