@@ -37,8 +37,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static HashMap<Integer, View> viewMap = new HashMap<Integer, View>();
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
     public static HashMap <Character, Long> letterMap = new HashMap <Character, Long>();
-    public static HashMap<String, String> dictMap = new HashMap<String, String>();
-    public static HashMap<Long, Long> threeWords = new HashMap<Long, Long>();
+    //public static HashMap<String, String> dictMap = new HashMap<String, String>();
+    public static HashMap<Short, Short> threeWords = new HashMap<Short, Short>();
     public static HashMap<Integer, Integer> fourWords = new HashMap<Integer, Integer>();
     public static HashMap<Integer, Integer> fiveWords = new HashMap<Integer, Integer>();
     public static HashMap<Integer, Integer> sixWords = new HashMap<Integer, Integer>();
@@ -88,32 +88,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
            DataInputStream din3 = new DataInputStream(b3);
            DataInputStream din4 = new DataInputStream(b4);
 
-           // letter =("rat").toCharArray();
 
-          /*  int c=0;
-            while(c<3) {
-                //MyCharacter=0;
-                MyCharacter = MyCharacter << 5;
-                MyCharacter += MainActivity.letterMap.get(letter[c]);
-                c++;
-            }
-*/
             for (int data = 1; data <= 528; data++) {
                 Long d = din.readLong();
-                long first =  (d >>> 45);
+                short first =  (short)(d >>> 45);
                 long secondProgress = d << 19;
-                long second = (secondProgress >>> 49);
+                short second = (short)(secondProgress >>> 49);
                 long thirdProgress = d << 34;
-                long third = (thirdProgress >>> 49);
+                short third = (short)(thirdProgress >>> 49);
                 long fourthProgress = d << 49;
-                long fourth = (d >>> 49);
-
-
-              //  if((first == MyCharacter )||( second == MyCharacter)||(third ==MyCharacter)|| fourth== MyCharacter){
-                //    Log.d("it is", "therrrrrrrrrrrrrrr");
-                  //  Log.d("heelo","as");
-                  // System.exit(0);
-                //}
+                short fourth = (short)(fourthProgress >>> 49);
                 threeWords.put(first, first);
                 threeWords.put(second, second);
                 threeWords.put(third, third);
@@ -151,12 +135,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             }
 
-/*
+
             for (int data = 1; data <= 16609; data++) {
                 Long d = din3.readLong();
-                int first = (int) (d >> 30);
+                int first = (int) (d >>> 30);
                 long secondProgress = d << 34;
-                int second = (int) (secondProgress >> 34);
+                int second = (int) (secondProgress >>> 34);
 
                 sixWords.put(first, first);
                 sixWords.put(second, second);
@@ -175,20 +159,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Log.d("six above words", " loading..");
 
             }
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
             Toast.makeText(this, "Dictionary loaded successfully", Toast.LENGTH_LONG).show();
 
         } catch (FileNotFoundException e) {
@@ -199,33 +169,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             e.printStackTrace();
         }
 
-
-
-
-
-
-
-
-
-
     }
-        /*InputStream is = getResources().openRawResource(R.raw.wordlist);
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        String line;
-        try {
 
-            while ((line = br.readLine()) != null) {
-
-
-                dictMap.put(line, line);
-            }
-
-             } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-    }
-*/
         private void setMap(){
             for(char x= 'a';x<='z';x++){
                 letterMap.put(x,  getBinaryValue());
