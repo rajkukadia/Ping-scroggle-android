@@ -47,10 +47,13 @@ both sides in the larger game.
     </string>
     <string name="references">\n\nReferences </string>
 <string name="ack_details_label_one">
-   <p>> I have loaded the entire dictionary in a hashmap in string format using put(); method and fetching using get(key);
-    method. \n \n> I have loaded the dictionary in the Main Activity itself so that the app runs smoother from there on. I am going
-    to try to load my dictionary on another thread. \n\n > Also, I am working on encoding the dictionary to Int, Double and Long formats.
-\n\n</p>
+    I have mapped every character to 5 bits. Hence compressing from 16 bits Unicode to 5 bits. \n\n
+    Used the same binary values for comparing while the look up is in process.
+       I have put four 3 letter words in a single Long, three 4 letter words in a Long, two 5 letter words in a Long, two 6 letter words in a Long.
+       \n\nI have put each word from 7 to 25 letters length in a single Long. \n\nFor the words greater than 25 letters, I have used loaded them in string
+       format itself since there are only 23 such words in the dictionary.
+      \n\nFinally, I have loaded all these encoded files in seperate HashMaps.
+        \n\nI have loaded the dictionary in the Main Activity itself so that the app runs smoother from there on.
 
 
 </string>
@@ -62,7 +65,8 @@ both sides in the larger game.
     Code for TicTacToe: Hello, Android text by Ed Burnette \n \n
     Code for requesting run time permission: https://developer.android.com/training/permissions/requesting.html \n \n
     App icon: Google Images \n \n
-    Sound: http://www.tannerhelland.com/music-directory/
+    Sound: http://www.tannerhelland.com/music-directory/ \n\n
+    Special thanks to my friend Dharak Savalia who helped me comming with a better idea for loading the dictionary efficiently.
 </p>
 
 

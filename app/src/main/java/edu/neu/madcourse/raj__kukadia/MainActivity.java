@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -37,12 +38,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static HashMap<Integer, View> viewMap = new HashMap<Integer, View>();
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
     public static HashMap <Character, Long> letterMap = new HashMap <Character, Long>();
-    //public static HashMap<String, String> dictMap = new HashMap<String, String>();
+    public static HashMap<String, String> stringWords = new HashMap<String, String>();
     public static HashMap<Short, Short> threeWords = new HashMap<Short, Short>();
     public static HashMap<Integer, Integer> fourWords = new HashMap<Integer, Integer>();
     public static HashMap<Integer, Integer> fiveWords = new HashMap<Integer, Integer>();
     public static HashMap<Integer, Integer> sixWords = new HashMap<Integer, Integer>();
-    public static HashMap<Long, Long> sixAboveWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> seventotwentyfiveWords = new HashMap<Long, Long>();
 
     public MainActivity() {
 
@@ -76,18 +77,37 @@ public class MainActivity extends Activity implements View.OnClickListener {
         try {
 
 
-           BufferedInputStream b = new BufferedInputStream(getResources().openRawResource(R.raw.threewords));
-           BufferedInputStream b1 = new BufferedInputStream(getResources().openRawResource(R.raw.fourwords));
-           BufferedInputStream b2 = new BufferedInputStream(getResources().openRawResource(R.raw.fivewords));
-           BufferedInputStream b3 = new BufferedInputStream(getResources().openRawResource(R.raw.sixwords));
-           BufferedInputStream b4 = new BufferedInputStream(getResources().openRawResource(R.raw.sixabovewords));
+          // BufferedInputStream b = new BufferedInputStream(getResources().openRawResource(R.raw.threewords));
+           //BufferedInputStream b1 = new BufferedInputStream(getResources().openRawResource(R.raw.fourwords));
+           //BufferedInputStream b2 = new BufferedInputStream(getResources().openRawResource(R.raw.fivewords));
+           //BufferedInputStream b3 = new BufferedInputStream(getResources().openRawResource(R.raw.sixwords));
+           //BufferedInputStream b4 = new BufferedInputStream(getResources().openRawResource(R.raw.sixabovewords));
+           // BufferedInputStream b5 = new BufferedInputStream(getResources().openRawResource(R.raw.sixabovewords));
 
-           DataInputStream din = new DataInputStream(b);
-           DataInputStream din1 = new DataInputStream(b1);
-           DataInputStream din2 = new DataInputStream(b2);
-           DataInputStream din3 = new DataInputStream(b3);
-           DataInputStream din4 = new DataInputStream(b4);
+            InputStream is = getResources().openRawResource(R.raw.threewords);
+            InputStream is1 = getResources().openRawResource(R.raw.fourwords);
+            InputStream is2 = getResources().openRawResource(R.raw.fivewords);
+            InputStream is3 = getResources().openRawResource(R.raw.sixwords);
+            InputStream is4 = getResources().openRawResource(R.raw.seventotwentyfivewords);
+            InputStream is5 = getResources().openRawResource(R.raw.twentyfiveabovewords);
 
+
+
+
+            DataInputStream din = new DataInputStream(is);
+           DataInputStream din1 = new DataInputStream(is1);
+           DataInputStream din2 = new DataInputStream(is2);
+           DataInputStream din3 = new DataInputStream(is3);
+           DataInputStream din4 = new DataInputStream(is4);
+            InputStreamReader inReader = new InputStreamReader(is5);
+            BufferedReader br = new BufferedReader(inReader);
+
+            String line;
+            for(int data =1; data<=23;data++){
+                if((line=br.readLine())!=null){
+                    stringWords.put(line,line);
+                }
+            }
 
             for (int data = 1; data <= 528; data++) {
                 Long d = din.readLong();
@@ -102,7 +122,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 threeWords.put(second, second);
                 threeWords.put(third, third);
                 threeWords.put(fourth, fourth);
-                Log.d("three words", " loading..");
+               // Log.d("three words", " loading..");
 
             }
 
@@ -117,7 +137,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 fourWords.put(second, second);
                 fourWords.put(third, third);
 
-                Log.d("four words", " loading..");
+               // Log.d("four words", " loading..");
 
             }
 
@@ -131,7 +151,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 fiveWords.put(first, first);
                 fiveWords.put(second, second);
 
-                Log.d("five words", " loading..");
+              //  Log.d("five words", " loading..");
 
             }
 
@@ -145,18 +165,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 sixWords.put(first, first);
                 sixWords.put(second, second);
 
-                Log.d("six words", " loading..");
+              //  Log.d("six words", " loading..");
 
             }
 
 
-            for (int data = 1; data <=371622; data++) {
+            for (int data = 1; data <=371600; data++) {
                 Long d = din4.readLong();
 
-                sixAboveWords.put(d, d);
+                seventotwentyfiveWords.put(d, d);
 
 
-                Log.d("six above words", " loading..");
+                //Log.d("six above words", " loading..");
 
             }
             Toast.makeText(this, "Dictionary loaded successfully", Toast.LENGTH_LONG).show();
@@ -174,13 +194,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         private void setMap(){
             for(char x= 'a';x<='z';x++){
                 letterMap.put(x,  getBinaryValue());
-                System.out.println(letterMap);
+                //System.out.println(letterMap);
             }
         }
 
     private long getBinaryValue(){
 
-        System.out.println(b);
+        //System.out.println(b);
         return ++b;
 
     }
