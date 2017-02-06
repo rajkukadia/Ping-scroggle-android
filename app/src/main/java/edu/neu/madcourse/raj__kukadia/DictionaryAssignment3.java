@@ -101,108 +101,117 @@ public class DictionaryAssignment3 extends Activity {
                         if (enteredString.toString().equals(MainActivity.stringWords.get(enteredString.toString()))) {
                             beep();
                             result.append(enteredString.toString()+"\n");
-
                         }
                     }
                     else
                         {
-                            switch (enteredStringLength) {
-                                case 3: {
-                                    try {
-                                        MyCharacter = 0;
+                           if(enteredStringLength>=3) {
+                               switch (enteredStringLength) {
+                                   case 3: {
+                                       try {
+                                           MyCharacter = 0;
 
-                                        for (int l = 0; l < enteredString.length(); l++) {
-                                            MyCharacter = MyCharacter << 5;
-                                            MyCharacter += MainActivity.letterMap.get(letter[l]);
-                                        }
-
-
-                                        if ((short)MyCharacter == MainActivity.threeWords.get((short)MyCharacter)) {
-                                            beep();
-                                            result.append(s.toString() + "\n");
+                                           for (int l = 0; l < enteredString.length(); l++) {
+                                               MyCharacter = MyCharacter << 5;
+                                               MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                           }
 
 
-                                        }
-                                    } catch (NullPointerException e) {
-
-                                    }
-
-                                    MyCharacter = 0;
-                                    break;
-                                }
-
-                                case 4: {
-                                    MyCharacter = 0;
-
-                                    for (int l = 0; l < enteredString.length(); l++) {
-                                        MyCharacter = MyCharacter << 5;
-                                        MyCharacter += MainActivity.letterMap.get(letter[l]);
-                                    }
-
-                                    try {
-                                        if ((int) MyCharacter == MainActivity.fourWords.get((int) MyCharacter)) {
-                                            beep();
-                                            result.append(s.toString() + "\n");
+                                           if ((short) MyCharacter == MainActivity.threeWords.get((short) MyCharacter)) {
+                                               beep();
+                                               result.append(s.toString() + "\n");
 
 
-                                        }
-                                    } catch (NullPointerException e) {
+                                           }
+                                       } catch (NullPointerException e) {
+                                           Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
 
-                                    }
+                                       }catch(Exception e){
 
-                                    MyCharacter = 0;
-                                    break;
-                                }
+                                       }
 
-                                case 5: {
-                                    MyCharacter = 0;
+                                       MyCharacter = 0;
+                                       break;
+                                   }
 
-                                    for (int l = 0; l < enteredString.length(); l++) {
-                                        MyCharacter = MyCharacter << 5;
-                                        MyCharacter += MainActivity.letterMap.get(letter[l]);
-                                    }
+                                   case 4: {
+                                       try{
+                                       MyCharacter = 0;
 
-                                    try {
-                                        if ((int) MyCharacter == MainActivity.fiveWords.get((int) MyCharacter)) {
-                                            beep();
-                                            result.append(s.toString() + "\n");
-
-
-                                        }
-                                    } catch (NullPointerException e) {
-
-                                    }
-
-                                    MyCharacter = 0;
-                                    break;
-                                }
-
-                                case 6: {
-                                    MyCharacter = 0;
-
-                                    for (int l = 0; l < enteredString.length(); l++) {
-                                        MyCharacter = MyCharacter << 5;
-                                        MyCharacter += MainActivity.letterMap.get(letter[l]);
-                                    }
-
-                                    try {
-                                        if ((int) MyCharacter == MainActivity.sixWords.get((int) MyCharacter)) {
-                                            beep();
-                                            result.append(s.toString() + "\n");
+                                       for (int l = 0; l < enteredString.length(); l++) {
+                                           MyCharacter = MyCharacter << 5;
+                                           MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                       }
 
 
-                                        }
-                                    } catch (NullPointerException e) {
+                                           if ((int) MyCharacter == MainActivity.fourWords.get((int) MyCharacter)) {
+                                               beep();
+                                               result.append(s.toString() + "\n");
 
-                                    }
 
-                                    MyCharacter = 0;
-                                    break;
-                                }
-                                default:
-                                    Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
-                                    break;
-                            }
+                                           }
+                                       } catch (NullPointerException e) {
+                                           Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+
+
+                                       }
+
+                                       MyCharacter = 0;
+                                       break;
+                                   }
+
+                                   case 5: {
+                                       try{
+                                       MyCharacter = 0;
+
+                                       for (int l = 0; l < enteredString.length(); l++) {
+                                           MyCharacter = MyCharacter << 5;
+                                           MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                       }
+
+                                           if ((int) MyCharacter == MainActivity.fiveWords.get((int) MyCharacter)) {
+                                               beep();
+                                               result.append(s.toString() + "\n");
+
+
+                                           }
+                                       } catch (NullPointerException e) {
+                                           Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+
+                                       }
+
+                                       MyCharacter = 0;
+                                       break;
+                                   }
+
+                                   case 6: {
+                                       try{
+                                       MyCharacter = 0;
+
+                                       for (int l = 0; l < enteredString.length(); l++) {
+                                           MyCharacter = MyCharacter << 5;
+                                           MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                       }
+
+                                           if ((int) MyCharacter == MainActivity.sixWords.get((int) MyCharacter)) {
+                                               beep();
+                                               result.append(s.toString() + "\n");
+
+
+                                           }
+                                       } catch (NullPointerException e) {
+                                           Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+
+                                       }
+
+                                       MyCharacter = 0;
+                                       break;
+                                   }
+                                   default:
+                                       Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+                                       break;
+                               }
+                           }
                         }
                     }
 

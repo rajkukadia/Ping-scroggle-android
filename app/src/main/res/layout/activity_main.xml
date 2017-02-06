@@ -10,7 +10,14 @@
     android:background="@color/Linen"
     tools:context=".MainActivity">
 
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
     <Button
         android:id="@+id/about_mainactivity_button"
         android:layout_width="match_parent"
@@ -61,4 +68,7 @@
         android:background="@color/Khaki"
         android:text="@string/quit_label" />
 
+
+        </LinearLayout>
+</ScrollView>
 </LinearLayout>
