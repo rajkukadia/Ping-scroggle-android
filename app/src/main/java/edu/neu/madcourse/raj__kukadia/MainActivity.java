@@ -43,7 +43,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public static HashMap<Integer, Integer> fourWords = new HashMap<Integer, Integer>();
     public static HashMap<Integer, Integer> fiveWords = new HashMap<Integer, Integer>();
     public static HashMap<Integer, Integer> sixWords = new HashMap<Integer, Integer>();
-    public static HashMap<Long, Long> seventotwentyfiveWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> seventotenWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> eleventofifteenWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> sixteentotwentyWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> twentyonetotwentyfiveWords = new HashMap<Long, Long>();
+
+
+
+
 
     public MainActivity() {
 
@@ -56,140 +63,53 @@ public class MainActivity extends Activity implements View.OnClickListener {
         checkPermissions();
         getActionBar().setTitle("Raj Kukadia");
         setContentView(R.layout.activity_main);
+
+
         setHashMap();
         setMap();
-        if (firstTime) {
-            firstTime = false;
-            loadDictionary();
-        }
+       // if (firstTime) {
+         //   firstTime = false;
+           // loadDictionary();
+        //}
 
         setListner(viewMap);
-
+       // readfirstpart();
     }
 
+
+  /*  private void readfirstpart(){
+
+            for (int data = 1; data <=(371600/2); data++) {
+                Long d = null;
+                try {
+                    d = din4.readLong();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                seventotwentyfiveWords.put(d, d);
+
+                //Log.d("six above words", " loading..");
+
+            }
+
+            try {
+                din4.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+*/
     @Override
     protected void onResume() {
         super.onResume();
 
     }
 
-    protected void loadDictionary() {
-        try {
 
-
-          // BufferedInputStream b = new BufferedInputStream(getResources().openRawResource(R.raw.threewords));
-           //BufferedInputStream b1 = new BufferedInputStream(getResources().openRawResource(R.raw.fourwords));
-           //BufferedInputStream b2 = new BufferedInputStream(getResources().openRawResource(R.raw.fivewords));
-           //BufferedInputStream b3 = new BufferedInputStream(getResources().openRawResource(R.raw.sixwords));
-           //BufferedInputStream b4 = new BufferedInputStream(getResources().openRawResource(R.raw.sixabovewords));
-           // BufferedInputStream b5 = new BufferedInputStream(getResources().openRawResource(R.raw.sixabovewords));
-
-            InputStream is = getResources().openRawResource(R.raw.threewords);
-            InputStream is1 = getResources().openRawResource(R.raw.fourwords);
-            InputStream is2 = getResources().openRawResource(R.raw.fivewords);
-            InputStream is3 = getResources().openRawResource(R.raw.sixwords);
-            InputStream is4 = getResources().openRawResource(R.raw.seventotwentyfivewords);
-            InputStream is5 = getResources().openRawResource(R.raw.twentyfiveabovewords);
-
-
-
-
-            DataInputStream din = new DataInputStream(is);
-           DataInputStream din1 = new DataInputStream(is1);
-           DataInputStream din2 = new DataInputStream(is2);
-           DataInputStream din3 = new DataInputStream(is3);
-           DataInputStream din4 = new DataInputStream(is4);
-            InputStreamReader inReader = new InputStreamReader(is5);
-            BufferedReader br = new BufferedReader(inReader);
-
-            String line;
-            for(int data =1; data<=23;data++){
-                if((line=br.readLine())!=null){
-                    stringWords.put(line,line);
-                }
-            }
-
-            for (int data = 1; data <= 528; data++) {
-                Long d = din.readLong();
-                short first =  (short)(d >>> 45);
-                long secondProgress = d << 19;
-                short second = (short)(secondProgress >>> 49);
-                long thirdProgress = d << 34;
-                short third = (short)(thirdProgress >>> 49);
-                long fourthProgress = d << 49;
-                short fourth = (short)(fourthProgress >>> 49);
-                threeWords.put(first, first);
-                threeWords.put(second, second);
-                threeWords.put(third, third);
-                threeWords.put(fourth, fourth);
-               // Log.d("three words", " loading..");
-
-            }
-
-            for (int data = 1; data <= 2551; data++) {
-                Long d = din1.readLong();
-                int first = (int) (d >>> 40);
-                long secondProgress = d << 24;
-                int second = (int) (secondProgress >>> 44);
-                long thirdProgress = d << 44;
-                int third = (int) (thirdProgress >>> 44);
-                fourWords.put(first, first);
-                fourWords.put(second, second);
-                fourWords.put(third, third);
-
-               // Log.d("four words", " loading..");
-
-            }
-
-
-            for (int data = 1; data <= 8866; data++) {
-                Long d = din2.readLong();
-                int first = (int) (d >>> 25);
-                long secondProgress = d << 39;
-                int second = (int) (secondProgress >>> 39);
-
-                fiveWords.put(first, first);
-                fiveWords.put(second, second);
-
-              //  Log.d("five words", " loading..");
-
-            }
-
-
-            for (int data = 1; data <= 16609; data++) {
-                Long d = din3.readLong();
-                int first = (int) (d >>> 30);
-                long secondProgress = d << 34;
-                int second = (int) (secondProgress >>> 34);
-
-                sixWords.put(first, first);
-                sixWords.put(second, second);
-
-              //  Log.d("six words", " loading..");
-
-            }
-
-
-            for (int data = 1; data <=371600; data++) {
-                Long d = din4.readLong();
-
-                seventotwentyfiveWords.put(d, d);
-
-
-                //Log.d("six above words", " loading..");
-
-            }
-            Toast.makeText(this, "Dictionary loaded successfully", Toast.LENGTH_LONG).show();
-
-        } catch (FileNotFoundException e) {
-            Log.d("Error:", "File not found");
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.d("Error:", "IO Exception");
-            e.printStackTrace();
-        }
-
-    }
 
         private void setMap(){
             for(char x= 'a';x<='z';x++){

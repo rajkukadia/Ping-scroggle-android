@@ -37,6 +37,9 @@
             android:parentActivityName=".DictionaryAssignment3"
             android:theme="@style/NoTitle" />
 
+
+
+
     </application>
 
 </manifest>
