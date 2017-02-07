@@ -2,37 +2,19 @@ package edu.neu.madcourse.raj__kukadia;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    private int threedigit, fourdigit,fivedigit,sixdigit,sevendigit,edigit,ndigit,tendigit,elevendigit,tewlvedigit,thirteendigit,fourteendigit,fifteendifit,abovefifteen = 0;
-    char letter[];
-    long MyCharacter=0;
-    private static Boolean firstTime = true;
     private int i = 1;
-    private EditText mytext;
     public static boolean permission = true;
     long b = 0b00000;
     private static HashMap<Integer, View> viewMap = new HashMap<Integer, View>();
@@ -49,9 +31,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public static HashMap<Long, Long> twentyonetotwentyfiveWords = new HashMap<Long, Long>();
 
 
-
-
-
     public MainActivity() {
 
     }
@@ -64,67 +43,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
         getActionBar().setTitle("Raj Kukadia");
         setContentView(R.layout.activity_main);
 
-
         setHashMap();
         setMap();
-       // if (firstTime) {
-         //   firstTime = false;
-           // loadDictionary();
-        //}
-
         setListner(viewMap);
-       // readfirstpart();
+
     }
 
-
-  /*  private void readfirstpart(){
-
-            for (int data = 1; data <=(371600/2); data++) {
-                Long d = null;
-                try {
-                    d = din4.readLong();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                seventotwentyfiveWords.put(d, d);
-
-                //Log.d("six above words", " loading..");
-
-            }
-
-            try {
-                din4.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-
-*/
     @Override
     protected void onResume() {
         super.onResume();
 
     }
 
-
-
-        private void setMap(){
+    private void setMap(){
             for(char x= 'a';x<='z';x++){
                 letterMap.put(x,  getBinaryValue());
-                //System.out.println(letterMap);
-            }
+                }
         }
 
     private long getBinaryValue(){
 
-        //System.out.println(b);
-        return ++b;
+            return ++b;
 
     }
-
 
 
     protected void checkPermissions() {
