@@ -27,7 +27,7 @@ public class DictionaryAssignment3 extends Activity {
     private char[] textInput = new char[15];
     private EditText mytext;
     private EditText result;
-    private static boolean FirstTimeCommingFor7to10 = true, FirstTimeCommingFor11to15 = true, FirstTimeCommingFor16to20 = true, FirstTimeCommingFor20to25 = true, FirstTimeCommingFor6to25 = true, FirstTimeCommingFor5and6 = true, FirstTimeCommingFor25Above = true;
+    private static boolean FirstSeven = true,Firsteight = true, Firstnine = true, Firstten = true,Firsteleven = true, Firsttwelve = true, Firstthirteen = true,Firstfourteen = true,Firstfifteen = true,FirstTimeCommingFor7to10 = true, FirstTimeCommingFor11to15 = true, FirstTimeCommingFor16to20 = true, FirstTimeCommingFor20to25 = true, FirstTimeCommingFor6to25 = true, FirstTimeCommingFor5and6 = true, FirstTimeCommingFor25Above = true;
     private char letter[];
     private long MyCharacter;
 
@@ -40,6 +40,18 @@ public class DictionaryAssignment3 extends Activity {
     InputStream is6;
     InputStream is7;
     InputStream is8;
+    InputStream is9;
+    InputStream is10;
+    InputStream is11;
+    InputStream is12;
+    InputStream is13;
+    InputStream is14;
+    InputStream is15;
+    InputStream is16;
+    InputStream is17;
+    InputStream is18;
+
+
 
     DataInputStream din;
     DataInputStream din1;
@@ -50,6 +62,20 @@ public class DictionaryAssignment3 extends Activity {
     DataInputStream din6;
     DataInputStream din7;
     DataInputStream din8;
+    DataInputStream din9;
+    DataInputStream din10;
+    DataInputStream din11;
+    DataInputStream din12;
+    DataInputStream din13;
+    DataInputStream din14;
+    DataInputStream din15;
+    DataInputStream din16;
+    DataInputStream din17;
+    DataInputStream din18;
+
+
+
+
 
 
     BufferedReader br;
@@ -79,6 +105,19 @@ public class DictionaryAssignment3 extends Activity {
         is6 = getResources().openRawResource(R.raw.sixteentotwentywords);
         is7 = getResources().openRawResource(R.raw.twentyonetotwentyfivewords);
         is8 = getResources().openRawResource(R.raw.twentyfiveabovewords);
+        is9 = getResources().openRawResource(R.raw.sevenwords);
+        is10 = getResources().openRawResource(R.raw.eightwords);
+        is11 = getResources().openRawResource(R.raw.ninewords);
+        is12 = getResources().openRawResource(R.raw.tenwords);
+        is13 = getResources().openRawResource(R.raw.elevenwords);
+        is14 = getResources().openRawResource(R.raw.twelvewords);
+        is15 = getResources().openRawResource(R.raw.thirteenwords);
+        is16 = getResources().openRawResource(R.raw.fourteenwords);
+        is17 = getResources().openRawResource(R.raw.fifteenwords);
+
+
+
+
 
 
         inReader = new InputStreamReader(is8);
@@ -92,6 +131,16 @@ public class DictionaryAssignment3 extends Activity {
         din5 = new DataInputStream(is5);
         din6 = new DataInputStream(is6);
         din7 = new DataInputStream(is7);
+        //din8 is not used
+       din9 = new DataInputStream(is9);
+        din10 = new DataInputStream(is10);
+        din11 = new DataInputStream(is11);
+        din12 = new DataInputStream(is12);
+        din13 = new DataInputStream(is13);
+        din14 = new DataInputStream(is14);
+        din15 = new DataInputStream(is15);
+        din16 = new DataInputStream(is16);
+        din17 = new DataInputStream(is17);
 
     }
 
@@ -201,7 +250,7 @@ public class DictionaryAssignment3 extends Activity {
             e.printStackTrace();
         }
     }
-
+/*
     private void setseventotenfile() {
         for (int data = 1; data <= 221152; data++) {
             Long d = null;
@@ -221,7 +270,197 @@ public class DictionaryAssignment3 extends Activity {
             e.printStackTrace();
         }
     }
+*/
 
+    private void setsevenfile(){
+        for (int data = 0; data <= 47523; data++) {
+            Long d = null;
+            try {
+                d = din9.readLong();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            MainActivity.sevenWords.put(d, d);
+
+        }
+
+        try {
+            din9.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void seteightfile(){
+        for (int data = 0; data <= 58447; data++) {
+            Long d = null;
+            try {
+                d = din10.readLong();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            MainActivity.eightWords.put(d, d);
+
+        }
+
+        try {
+            din10.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void setninefile(){
+        for (int data = 0; data <= 60121; data++) {
+            Long d = null;
+            try {
+                d = din11.readLong();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            MainActivity.nineWords.put(d, d);
+
+        }
+
+        try {
+            din11.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void settenfile(){
+        for (int data = 0; data <= 55061; data++) {
+            Long d = null;
+            try {
+                d = din12.readLong();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            MainActivity.tenWords.put(d, d);
+
+        }
+
+        try {
+            din12.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void setelevenfile(){
+        for (int data = 0; data <= 45675; data++) {
+            Long d = null;
+            try {
+                d = din13.readLong();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            MainActivity.elevenWords.put(d, d);
+
+        }
+
+        try {
+            din13.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void settwelvefile(){
+        for (int data = 0; data <= 35470; data++) {
+            Long d = null;
+            try {
+                d = din14.readLong();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            MainActivity.twelveWords.put(d, d);
+
+        }
+
+        try {
+            din14.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void setthirteenfile(){
+        for (int data = 0; data <= 25593; data++) {
+            Long d = null;
+            try {
+                d = din15.readLong();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            MainActivity.thirteenWords.put(d, d);
+
+        }
+
+        try {
+            din15.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setfourteenfile(){
+        for (int data = 0; data <= 17591; data++) {
+            Long d = null;
+            try {
+                d = din16.readLong();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            MainActivity.fourteenWords.put(d, d);
+
+        }
+
+        try {
+            din16.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setfifteenfile(){
+        for (int data = 0; data <= 11256; data++) {
+            Long d = null;
+            try {
+                d = din17.readLong();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            MainActivity.fifteenWords.put(d, d);
+
+        }
+
+        try {
+            din17.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+/*
     private void seteleventofifteenfile() {
 
         for (int data = 1; data <= 135585; data++) {
@@ -244,7 +483,7 @@ public class DictionaryAssignment3 extends Activity {
             e.printStackTrace();
         }
     }
-
+*/
 
     private void setsixteentotwentyfile() {
 
@@ -332,55 +571,8 @@ public class DictionaryAssignment3 extends Activity {
                 String enteredString = s.toString();
                 int enteredStringLength = enteredString.length();
                 letter = enteredString.toCharArray();
-                if (enteredStringLength > 6 && enteredStringLength < 11) {
-                    try {
-                        if (FirstTimeCommingFor7to10) {
-                            setseventotenfile();
-                            FirstTimeCommingFor7to10 = false;
-                        }
-                        MyCharacter = 0;
 
-                        for (int l = 0; l < enteredString.length(); l++) {
-                            MyCharacter = MyCharacter << 5;
-                            MyCharacter += MainActivity.letterMap.get(letter[l]);
-                        }
-
-
-                        if (MyCharacter == MainActivity.seventotenWords.get(MyCharacter)) {
-                            beep();
-                            result.append(s.toString() + "\n");
-                        }
-                    } catch (NullPointerException e) {
-
-                    }
-
-                    MyCharacter = 0;
-
-                } else if (enteredStringLength > 10 & enteredStringLength < 16) {
-                    try {
-                        if (FirstTimeCommingFor11to15) {
-
-                            seteleventofifteenfile();
-                            FirstTimeCommingFor11to15 = false;
-                        }
-                        MyCharacter = 0;
-
-                        for (int l = 0; l < enteredString.length(); l++) {
-                            MyCharacter = MyCharacter << 5;
-                            MyCharacter += MainActivity.letterMap.get(letter[l]);
-                        }
-                        if (MyCharacter == MainActivity.eleventofifteenWords.get(MyCharacter)) {
-                            beep();
-                            result.append(s.toString() + "\n");
-
-
-                        }
-                    } catch (NullPointerException e) {
-
-                    }
-
-                    MyCharacter = 0;
-                } else if (enteredStringLength > 15 & enteredStringLength < 21) {
+                if (enteredStringLength > 15 & enteredStringLength < 21) {
 
                     try {
                         if (FirstTimeCommingFor16to20) {
@@ -558,6 +750,260 @@ public class DictionaryAssignment3 extends Activity {
                             MyCharacter = 0;
                             break;
                         }
+                        case 7:
+                        {
+                            if (FirstSeven) {
+                              setsevenfile();
+                                FirstSeven = false;
+                            }
+
+                            try {
+                                MyCharacter = 0;
+
+                                for (int l = 0; l < enteredString.length(); l++) {
+                                    MyCharacter = MyCharacter << 5;
+                                    MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                }
+
+                                if ( MyCharacter == MainActivity.sevenWords.get(MyCharacter)) {
+                                    beep();
+                                    result.append(s.toString() + "\n");
+
+
+                                }
+                            } catch (NullPointerException e) {
+                                //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+
+                            }
+
+                            MyCharacter = 0;
+                            break;
+                        }
+                        case 8:
+                        {
+                            if (Firsteight) {
+                                seteightfile();
+                                Firsteight = false;
+                            }
+                            try {
+                                MyCharacter = 0;
+
+                                for (int l = 0; l < enteredString.length(); l++) {
+                                    MyCharacter = MyCharacter << 5;
+                                    MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                }
+
+                                if (MyCharacter == MainActivity.eightWords.get(MyCharacter)) {
+                                    beep();
+                                    result.append(s.toString() + "\n");
+
+
+                                }
+                            } catch (NullPointerException e) {
+                                //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+
+                            }
+
+                            MyCharacter = 0;
+                            break;
+                        }
+                        case 9:
+                        {
+                            if (Firstnine) {
+                                setninefile();
+                                Firstnine = false;
+                            }
+                            try {
+                                MyCharacter = 0;
+
+                                for (int l = 0; l < enteredString.length(); l++) {
+                                    MyCharacter = MyCharacter << 5;
+                                    MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                }
+
+                                if (MyCharacter == MainActivity.nineWords.get( MyCharacter)) {
+                                    beep();
+                                    result.append(s.toString() + "\n");
+
+
+                                }
+                            } catch (NullPointerException e) {
+                                //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+
+                            }
+
+                            MyCharacter = 0;
+                            break;
+                        }
+                        case 10:
+                        {
+                            if (Firstten) {
+                                settenfile();
+                                Firstten = false;
+                            }
+                            try {
+                                MyCharacter = 0;
+
+                                for (int l = 0; l < enteredString.length(); l++) {
+                                    MyCharacter = MyCharacter << 5;
+                                    MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                }
+
+                                if (MyCharacter == MainActivity.tenWords.get( MyCharacter)) {
+                                    beep();
+                                    result.append(s.toString() + "\n");
+
+
+                                }
+                            } catch (NullPointerException e) {
+                                //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+
+                            }
+
+                            MyCharacter = 0;
+                            break;
+                        }
+                        case 11:
+                        {
+                            if (Firsteleven) {
+                                setelevenfile();
+                                Firsteleven = false;
+                            }
+                            try {
+                                MyCharacter = 0;
+
+                                for (int l = 0; l < enteredString.length(); l++) {
+                                    MyCharacter = MyCharacter << 5;
+                                    MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                }
+
+                                if ( MyCharacter == MainActivity.elevenWords.get( MyCharacter)) {
+                                    beep();
+                                    result.append(s.toString() + "\n");
+
+
+                                }
+                            } catch (NullPointerException e) {
+                                //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+
+                            }
+
+                            MyCharacter = 0;
+                            break;
+                        }
+                        case 12:
+                        {
+                            if (Firsttwelve) {
+                                settwelvefile();
+                                Firsttwelve = false;
+                            }
+                            try {
+                                MyCharacter = 0;
+
+                                for (int l = 0; l < enteredString.length(); l++) {
+                                    MyCharacter = MyCharacter << 5;
+                                    MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                }
+
+                                if (MyCharacter == MainActivity.twelveWords.get( MyCharacter)) {
+                                    beep();
+                                    result.append(s.toString() + "\n");
+
+
+                                }
+                            } catch (NullPointerException e) {
+                                //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+
+                            }
+
+                            MyCharacter = 0;
+                            break;
+                        }
+                        case 13:
+                        {
+                            if (Firstthirteen) {
+                                setthirteenfile();
+                                Firstthirteen = false;
+                            }
+                            try {
+                                MyCharacter = 0;
+
+                                for (int l = 0; l < enteredString.length(); l++) {
+                                    MyCharacter = MyCharacter << 5;
+                                    MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                }
+
+                                if (MyCharacter == MainActivity.thirteenWords.get(MyCharacter)) {
+                                    beep();
+                                    result.append(s.toString() + "\n");
+
+
+                                }
+                            } catch (NullPointerException e) {
+                                //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+
+                            }
+
+                            MyCharacter = 0;
+                            break;
+                        }
+                        case 14:
+                        {
+                            if (Firstfourteen) {
+                                setfourteenfile();
+                                Firstfourteen = false;
+                            }
+                            try {
+                                MyCharacter = 0;
+
+                                for (int l = 0; l < enteredString.length(); l++) {
+                                    MyCharacter = MyCharacter << 5;
+                                    MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                }
+
+                                if ( MyCharacter == MainActivity.fourteenWords.get(MyCharacter)) {
+                                    beep();
+                                    result.append(s.toString() + "\n");
+
+
+                                }
+                            } catch (NullPointerException e) {
+                                //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+
+                            }
+
+                            MyCharacter = 0;
+                            break;
+                        }
+                        case 15:
+                        {
+                            if (Firstfifteen) {
+                                setfifteenfile();
+                                Firstfifteen = false;
+                            }
+                            try {
+                                MyCharacter = 0;
+
+                                for (int l = 0; l < enteredString.length(); l++) {
+                                    MyCharacter = MyCharacter << 5;
+                                    MyCharacter += MainActivity.letterMap.get(letter[l]);
+                                }
+
+                                if ( MyCharacter == MainActivity.fifteenWords.get( MyCharacter)) {
+                                    beep();
+                                    result.append(s.toString() + "\n");
+
+
+                                }
+                            } catch (NullPointerException e) {
+                                //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+
+                            }
+
+                            MyCharacter = 0;
+                            break;
+                        }
+
                         default:
                             Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
                             break;
@@ -583,10 +1029,11 @@ public class DictionaryAssignment3 extends Activity {
 
         View returnButton = findViewById(R.id.button_return);
         returnButton.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+            //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                navigateUpTo(getParentActivityIntent());
+              finish();
+                //  navigateUpTo(getParentActivityIntent());
 
             }
         });

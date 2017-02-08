@@ -25,7 +25,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public static HashMap<Integer, Integer> fourWords = new HashMap<Integer, Integer>();
     public static HashMap<Integer, Integer> fiveWords = new HashMap<Integer, Integer>();
     public static HashMap<Integer, Integer> sixWords = new HashMap<Integer, Integer>();
-    public static HashMap<Long, Long> seventotenWords = new HashMap<Long, Long>();
+   // public static HashMap<Long, Long> seventotenWords = new HashMap<Long, Long>();
+   public static HashMap<Long, Long> sevenWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> eightWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> nineWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> tenWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> elevenWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> twelveWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> thirteenWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> fourteenWords = new HashMap<Long, Long>();
+    public static HashMap<Long, Long> fifteenWords = new HashMap<Long, Long>();
+
+
+
     public static HashMap<Long, Long> eleventofifteenWords = new HashMap<Long, Long>();
     public static HashMap<Long, Long> sixteentotwentyWords = new HashMap<Long, Long>();
     public static HashMap<Long, Long> twentyonetotwentyfiveWords = new HashMap<Long, Long>();
