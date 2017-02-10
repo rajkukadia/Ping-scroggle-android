@@ -495,7 +495,7 @@ public class DictionaryAssignment3 extends Activity {
                 e.printStackTrace();
             }
 
-            MainActivity.eleventofifteenWords.put(d, d);
+            MainActivity.sixteentotwentyWords.put(d, d);
 
 
         }
