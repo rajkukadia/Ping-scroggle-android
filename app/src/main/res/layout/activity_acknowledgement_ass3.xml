@@ -34,21 +34,15 @@
         android:layout_gravity="center"
         android:textSize="25sp"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"/>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="200sp"
-        android:visibility="visible"
-        android:scrollIndicators="right"
-        android:scrollbarFadeDuration="45000"
-        >
+
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="200sp"
+        android:layout_height="wrap_content"
         android:textSize="20sp"
         android:text="@string/ack_details_label_one"
+        android:scrollbars="vertical"
         >
     </TextView>
-    </ScrollView>
 
 
     <TextView
@@ -59,21 +53,19 @@
         android:textStyle="italic"
         android:layout_gravity="center"
         android:textSize="25sp"
+
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"/>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="200sp"
-        android:scrollbarFadeDuration="45000">
+
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="200sp"
-
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
         android:textSize="20sp"
         android:text="@string/ack_details_label_two"
         >
 
     </TextView>
-    </ScrollView>
+
     </LinearLayout>
 </ScrollView>
 </LinearLayout>
