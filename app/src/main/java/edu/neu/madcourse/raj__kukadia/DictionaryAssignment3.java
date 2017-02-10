@@ -584,6 +584,9 @@ public class DictionaryAssignment3 extends Activity {
 
                         for (int l = 0; l < enteredString.length(); l++) {
                             MyCharacter = MyCharacter << 5;
+                            if(letter[l]>=65&&letter[l]<=90){
+                                letter[l]+=32;
+                            }
                             MyCharacter += MainActivity.letterMap.get(letter[l]);
                         }
 
@@ -611,6 +614,9 @@ public class DictionaryAssignment3 extends Activity {
 
                         for (int l = 0; l < enteredString.length(); l++) {
                             MyCharacter = MyCharacter << 5;
+                            if(letter[l]>=65&&letter[l]<=90){
+                                letter[l]+=32;
+                            }
                             MyCharacter += MainActivity.letterMap.get(letter[l]);
                         }
 
@@ -651,6 +657,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
@@ -678,6 +687,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
@@ -709,6 +721,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
@@ -733,6 +748,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
@@ -762,6 +780,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
@@ -790,6 +811,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
@@ -818,6 +842,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
@@ -846,6 +873,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
@@ -874,6 +904,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
@@ -902,6 +935,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
@@ -930,6 +966,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
@@ -958,6 +997,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
@@ -986,6 +1028,9 @@ public class DictionaryAssignment3 extends Activity {
 
                                 for (int l = 0; l < enteredString.length(); l++) {
                                     MyCharacter = MyCharacter << 5;
+                                    if(letter[l]>=65&&letter[l]<=90){
+                                        letter[l]+=32;
+                                    }
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 

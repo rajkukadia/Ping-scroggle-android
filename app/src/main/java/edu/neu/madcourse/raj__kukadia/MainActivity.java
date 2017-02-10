@@ -20,6 +20,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static HashMap<Integer, View> viewMap = new HashMap<Integer, View>();
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
     public static HashMap <Character, Long> letterMap = new HashMap <Character, Long>();
+
+
     public static HashMap<String, String> stringWords = new HashMap<String, String>();
     public static HashMap<Short, Short> threeWords = new HashMap<Short, Short>();
     public static HashMap<Integer, Integer> fourWords = new HashMap<Integer, Integer>();
@@ -72,6 +74,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 letterMap.put(x,  getBinaryValue());
                 }
         }
+
 
     private long getBinaryValue(){
 
