@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -455,35 +456,27 @@ public class DictionaryAssignment3 extends Activity {
     }
 
 
+    private boolean checkExixtingContent(String s, EditText e){
+        boolean response=true;
 
+        String[] splitter  =e.getText().toString().split("\n");
 
-
-
-
-/*
-    private void seteleventofifteenfile() {
-
-        for (int data = 1; data <= 135585; data++) {
-            Long d = null;
-            try {
-                d = din5.readLong();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            MainActivity.eleventofifteenWords.put(d, d);
-
-
+        for (int split = 0; split<splitter.length;split++){
+           // Log.d(splitter[split],"check");
+                if(splitter[split].equalsIgnoreCase(s))
+                {
+                    response=true;
+                    break;
+                }
+            else{
+                    response=false;
+                }
 
         }
 
-        try {
-            din5.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return response;
     }
-*/
+
 
     private void setsixteentotwentyfile() {
 
@@ -592,9 +585,12 @@ public class DictionaryAssignment3 extends Activity {
 
 
                         if (MyCharacter == MainActivity.sixteentotwentyWords.get(MyCharacter)) {
-                            beep();
-                            result.append(s.toString() + "\n");
+                            Boolean content = checkExixtingContent(s.toString(), result);
+                            if (!content) {
 
+                                beep();
+                                result.append(s.toString() + "\n");
+                            }
 
                         }
                     } catch (NullPointerException e) {
@@ -622,10 +618,13 @@ public class DictionaryAssignment3 extends Activity {
 
 
                         if (MyCharacter == MainActivity.twentyonetotwentyfiveWords.get(MyCharacter)) {
-                            beep();
-                            result.append(s.toString() + "\n");
+                            Boolean content = checkExixtingContent(s.toString(), result);
+                            if (!content) {
 
+                                beep();
+                                result.append(s.toString() + "\n");
 
+                            }
                         }
                     } catch (NullPointerException e) {
 
@@ -641,9 +640,13 @@ public class DictionaryAssignment3 extends Activity {
                         FirstTimeCommingFor25Above = false;
                     }
                     if (enteredString.toString().equals(MainActivity.stringWords.get(enteredString.toString()))) {
-                        beep();
-                        result.append(enteredString.toString() + "\n");
-                    }
+                        Boolean content = checkExixtingContent(s.toString(), result);
+                        if (!content) {
+
+                            beep();
+                            result.append(enteredString.toString() + "\n");
+                        }
+                        }
                 } else
                     switch (enteredStringLength) {
                         case 0:
@@ -665,16 +668,21 @@ public class DictionaryAssignment3 extends Activity {
 
 
                                 if ((short) MyCharacter == MainActivity.threeWords.get((short) MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
+
+                                    if(!content) {
+                                        beep();
+                                        result.append(s.toString() + "\n");
+                                    }
 
 
                                 }
                             } catch (NullPointerException e) {
                                 // Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+                                Log.d("catches", " Exception");
 
                             } catch (Exception e) {
-
+                                Log.d("catches", " Exception");
                             }
 
                             MyCharacter = 0;
@@ -695,9 +703,12 @@ public class DictionaryAssignment3 extends Activity {
 
 
                                 if ((int) MyCharacter == MainActivity.fourWords.get((int) MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
 
+                                    if(!content) {
+                                        beep();
+                                        result.append(s.toString() + "\n");
+                                    }
 
                                 }
                             } catch (NullPointerException e) {
@@ -728,8 +739,11 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
                                 if ((int) MyCharacter == MainActivity.fiveWords.get((int) MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
+                                    if(!content) {
+                                        beep();
+                                        result.append(s.toString() + "\n");
+                                    }
 
 
                                 }
@@ -755,8 +769,12 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
                                 if ((int) MyCharacter == MainActivity.sixWords.get((int) MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
+
+                                    if(!content) {
+                                        beep();
+                                        result.append(s.toString() + "\n");
+                                    }
 
 
                                 }
@@ -787,9 +805,12 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
                                 if ( MyCharacter == MainActivity.sevenWords.get(MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
+                                    if (!content) {
 
+                                        beep();
+                                        result.append(s.toString() + "\n");
+                                    }
 
                                 }
                             } catch (NullPointerException e) {
@@ -818,9 +839,12 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
                                 if (MyCharacter == MainActivity.eightWords.get(MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
+                                    if (!content) {
 
+                                        beep();
+                                        result.append(s.toString() + "\n");
+                                    }
 
                                 }
                             } catch (NullPointerException e) {
@@ -849,9 +873,12 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
                                 if (MyCharacter == MainActivity.nineWords.get( MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
+                                    if (!content) {
 
+                                        beep();
+                                        result.append(s.toString() + "\n");
+                                    }
 
                                 }
                             } catch (NullPointerException e) {
@@ -880,9 +907,12 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
                                 if (MyCharacter == MainActivity.tenWords.get( MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
+                                    if (!content) {
 
+                                        beep();
+                                        result.append(s.toString() + "\n");
+                                    }
 
                                 }
                             } catch (NullPointerException e) {
@@ -911,9 +941,12 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
                                 if ( MyCharacter == MainActivity.elevenWords.get( MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
+                                    if (!content) {
 
+                                        beep();
+                                        result.append(s.toString() + "\n");
+                                    }
 
                                 }
                             } catch (NullPointerException e) {
@@ -942,10 +975,13 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
                                 if (MyCharacter == MainActivity.twelveWords.get( MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
+                                    if (!content) {
 
+                                        beep();
+                                        result.append(s.toString() + "\n");
 
+                                    }
                                 }
                             } catch (NullPointerException e) {
                                 //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
@@ -973,9 +1009,12 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
                                 if (MyCharacter == MainActivity.thirteenWords.get(MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
+                                    if (!content) {
 
+                                        beep();
+                                        result.append(s.toString() + "\n");
+                                    }
 
                                 }
                             } catch (NullPointerException e) {
@@ -1004,10 +1043,13 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
                                 if ( MyCharacter == MainActivity.fourteenWords.get(MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
+                                    if (!content) {
 
+                                        beep();
+                                        result.append(s.toString() + "\n");
 
+                                    }
                                 }
                             } catch (NullPointerException e) {
                                 //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
@@ -1035,10 +1077,13 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
                                 if ( MyCharacter == MainActivity.fifteenWords.get( MyCharacter)) {
-                                    beep();
-                                    result.append(s.toString() + "\n");
+                                    Boolean content = checkExixtingContent(s.toString(), result);
+                                    if (!content) {
 
+                                        beep();
+                                        result.append(s.toString() + "\n");
 
+                                    }
                                 }
                             } catch (NullPointerException e) {
                                 //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
