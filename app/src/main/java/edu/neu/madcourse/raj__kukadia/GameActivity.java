@@ -1,3 +1,4 @@
+/*
 package edu.neu.madcourse.raj__kukadia;
 
 import android.app.Activity;
@@ -106,3 +107,4 @@ public class GameActivity extends Activity {
         Log.d("UT3", "state = " + gameData);
     }
 }
+*/

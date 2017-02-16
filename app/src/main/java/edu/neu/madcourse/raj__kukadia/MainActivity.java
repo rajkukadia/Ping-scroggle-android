@@ -132,6 +132,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         viewMap.put(4, v);
         v = findViewById(R.id.dict_button);
         viewMap.put(5, v);
+        v=findViewById(R.id.scroggle_button);
+        viewMap.put(6, v);
 
     }
 
@@ -144,12 +146,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(intent);
             }
         });
+
         v = (View) view.get(2);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, UT3MainActivity.class);
-                startActivity(intent);
+        //        Intent intent = new Intent(MainActivity.this, UT3MainActivity.class);
+          //      startActivity(intent);
             }
         });
         v = (View) view.get(3);
@@ -173,6 +176,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DictionaryAssignment3.class);
+                startActivity(intent);
+            }
+        });
+        v = (View) view.get(6);
+        v.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UT3MainActivityScroggleAssignment5.class);
                 startActivity(intent);
             }
         });

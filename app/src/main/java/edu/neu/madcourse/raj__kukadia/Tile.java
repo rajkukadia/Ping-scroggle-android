@@ -1,4 +1,4 @@
-
+/*
 package edu.neu.madcourse.raj__kukadia;
 
 import android.animation.Animator;
@@ -16,10 +16,10 @@ import java.util.StringTokenizer;
 public class Tile {
 
    public enum Owner {
-      X, O /* letter O */, NEITHER, BOTH
+      X, O /* letter O , NEITHER, BOTH
    }
 
-   // These levels are defined in the drawable definitions
+   //These levels are defined in the drawable definitions
    private static final int LEVEL_X = 0;
    private static final int LEVEL_O = 1; // letter O
    private static final String LEVEL_BLANK = "";

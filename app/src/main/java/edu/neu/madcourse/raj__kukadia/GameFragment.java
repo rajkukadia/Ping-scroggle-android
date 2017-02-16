@@ -1,4 +1,4 @@
-
+/*
 package edu.neu.madcourse.raj__kukadia;
 
 import android.app.Fragment;
@@ -484,7 +484,7 @@ public class GameFragment extends Fragment {
       }
    }
 
-   /** Create a string containing the state of the game. */
+   /** Create a string containing the state of the game.
    public String getState() {
       StringBuilder builder = new StringBuilder();
       builder.append(mLastLarge);
@@ -500,7 +500,7 @@ public class GameFragment extends Fragment {
       return builder.toString();
    }
 
-   /** Restore the state of the game from the given string. */
+   /** Restore the state of the game from the given string.
    public void putState(String gameData) {
       String[] fields = gameData.split(",");
       int index = 0;
@@ -517,3 +517,4 @@ public class GameFragment extends Fragment {
    }
 }
 
+*/
