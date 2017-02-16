@@ -70,7 +70,7 @@ public class GameFragment extends Fragment {
       View rootView =
             inflater.inflate(R.layout.large_board, container, false);
       initViews(rootView);
-      updateAllTiles();
+     updateAllTiles();
       return rootView;
    }
 
@@ -116,7 +116,34 @@ public class GameFragment extends Fragment {
 
    }
 
+
+   private String[] generateRandomWords(){
+      int i=0;
+
+      String newRandomWord;
+      newRandomWord = chooseRandomWord();
+      do {
+
+         nineNineLetterWords[i] = newRandomWord;
+         newRandomWord = chooseRandomWord();
+         if(!checkIfValidRandomWord(newRandomWord)){
+            newRandomWord = chooseRandomWord();
+            continue;
+         }
+         i++;
+      }
+      while (i<9);
+
+      //Log.d(chooseRandomWord(), " HashMap Size");
+
+      for(int j = 0;j<nineNineLetterWords.length;j++) {
+         Log.d(nineNineLetterWords[j].toString(), " answer");
+      }
+   return nineNineLetterWords;
+   }
+
    private void initViews(View rootView) {
+
       mEntireBoard.setView(rootView);
     for (int large = 0; large < 9; large++) {
          View outer = rootView.findViewById(mLargeIds[large]);
@@ -135,7 +162,7 @@ public class GameFragment extends Fragment {
 
             // ...
 
-            /*
+
             inner.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
@@ -152,30 +179,12 @@ public class GameFragment extends Fragment {
                }
             });
             // ...
-            */
+
          }
       }
 
-         int i=0;
 
-      String newRandomWord;
-      newRandomWord = chooseRandomWord();
-         do {
-
-            nineNineLetterWords[i] = newRandomWord;
-            newRandomWord = chooseRandomWord();
-            if(!checkIfValidRandomWord(newRandomWord)){
-               newRandomWord = chooseRandomWord();
-               continue;
-            }
-            i++;
-         }
-         while (i<9);
-
-         //Log.d(chooseRandomWord(), " HashMap Size");
-
-      Log.d(nineNineLetterWords.toString(), " answer");
-  }
+      }
 
    private Boolean checkIfValidRandomWord(String x){
       for(int i = 0;i<nineNineLetterWords.length;i++){
@@ -317,13 +326,161 @@ public class GameFragment extends Fragment {
 
    }
 
+   private char[][] generateCharArrays(String [] randomStrings){
+      char[][] randomStringsCharArray = new char[9][];
+      for(int a = 0;a<9;a++) {
+         randomStringsCharArray[a]= randomStrings[a].toCharArray();
+      }
+      return randomStringsCharArray;
+   }
+
+   private int choosePatternNumber(){
+
+      Random r = new Random();
+      int num = r.nextInt(8);
+      return num;
+   }
+
+   private void fixSmallBoards(char [] finalSequenceOfCharacters, int finalPattern, int large){
+
+      switch(finalPattern){
+
+         case 0:
+            Log.d("case 0 ", "called");
+            mSmallTiles[large][0].updateDrawableState(finalSequenceOfCharacters[0]);
+            mSmallTiles[large][1].updateDrawableState(finalSequenceOfCharacters[1]);
+            mSmallTiles[large][2].updateDrawableState(finalSequenceOfCharacters[8]);
+            mSmallTiles[large][3].updateDrawableState(finalSequenceOfCharacters[3]);
+            mSmallTiles[large][4].updateDrawableState(finalSequenceOfCharacters[2]);
+            mSmallTiles[large][5].updateDrawableState(finalSequenceOfCharacters[7]);
+            mSmallTiles[large][6].updateDrawableState(finalSequenceOfCharacters[4]);
+            mSmallTiles[large][7].updateDrawableState(finalSequenceOfCharacters[5]);
+            mSmallTiles[large][8].updateDrawableState(finalSequenceOfCharacters[6]);
+            break;
+         case 1:
+            Log.d("case 1 ", "called");
+            mSmallTiles[large][0].updateDrawableState(finalSequenceOfCharacters[0]);
+            mSmallTiles[large][1].updateDrawableState(finalSequenceOfCharacters[1]);
+            mSmallTiles[large][2].updateDrawableState(finalSequenceOfCharacters[3]);
+            mSmallTiles[large][3].updateDrawableState(finalSequenceOfCharacters[8]);
+            mSmallTiles[large][4].updateDrawableState(finalSequenceOfCharacters[2]);
+            mSmallTiles[large][5].updateDrawableState(finalSequenceOfCharacters[4]);
+            mSmallTiles[large][6].updateDrawableState(finalSequenceOfCharacters[7]);
+            mSmallTiles[large][7].updateDrawableState(finalSequenceOfCharacters[6]);
+            mSmallTiles[large][8].updateDrawableState(finalSequenceOfCharacters[5]);
+            break;
+
+         case 2:
+            Log.d("case 2 ", "called");
+            mSmallTiles[large][0].updateDrawableState(finalSequenceOfCharacters[2]);
+            mSmallTiles[large][1].updateDrawableState(finalSequenceOfCharacters[3]);
+            mSmallTiles[large][2].updateDrawableState(finalSequenceOfCharacters[4]);
+            mSmallTiles[large][3].updateDrawableState(finalSequenceOfCharacters[1]);
+            mSmallTiles[large][4].updateDrawableState(finalSequenceOfCharacters[6]);
+            mSmallTiles[large][5].updateDrawableState(finalSequenceOfCharacters[5]);
+            mSmallTiles[large][6].updateDrawableState(finalSequenceOfCharacters[0]);
+            mSmallTiles[large][7].updateDrawableState(finalSequenceOfCharacters[7]);
+            mSmallTiles[large][8].updateDrawableState(finalSequenceOfCharacters[8]);
+            break;
+
+         case 3:
+            Log.d("case 3 ", "called");
+            mSmallTiles[large][0].updateDrawableState(finalSequenceOfCharacters[7]);
+            mSmallTiles[large][1].updateDrawableState(finalSequenceOfCharacters[8]);
+            mSmallTiles[large][2].updateDrawableState(finalSequenceOfCharacters[1]);
+            mSmallTiles[large][3].updateDrawableState(finalSequenceOfCharacters[6]);
+            mSmallTiles[large][4].updateDrawableState(finalSequenceOfCharacters[0]);
+            mSmallTiles[large][5].updateDrawableState(finalSequenceOfCharacters[2]);
+            mSmallTiles[large][6].updateDrawableState(finalSequenceOfCharacters[5]);
+            mSmallTiles[large][7].updateDrawableState(finalSequenceOfCharacters[4]);
+            mSmallTiles[large][8].updateDrawableState(finalSequenceOfCharacters[3]);
+            break;
+
+         case 4:
+            Log.d("case 4 ", "called");
+            mSmallTiles[large][0].updateDrawableState(finalSequenceOfCharacters[3]);
+            mSmallTiles[large][1].updateDrawableState(finalSequenceOfCharacters[1]);
+            mSmallTiles[large][2].updateDrawableState(finalSequenceOfCharacters[0]);
+            mSmallTiles[large][3].updateDrawableState(finalSequenceOfCharacters[4]);
+            mSmallTiles[large][4].updateDrawableState(finalSequenceOfCharacters[2]);
+            mSmallTiles[large][5].updateDrawableState(finalSequenceOfCharacters[8]);
+            mSmallTiles[large][6].updateDrawableState(finalSequenceOfCharacters[5]);
+            mSmallTiles[large][7].updateDrawableState(finalSequenceOfCharacters[6]);
+            mSmallTiles[large][8].updateDrawableState(finalSequenceOfCharacters[7]);
+            break;
+
+         case 5:
+            Log.d("case 5 ", "called");
+            mSmallTiles[large][0].updateDrawableState(finalSequenceOfCharacters[0]);
+            mSmallTiles[large][1].updateDrawableState(finalSequenceOfCharacters[1]);
+            mSmallTiles[large][2].updateDrawableState(finalSequenceOfCharacters[2]);
+            mSmallTiles[large][3].updateDrawableState(finalSequenceOfCharacters[4]);
+            mSmallTiles[large][4].updateDrawableState(finalSequenceOfCharacters[3]);
+            mSmallTiles[large][5].updateDrawableState(finalSequenceOfCharacters[8]);
+            mSmallTiles[large][6].updateDrawableState(finalSequenceOfCharacters[5]);
+            mSmallTiles[large][7].updateDrawableState(finalSequenceOfCharacters[6]);
+            mSmallTiles[large][8].updateDrawableState(finalSequenceOfCharacters[7]);
+            break;
+
+         case 6:
+            Log.d("case 6 ", "called");
+
+            mSmallTiles[large][0].updateDrawableState(finalSequenceOfCharacters[6]);
+            mSmallTiles[large][1].updateDrawableState(finalSequenceOfCharacters[5]);
+            mSmallTiles[large][2].updateDrawableState(finalSequenceOfCharacters[0]);
+            mSmallTiles[large][3].updateDrawableState(finalSequenceOfCharacters[7]);
+            mSmallTiles[large][4].updateDrawableState(finalSequenceOfCharacters[4]);
+            mSmallTiles[large][5].updateDrawableState(finalSequenceOfCharacters[1]);
+            mSmallTiles[large][6].updateDrawableState(finalSequenceOfCharacters[8]);
+            mSmallTiles[large][7].updateDrawableState(finalSequenceOfCharacters[3]);
+            mSmallTiles[large][8].updateDrawableState(finalSequenceOfCharacters[2]);
+            break;
+
+         case 7:
+            Log.d("case 7 ", "called");
+
+            mSmallTiles[large][0].updateDrawableState(finalSequenceOfCharacters[4]);
+            mSmallTiles[large][1].updateDrawableState(finalSequenceOfCharacters[3]);
+            mSmallTiles[large][2].updateDrawableState(finalSequenceOfCharacters[2]);
+            mSmallTiles[large][3].updateDrawableState(finalSequenceOfCharacters[5]);
+            mSmallTiles[large][4].updateDrawableState(finalSequenceOfCharacters[0]);
+            mSmallTiles[large][5].updateDrawableState(finalSequenceOfCharacters[1]);
+            mSmallTiles[large][6].updateDrawableState(finalSequenceOfCharacters[6]);
+            mSmallTiles[large][7].updateDrawableState(finalSequenceOfCharacters[7]);
+            mSmallTiles[large][8].updateDrawableState(finalSequenceOfCharacters[8]);
+            break;
+
+         case 8:
+            Log.d("case 8 ", "called");
+
+            mSmallTiles[large][0].updateDrawableState(finalSequenceOfCharacters[8]);
+            mSmallTiles[large][1].updateDrawableState(finalSequenceOfCharacters[7]);
+            mSmallTiles[large][2].updateDrawableState(finalSequenceOfCharacters[6]);
+            mSmallTiles[large][3].updateDrawableState(finalSequenceOfCharacters[0]);
+            mSmallTiles[large][4].updateDrawableState(finalSequenceOfCharacters[2]);
+            mSmallTiles[large][5].updateDrawableState(finalSequenceOfCharacters[5]);
+            mSmallTiles[large][6].updateDrawableState(finalSequenceOfCharacters[1]);
+            mSmallTiles[large][7].updateDrawableState(finalSequenceOfCharacters[3]);
+            mSmallTiles[large][8].updateDrawableState(finalSequenceOfCharacters[4]);
+            break;
+
+      }
+
+
+   }
+
    private void updateAllTiles() {
-      mEntireBoard.updateDrawableState();
+      String[] randomStrings = generateRandomWords();
+      char[][] randomStringsCharArray = generateCharArrays(randomStrings);
+      mEntireBoard.updateDrawableState('a');
       for (int large = 0; large < 9; large++) {
-         mLargeTiles[large].updateDrawableState();
-         for (int small = 0; small < 9; small++) {
-            mSmallTiles[large][small].updateDrawableState();
-         }
+         int pattern = choosePatternNumber();
+         fixSmallBoards(randomStringsCharArray[large], pattern, large);
+         // mLargeTiles[large].updateDrawableState();
+        // for (int small = 0; small < 9; small++) {
+
+           //mSmallTiles[large][small].updateDrawableState();
+         //}
       }
    }
 

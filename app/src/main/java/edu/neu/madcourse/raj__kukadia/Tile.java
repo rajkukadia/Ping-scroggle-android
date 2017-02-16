@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import java.util.Random;
+import java.util.StringTokenizer;
 
 public class Tile {
 
@@ -85,18 +86,18 @@ public class Tile {
       this.mSubTiles = subTiles;
    }
 
-   public void updateDrawableState() {
+   public void updateDrawableState(char a) {
       if (mView == null) return;
       // int level = getLevel();
       // if (mView.getBackground() != null) {
       //  mView.getBackground().setLevel(level);
       //}
       if (mView instanceof Button) {
-         Random randomGenerator;
-         randomGenerator = new Random();
-         int stopNumber = randomGenerator.nextInt(8)+1;
+         //Random randomGenerator;
+         //randomGenerator = new Random();
+         //int stopNumber = randomGenerator.nextInt(8)+1;
          Button b = ((Button) mView);
-         b.setText(getMyCharacter(stopNumber));
+         b.setText(String.valueOf(a));
 
          //spreadWords sw = new spreadWords(mView);
          //sw.execute();
