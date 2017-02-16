@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 public class GameActivity extends Activity {
+
     public static final String KEY_RESTORE = "key_restore";
     public static final String PREF_RESTORE = "pref_restore";
     private MediaPlayer mMediaPlayer;

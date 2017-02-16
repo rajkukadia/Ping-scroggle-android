@@ -19,8 +19,10 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 public class DictionaryAssignment3 extends Activity {
+
 
     private static int x = 0;
     private char[] ans = new char[15];
@@ -240,7 +242,6 @@ public class DictionaryAssignment3 extends Activity {
             int first = (int) (d >>> 30);
             long secondProgress = d << 34;
             int second = (int) (secondProgress >>> 34);
-
             MainActivity.sixWords.put(first, first);
             MainActivity.sixWords.put(second, second);
 
@@ -324,6 +325,7 @@ public class DictionaryAssignment3 extends Activity {
             }
 
             MainActivity.nineWords.put(d, d);
+            MainActivity.nineWordsCopy.put(data, d);
 
         }
 
@@ -362,7 +364,6 @@ public class DictionaryAssignment3 extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             MainActivity.elevenWords.put(d, d);
 
         }
@@ -403,7 +404,6 @@ public class DictionaryAssignment3 extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             MainActivity.thirteenWords.put(d, d);
 
         }
@@ -443,7 +443,6 @@ public class DictionaryAssignment3 extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             MainActivity.fifteenWords.put(d, d);
 
         }
@@ -584,7 +583,7 @@ public class DictionaryAssignment3 extends Activity {
                         }
 
 
-                        if (MyCharacter == MainActivity.sixteentotwentyWords.get(MyCharacter)) {
+                        if (MyCharacter ==  MainActivity.sixteentotwentyWords.get(MyCharacter)) {
                             Boolean content = checkExixtingContent(s.toString(), result);
                             if (!content) {
 
@@ -617,7 +616,7 @@ public class DictionaryAssignment3 extends Activity {
                         }
 
 
-                        if (MyCharacter == MainActivity.twentyonetotwentyfiveWords.get(MyCharacter)) {
+                        if (MyCharacter ==  MainActivity.twentyonetotwentyfiveWords.get(MyCharacter)) {
                             Boolean content = checkExixtingContent(s.toString(), result);
                             if (!content) {
 
@@ -639,7 +638,7 @@ public class DictionaryAssignment3 extends Activity {
 
                         FirstTimeCommingFor25Above = false;
                     }
-                    if (enteredString.toString().equals(MainActivity.stringWords.get(enteredString.toString()))) {
+                    if (enteredString.toString().equals( MainActivity.stringWords.get(enteredString.toString()))) {
                         Boolean content = checkExixtingContent(s.toString(), result);
                         if (!content) {
 
@@ -667,7 +666,7 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
 
-                                if ((short) MyCharacter == MainActivity.threeWords.get((short) MyCharacter)) {
+                                if ((short) MyCharacter ==  MainActivity.threeWords.get((short) MyCharacter)) {
                                     Boolean content = checkExixtingContent(s.toString(), result);
 
                                     if(!content) {
@@ -678,10 +677,12 @@ public class DictionaryAssignment3 extends Activity {
 
                                 }
                             } catch (NullPointerException e) {
+                                e.printStackTrace();
                                 // Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
                                 Log.d("catches", " Exception");
 
                             } catch (Exception e) {
+                                e.printStackTrace();
                                 Log.d("catches", " Exception");
                             }
 
@@ -702,7 +703,7 @@ public class DictionaryAssignment3 extends Activity {
                                 }
 
 
-                                if ((int) MyCharacter == MainActivity.fourWords.get((int) MyCharacter)) {
+                                if ((int) MyCharacter ==  MainActivity.fourWords.get((int) MyCharacter)) {
                                     Boolean content = checkExixtingContent(s.toString(), result);
 
                                     if(!content) {
@@ -738,7 +739,7 @@ public class DictionaryAssignment3 extends Activity {
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
-                                if ((int) MyCharacter == MainActivity.fiveWords.get((int) MyCharacter)) {
+                                if ((int) MyCharacter ==  MainActivity.fiveWords.get((int) MyCharacter)) {
                                     Boolean content = checkExixtingContent(s.toString(), result);
                                     if(!content) {
                                         beep();
@@ -768,7 +769,7 @@ public class DictionaryAssignment3 extends Activity {
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
-                                if ((int) MyCharacter == MainActivity.sixWords.get((int) MyCharacter)) {
+                                if ((int) MyCharacter ==  MainActivity.sixWords.get((int) MyCharacter)) {
                                     Boolean content = checkExixtingContent(s.toString(), result);
 
                                     if(!content) {
@@ -804,7 +805,7 @@ public class DictionaryAssignment3 extends Activity {
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
-                                if ( MyCharacter == MainActivity.sevenWords.get(MyCharacter)) {
+                                if ( MyCharacter ==  MainActivity.sevenWords.get(MyCharacter)) {
                                     Boolean content = checkExixtingContent(s.toString(), result);
                                     if (!content) {
 
@@ -838,7 +839,7 @@ public class DictionaryAssignment3 extends Activity {
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
-                                if (MyCharacter == MainActivity.eightWords.get(MyCharacter)) {
+                                if (MyCharacter ==  MainActivity.eightWords.get(MyCharacter)) {
                                     Boolean content = checkExixtingContent(s.toString(), result);
                                     if (!content) {
 
@@ -906,7 +907,7 @@ public class DictionaryAssignment3 extends Activity {
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
-                                if (MyCharacter == MainActivity.tenWords.get( MyCharacter)) {
+                                if (MyCharacter ==  MainActivity.tenWords.get( MyCharacter)) {
                                     Boolean content = checkExixtingContent(s.toString(), result);
                                     if (!content) {
 
@@ -940,7 +941,7 @@ public class DictionaryAssignment3 extends Activity {
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
-                                if ( MyCharacter == MainActivity.elevenWords.get( MyCharacter)) {
+                                if ( MyCharacter ==  MainActivity.elevenWords.get( MyCharacter)) {
                                     Boolean content = checkExixtingContent(s.toString(), result);
                                     if (!content) {
 
@@ -974,7 +975,7 @@ public class DictionaryAssignment3 extends Activity {
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
-                                if (MyCharacter == MainActivity.twelveWords.get( MyCharacter)) {
+                                if (MyCharacter ==  MainActivity.twelveWords.get( MyCharacter)) {
                                     Boolean content = checkExixtingContent(s.toString(), result);
                                     if (!content) {
 
@@ -1008,7 +1009,7 @@ public class DictionaryAssignment3 extends Activity {
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
-                                if (MyCharacter == MainActivity.thirteenWords.get(MyCharacter)) {
+                                if (MyCharacter ==  MainActivity.thirteenWords.get(MyCharacter)) {
                                     Boolean content = checkExixtingContent(s.toString(), result);
                                     if (!content) {
 
@@ -1042,7 +1043,7 @@ public class DictionaryAssignment3 extends Activity {
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
-                                if ( MyCharacter == MainActivity.fourteenWords.get(MyCharacter)) {
+                                if ( MyCharacter ==  MainActivity.fourteenWords.get(MyCharacter)) {
                                     Boolean content = checkExixtingContent(s.toString(), result);
                                     if (!content) {
 
@@ -1076,7 +1077,7 @@ public class DictionaryAssignment3 extends Activity {
                                     MyCharacter += MainActivity.letterMap.get(letter[l]);
                                 }
 
-                                if ( MyCharacter == MainActivity.fifteenWords.get( MyCharacter)) {
+                                if ( MyCharacter ==  MainActivity.fifteenWords.get( MyCharacter)) {
                                     Boolean content = checkExixtingContent(s.toString(), result);
                                     if (!content) {
 

@@ -10,9 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class GameFragment extends Fragment {
@@ -34,12 +36,14 @@ public class GameFragment extends Fragment {
    private int mLastLarge;
    private int mLastSmall;
 
+   private String[] nineNineLetterWords = new String[9];
+
    @Override
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       // Retain this fragment across configuration changes.
       setRetainInstance(true);
-      initGame();
+    initGame();
       mSoundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
       mSoundX = mSoundPool.load(getActivity(), R.raw.sergenious_movex, 1);
       mSoundO = mSoundPool.load(getActivity(), R.raw.sergenious_moveo, 1);
@@ -70,20 +74,68 @@ public class GameFragment extends Fragment {
       return rootView;
    }
 
+   private String chooseRandomWord(){
+      char stringInMaking[] = new char[9];
+      Random randomGenerator = new Random();
+      int stopperNumber = randomGenerator.nextInt(60121);
+
+      long stopper = MainActivity.nineWordsCopy.get(stopperNumber);
+
+      long firstChar = stopper>>>40;
+      stringInMaking[0] = MainActivity.reverseletterMap.get(firstChar);
+      long secondCharProgresss = stopper<<24;
+      long secondChar = secondCharProgresss>>>59;
+      stringInMaking[1] = MainActivity.reverseletterMap.get(secondChar);
+      long thirdCharProgress = stopper<<29;
+      long thirdChar = thirdCharProgress>>>59;
+      stringInMaking[2] = MainActivity.reverseletterMap.get(thirdChar);
+      long fourthCharProgress = stopper<<34;
+      long fourthChar = fourthCharProgress>>>59;
+      stringInMaking[3] = MainActivity.reverseletterMap.get(fourthChar);
+      long fifthCharProgress = stopper<<39;
+      long fifthChar = fifthCharProgress>>>59;
+      stringInMaking[4] = MainActivity.reverseletterMap.get(fifthChar);
+      long sixthCharProgress = stopper<<44;
+      long sixthChar = sixthCharProgress>>>59;
+      stringInMaking[5] = MainActivity.reverseletterMap.get(sixthChar);
+      long seventhCharProgress = stopper<<49;
+      long seventhChar = seventhCharProgress>>>59;
+      stringInMaking[6] = MainActivity.reverseletterMap.get(seventhChar);
+      long eightCharProgress = stopper<<54;
+      long eightChar = eightCharProgress>>>59;
+      stringInMaking[7] = MainActivity.reverseletterMap.get(eightChar);
+      long ninthCharProgress = stopper<<59;
+      long ninthChar = ninthCharProgress>>>59;
+      stringInMaking[8] = MainActivity.reverseletterMap.get(ninthChar);
+
+      String returnValue = new String(stringInMaking);
+
+    Log.d(returnValue, " Is this a word?");
+
+      return returnValue;
+
+   }
+
    private void initViews(View rootView) {
       mEntireBoard.setView(rootView);
-      for (int large = 0; large < 9; large++) {
+    for (int large = 0; large < 9; large++) {
          View outer = rootView.findViewById(mLargeIds[large]);
          mLargeTiles[large].setView(outer);
 
          for (int small = 0; small < 9; small++) {
-            ImageButton inner = (ImageButton) outer.findViewById
+            Button inner = (Button) outer.findViewById
                   (mSmallIds[small]);
             final int fLarge = large;
             final int fSmall = small;
             final Tile smallTile = mSmallTiles[large][small];
             smallTile.setView(inner);
+
+            //smallTile.updateDrawableState(); //Update here...........................................
+
+
             // ...
+
+            /*
             inner.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
@@ -100,8 +152,36 @@ public class GameFragment extends Fragment {
                }
             });
             // ...
+            */
          }
       }
+
+         int i=0;
+
+      String newRandomWord;
+      newRandomWord = chooseRandomWord();
+         do {
+
+            nineNineLetterWords[i] = newRandomWord;
+            newRandomWord = chooseRandomWord();
+            if(!checkIfValidRandomWord(newRandomWord)){
+               newRandomWord = chooseRandomWord();
+               continue;
+            }
+            i++;
+         }
+         while (i<9);
+
+         //Log.d(chooseRandomWord(), " HashMap Size");
+
+      Log.d(nineNineLetterWords.toString(), " answer");
+  }
+
+   private Boolean checkIfValidRandomWord(String x){
+      for(int i = 0;i<nineNineLetterWords.length;i++){
+         if(nineNineLetterWords[i]==x) {return false;}
+      }
+   return true;
    }
 
    private void think() {
@@ -234,6 +314,7 @@ public class GameFragment extends Fragment {
                addAvailable(tile);
          }
       }
+
    }
 
    private void updateAllTiles() {

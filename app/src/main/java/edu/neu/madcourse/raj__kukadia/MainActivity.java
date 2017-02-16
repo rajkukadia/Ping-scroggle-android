@@ -14,35 +14,40 @@ import java.util.HashMap;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
+   public static final HashMap<String, String> stringWords = new HashMap<String, String>();
+    public static  final HashMap<Short, Short> threeWords = new HashMap<Short, Short>();
+    public static final HashMap<Integer, Integer> fourWords = new HashMap<Integer, Integer>();
+    public static final HashMap<Integer, Integer> fiveWords = new HashMap<Integer, Integer>();
+    public static  final HashMap<Integer, Integer> sixWords = new HashMap<Integer, Integer>();
+    // public static HashMap<Long, Long> seventotenWords = new HashMap<Long, Long>();
+    public static final HashMap<Long, Long> sevenWords = new HashMap<Long, Long>();
+    public static final HashMap<Long, Long> eightWords = new HashMap<Long, Long>();
+    public static final HashMap<Long, Long> nineWords = new HashMap<Long, Long>();
+    public static final HashMap<Integer, Long> nineWordsCopy = new HashMap<Integer, Long>();
+
+    public static final HashMap<Long, Long> tenWords = new HashMap<Long, Long>();
+    public static final HashMap<Long, Long> elevenWords = new HashMap<Long, Long>();
+    public static final HashMap<Long, Long> twelveWords = new HashMap<Long, Long>();
+    public static final HashMap<Long, Long> thirteenWords = new HashMap<Long, Long>();
+    public static final HashMap<Long, Long> fourteenWords = new HashMap<Long, Long>();
+    public static final HashMap<Long, Long> fifteenWords = new HashMap<Long, Long>();
+
+
+
+    public static final HashMap<Long, Long> eleventofifteenWords = new HashMap<Long, Long>();
+    public static final HashMap<Long, Long> sixteentotwentyWords = new HashMap<Long, Long>();
+    public static final HashMap<Long, Long> twentyonetotwentyfiveWords = new HashMap<Long, Long>();
+
+
     private int i = 1;
     public static boolean permission = true;
     long b = 0b00000;
     private static HashMap<Integer, View> viewMap = new HashMap<Integer, View>();
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
     public static HashMap <Character, Long> letterMap = new HashMap <Character, Long>();
+    public static HashMap <Long, Character> reverseletterMap = new HashMap<Long, Character>();
 
 
-    public static HashMap<String, String> stringWords = new HashMap<String, String>();
-    public static HashMap<Short, Short> threeWords = new HashMap<Short, Short>();
-    public static HashMap<Integer, Integer> fourWords = new HashMap<Integer, Integer>();
-    public static HashMap<Integer, Integer> fiveWords = new HashMap<Integer, Integer>();
-    public static HashMap<Integer, Integer> sixWords = new HashMap<Integer, Integer>();
-   // public static HashMap<Long, Long> seventotenWords = new HashMap<Long, Long>();
-   public static HashMap<Long, Long> sevenWords = new HashMap<Long, Long>();
-    public static HashMap<Long, Long> eightWords = new HashMap<Long, Long>();
-    public static HashMap<Long, Long> nineWords = new HashMap<Long, Long>();
-    public static HashMap<Long, Long> tenWords = new HashMap<Long, Long>();
-    public static HashMap<Long, Long> elevenWords = new HashMap<Long, Long>();
-    public static HashMap<Long, Long> twelveWords = new HashMap<Long, Long>();
-    public static HashMap<Long, Long> thirteenWords = new HashMap<Long, Long>();
-    public static HashMap<Long, Long> fourteenWords = new HashMap<Long, Long>();
-    public static HashMap<Long, Long> fifteenWords = new HashMap<Long, Long>();
-
-
-
-    public static HashMap<Long, Long> eleventofifteenWords = new HashMap<Long, Long>();
-    public static HashMap<Long, Long> sixteentotwentyWords = new HashMap<Long, Long>();
-    public static HashMap<Long, Long> twentyonetotwentyfiveWords = new HashMap<Long, Long>();
 
 
     public MainActivity() {
@@ -71,7 +76,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void setMap(){
             for(char x= 'a';x<='z';x++){
-                letterMap.put(x,  getBinaryValue());
+                long binaryValue = getBinaryValue();
+                letterMap.put(x,  binaryValue);
+               reverseletterMap.put(binaryValue, x);
                 }
         }
 
