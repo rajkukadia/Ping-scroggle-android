@@ -5,8 +5,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -16,7 +21,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.logging.Handler;
+
+import java.util.logging.LogRecord;
+
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -43,7 +50,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public static final HashMap<Long, Long> eleventofifteenWords = new HashMap<Long, Long>();
     public static final HashMap<Long, Long> sixteentotwentyWords = new HashMap<Long, Long>();
     public static final HashMap<Long, Long> twentyonetotwentyfiveWords = new HashMap<Long, Long>();
-
 
     private int i = 1;
     public static boolean permission = true;
@@ -74,7 +80,28 @@ public class MainActivity extends Activity implements View.OnClickListener {
         loadTheDictionary = new Thread(new Dictionary());
         loadTheDictionary.start();
 
+        handleLoadingDictionary = new Handler(Looper.getMainLooper()){
+
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                Log.d("Here", "  it comes");
+                //DictionaryAssignment3 instance = DictionaryAssignment3.getinstance();
+                //instance.setDictListener();
+                //d.onCreate(Bundle savedInstanceState);
+
+
+            }
+        };
     }
+
+
+
+
+
+
+
+
 
 
     @Override
@@ -250,9 +277,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         BufferedReader br;
         InputStreamReader inReader;
+
         @Override
         public void run() {
             createStreams();
+            Message mg = Message.obtain();
+            mg.arg1 = 0;
+
+            //Intent intent = new Intent(MainActivity.this, DictionaryAssignment3.class);
+           //startActivity(intent);
+
+
+            // handleLoadingDictionary.sendMessage(mg);
+          //  handleLoadingDictionary;
+
+
 
             setninefile();
             setthreewordfile();

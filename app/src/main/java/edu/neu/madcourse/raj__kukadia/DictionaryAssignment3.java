@@ -27,20 +27,22 @@ public class DictionaryAssignment3 extends Activity {
     private char[] ans = new char[15];
     private static final String DEFAULT = "N/A";
     private char[] textInput = new char[15];
-    public static EditText mytext;
-    public static EditText result;
-    private static boolean FirstSeven = true,Firsteight = true, Firstnine = true, Firstten = true,Firsteleven = true, Firsttwelve = true, Firstthirteen = true,Firstfourteen = true,Firstfifteen = true,FirstTimeCommingFor7to10 = true, FirstTimeCommingFor11to15 = true, FirstTimeCommingFor16to20 = true, FirstTimeCommingFor20to25 = true, FirstTimeCommingFor6to25 = true, FirstTimeCommingFor5and6 = true, FirstTimeCommingFor25Above = true;
-    private char letter[];
+
+    private boolean FirstSeven = true,Firsteight = true, Firstnine = true, Firstten = true,Firsteleven = true, Firsttwelve = true, Firstthirteen = true,Firstfourteen = true,Firstfifteen = true,FirstTimeCommingFor7to10 = true, FirstTimeCommingFor11to15 = true, FirstTimeCommingFor16to20 = true, FirstTimeCommingFor20to25 = true, FirstTimeCommingFor6to25 = true, FirstTimeCommingFor5and6 = true, FirstTimeCommingFor25Above = true;
+    private   char letter[];
     private long MyCharacter;
 
+    public static EditText mytext;
+    public static EditText result;
 
-
+   // private static DictionaryAssignment3 instance = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().setTitle("Test Dictionary");
         setContentView(R.layout.activity_dictionary_ass3);
+
         //createStreams();
         //setthreewordfile();
         //setfourwordfile();
@@ -48,6 +50,11 @@ public class DictionaryAssignment3 extends Activity {
         setDictListener();
 
     }
+
+    public DictionaryAssignment3(){
+
+    }
+
 
     private boolean checkExixtingContent(String s, EditText e){
         boolean response=true;
@@ -75,10 +82,10 @@ public class DictionaryAssignment3 extends Activity {
        // return is4;
   //  }
 
-    private void setDictListener() {
-
+    public void setDictListener() {
         result = (EditText) findViewById(R.id.anstext);
         mytext = (EditText) findViewById(R.id.searchtext);
+
         mytext.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -620,7 +627,7 @@ public class DictionaryAssignment3 extends Activity {
                                     }
                                 }
                             } catch (NullPointerException e) {
-                                //  Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
 
                             }
 
@@ -629,7 +636,7 @@ public class DictionaryAssignment3 extends Activity {
                         }
 
                         default:
-                            Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
+                           Toast.makeText(DictionaryAssignment3.this, "illegal expression", Toast.LENGTH_LONG).show();
                             break;
                     }
             }
