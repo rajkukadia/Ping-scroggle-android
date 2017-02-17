@@ -10,53 +10,13 @@
 <level-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
    <item
-       android:text="A"
-       android:drawable="@drawable/sample_icon"
-       android:maxLevel="1"
-   />
-   <item
-       android:text="A"
-       android:drawable="@drawable/sample_icon"
-       android:maxLevel="2" />
-   <item
-       android:text="A"
-       android:drawable="@drawable/sample_icon"
-       android:maxLevel="3" />
-   <item
-       android:text="A"
-       android:drawable="@drawable/sample_icon"
-       android:maxLevel="4" />
-   <item
-       android:text="A"
-       android:drawable="@drawable/sample_icon"
-       android:maxLevel="5" />
-   <item
-       android:text="A"
-       android:drawable="@drawable/sample_icon"
-       android:maxLevel="6" />
-   <item
-       android:text="A"
-       android:drawable="@drawable/x_blue"
-       android:maxLevel="7" />
-   <item
-       android:text="A"
-       android:drawable="@drawable/o_red"
-       android:maxLevel="8" />
-   <item
-       android:drawable="@drawable/sample_icon"
-       android:maxLevel="9" />
-<!--
-   <item
-      android:drawable="@drawable/x_blue"
+      android:drawable="@color/gray_color"
       android:maxLevel="0" />
    <item
-      android:drawable="@drawable/o_red"
+      android:drawable="@color/red_color"
       android:maxLevel="1" />
    <item
-      android:drawable="@drawable/tile_empty"
+      android:drawable="@color/available_color"
       android:maxLevel="2" />
-   <item
-      android:drawable="@drawable/tile_available"
-      android:maxLevel="3" />
-      -->
+
 </level-list>

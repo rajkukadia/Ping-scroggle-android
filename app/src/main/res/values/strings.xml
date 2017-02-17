@@ -27,6 +27,8 @@
     <string name="about_label">About</string>
     <string name="dict_label">Dictionary</string>
     <string name="scroggle_label">Scroggle</string>
+    <string name="scroggle_done_label">Done !</string>
+
     <string name="search_label">Search</string>
     <string name="save_label">Save</string>
     <string name="return_label">Return</string>

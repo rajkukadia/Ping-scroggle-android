@@ -9,15 +9,15 @@
 -->
 <level-list xmlns:android="http://schemas.android.com/apk/res/android">
    <item
-      android:drawable="@drawable/tile_blue"
+      android:drawable="@drawable/tile_gray"
       android:maxLevel="0"/>
    <item
-      android:drawable="@drawable/tile_red"
+      android:drawable="@drawable/tile_available"
       android:maxLevel="1"/>
    <item
-      android:drawable="@drawable/tile_gray"
+      android:drawable="@drawable/tile_red"
       android:maxLevel="2"/>
-   <item
+   <!--<item
       android:drawable="@drawable/tile_purple"
-      android:maxLevel="3"/>
+      android:maxLevel="3"/>-->
 </level-list>

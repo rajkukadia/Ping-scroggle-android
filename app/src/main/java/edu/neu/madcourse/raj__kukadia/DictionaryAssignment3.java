@@ -23,13 +23,12 @@ import java.util.HashMap;
 
 public class DictionaryAssignment3 extends Activity {
 
-
     private static int x = 0;
     private char[] ans = new char[15];
     private static final String DEFAULT = "N/A";
     private char[] textInput = new char[15];
-    private EditText mytext;
-    private EditText result;
+    public static EditText mytext;
+    public static EditText result;
     private static boolean FirstSeven = true,Firsteight = true, Firstnine = true, Firstten = true,Firsteleven = true, Firsttwelve = true, Firstthirteen = true,Firstfourteen = true,Firstfifteen = true,FirstTimeCommingFor7to10 = true, FirstTimeCommingFor11to15 = true, FirstTimeCommingFor16to20 = true, FirstTimeCommingFor20to25 = true, FirstTimeCommingFor6to25 = true, FirstTimeCommingFor5and6 = true, FirstTimeCommingFor25Above = true;
     private char letter[];
     private long MyCharacter;
@@ -54,8 +53,6 @@ public class DictionaryAssignment3 extends Activity {
     InputStream is17;
     InputStream is18;
 
-
-
     DataInputStream din;
     DataInputStream din1;
     DataInputStream din2;
@@ -75,11 +72,6 @@ public class DictionaryAssignment3 extends Activity {
     DataInputStream din16;
     DataInputStream din17;
     DataInputStream din18;
-
-
-
-
-
 
     BufferedReader br;
     InputStreamReader inReader;
@@ -117,10 +109,6 @@ public class DictionaryAssignment3 extends Activity {
         is15 = getResources().openRawResource(R.raw.thirteenwords);
         is16 = getResources().openRawResource(R.raw.fourteenwords);
         is17 = getResources().openRawResource(R.raw.fifteenwords);
-
-
-
-
 
 
         inReader = new InputStreamReader(is8);
