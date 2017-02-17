@@ -1,4 +1,11 @@
-/*
+/***
+ * Excerpted from "Hello, Android",
+ * published by The Pragmatic Bookshelf.
+ * Copyrights apply to this code. It may not be used to create training material,
+ * courses, books, articles, and the like. Contact us if you are in doubt.
+ * We make no guarantees that this code is fit for any purpose.
+ * Visit http://www.pragmaticprogrammer.com/titles/eband4 for more book information.
+ ***/
 package edu.neu.madcourse.raj__kukadia;
 
 import android.app.Activity;
@@ -12,7 +19,6 @@ import android.util.Log;
 import android.view.View;
 
 public class GameActivity extends Activity {
-
     public static final String KEY_RESTORE = "key_restore";
     public static final String PREF_RESTORE = "pref_restore";
     private MediaPlayer mMediaPlayer;
@@ -22,7 +28,6 @@ public class GameActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getActionBar().setTitle("Ultimate Tic Tac Toe");
         setContentView(R.layout.activity_game);
         mGameFragment = (GameFragment) getFragmentManager()
                 .findFragmentById(R.id.fragment_game);
@@ -88,7 +93,7 @@ public class GameActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        mMediaPlayer = MediaPlayer.create(this, R.raw.syntheticity);
+        mMediaPlayer = MediaPlayer.create(this, R.raw.frankum_loop001e);
         mMediaPlayer.setLooping(true);
         mMediaPlayer.start();
     }
@@ -107,4 +112,3 @@ public class GameActivity extends Activity {
         Log.d("UT3", "state = " + gameData);
     }
 }
-*/

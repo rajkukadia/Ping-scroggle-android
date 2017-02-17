@@ -22,12 +22,12 @@
             android:name=".AboutActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme" />
-       <!-- <activity
+        <activity
             android:name=".UT3MainActivity"
-            android:theme="@style/NoTitle" /> -->
-        <!--<activity
+            android:theme="@style/NoTitle" />
+        <activity
             android:name=".GameActivity"
-            android:theme="@style/NoTitle" />-->
+            android:theme="@style/NoTitle" />
         <activity
             android:name=".DictionaryAssignment3"
             android:parentActivityName=".MainActivity"

@@ -35,7 +35,7 @@
         <item name="android:background">@color/gray_color</item>
         <item name="android:padding">@dimen/tile_padding</item>
         <item name="android:scaleType">centerCrop</item>
-       <item name="android:src">@drawable/tile_background</item>
+       <item name="android:src">@drawable/tile</item>
     </style>
 
 

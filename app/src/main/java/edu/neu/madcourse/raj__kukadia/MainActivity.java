@@ -187,8 +187,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-        //        Intent intent = new Intent(MainActivity.this, UT3MainActivity.class);
-          //      startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, UT3MainActivity.class);
+             startActivity(intent);
             }
         });
         v = (View) view.get(3);

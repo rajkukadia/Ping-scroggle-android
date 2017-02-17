@@ -1,4 +1,11 @@
-/*
+/***
+ * Excerpted from "Hello, Android",
+ * published by The Pragmatic Bookshelf.
+ * Copyrights apply to this code. It may not be used to create training material,
+ * courses, books, articles, and the like. Contact us if you are in doubt.
+ * We make no guarantees that this code is fit for any purpose.
+ * Visit http://www.pragmaticprogrammer.com/titles/eband4 for more book information.
+ ***/
 package edu.neu.madcourse.raj__kukadia;
 
 import android.app.Activity;
@@ -12,14 +19,13 @@ public class UT3MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getActionBar().setTitle("Ultimate Tic Tac Toe");
         setContentView(R.layout.activity_main_ut3);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mMediaPlayer = MediaPlayer.create(this, R.raw.cyaronsgate);
+        mMediaPlayer = MediaPlayer.create(this, R.raw.a_guy_1_epicbuilduploop);
         mMediaPlayer.setVolume(0.5f, 0.5f);
         mMediaPlayer.setLooping(true);
         mMediaPlayer.start();
@@ -33,4 +39,3 @@ public class UT3MainActivity extends Activity {
         mMediaPlayer.release();
     }
 }
-*/
