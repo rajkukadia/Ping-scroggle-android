@@ -50,6 +50,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private String enteredStringSroggle="";
     private View doneView;
     private static Boolean done = false;
+    private static Boolean donePhaseTwo = false;
     public static int touchedLargeTile =0;
     public static int [] touchedSmallTiles=new int[9];
     private TextView e;
@@ -144,6 +145,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
     private void setPhasetwo(){
         phaseTwo = true;
+        done = false;
             for(int i = 0;i<9;i++){
                 for(int j = 0;j<9;j++){
                     TileAssignment5 tile = mSmallTiles[i][j];
@@ -363,80 +365,84 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
     private void donePressed() {
         Log.d("Done pressed", " ");
+        // if(!phaseTwo) {
         checkUnPressed();
-
+        //}
         DictionaryAssignment3.mytext.setText(enteredStringSroggle);
 
         if ((enteredStringSroggle + "\n").equalsIgnoreCase(DictionaryAssignment3.result.getText().toString())) {
-           //Entering text to the screen
+            //Entering text to the screen
             e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
             e.append(enteredStringSroggle + " ");
 
-            //Clearing off redundant buttons
-            for(int i = 0; i<9 ;i++) {
-                TileAssignment5 tile = mSmallTiles[touchedLargeTile][i];
-            if(tile.getOwner()!=TileAssignment5.Owner.CLICKED) {
-                tile.updateDrawableState(' ', 1);
-            }else{
-               updateScore (((Button)mSmallTiles[touchedLargeTile][i].getView()).getText().toString());
-            }
-            }
-           setAvailableFromLastMove(touchedLargeTile, 0);
+            if (!phaseTwo) {
+                //Clearing off redundant buttons
+                for (int i = 0; i < 9; i++) {
+                    TileAssignment5 tile = mSmallTiles[touchedLargeTile][i];
+                    if (tile.getOwner() != TileAssignment5.Owner.CLICKED) {
+                        if (!phaseTwo) {
+                            tile.updateDrawableState(' ', 1);
+                        }
+                    } else {
+                        updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString());
+                    }
+                }
+                setAvailableFromLastMove(touchedLargeTile, 0);
 
 
-            DoneTiles.add(touchedLargeTile);
+                DoneTiles.add(touchedLargeTile);
 
-            DictionaryAssignment3.result.setText("");
+                DictionaryAssignment3.result.setText("");
 
-            enteredStringSroggle = "";
-            // done = false;
-            for (int x = 0; x < touchedSmallTiles.length; x++) {
-                touchedSmallTiles[x] = 0;
-            }
-            touchedLargeTile = 0;
+                enteredStringSroggle = "";
+                // done = false;
+                for (int x = 0; x < touchedSmallTiles.length; x++) {
+                    touchedSmallTiles[x] = 0;
+                }
+                touchedLargeTile = 0;
 
-        }
-        else{
-            e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
-            e.append(" ");
-            TileAssignment5 tile = mLargeTiles[touchedLargeTile];
-           // for(int i =0;i<3;i++){
+            } }else {
+                e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
+                e.append(" ");
+                TileAssignment5 tile = mLargeTiles[touchedLargeTile];
+                // for(int i =0;i<3;i++){
                 tile.animate();
                 //try {
-                    //Thread.sleep(500);
+                //Thread.sleep(500);
                 //} catch (InterruptedException e1) {
-                  //  e1.printStackTrace();
+                //  e1.printStackTrace();
                 //}}
-            builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Not a valid word !");
-            builder.setCancelable(false);
-            builder.setPositiveButton(R.string.ok_label,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            // nothing
-                        }
+                builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Not a valid word !");
+                builder.setCancelable(false);
+                builder.setPositiveButton(R.string.ok_label,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // nothing
+                            }
 
-                    });
-            mDialog = builder.show();
-            //make the large tile available again
+                        });
+                mDialog = builder.show();
+                //make the large tile available again
 
-            for(int i = 0;i<9;i++) {
-                TileAssignment5 tiles = mSmallTiles[touchedLargeTile][i];
-                tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
-                tiles.updateDrawableState('a', 0);
-                addAvailable(tiles);
+                for (int i = 0; i < 9; i++) {
+                    TileAssignment5 tiles = mSmallTiles[touchedLargeTile][i];
+                    tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                    tiles.updateDrawableState('a', 0);
+                    addAvailable(tiles);
+                }
+                DictionaryAssignment3.result.setText("");
+                enteredStringSroggle = "";
+                // done = false;
+                // for (int x = 0; x < touchedSmallTiles.length; x++) {
+                //   touchedSmallTiles[x] = 0;
+                //}
+                //touchedLargeTile = 0;
+
             }
-            DictionaryAssignment3.result.setText("");
-            enteredStringSroggle = "";
-            // done = false;
-           // for (int x = 0; x < touchedSmallTiles.length; x++) {
-             //   touchedSmallTiles[x] = 0;
-            //}
-            //touchedLargeTile = 0;
-
         }
-    }
+
 
     private void updateScore(String x){
 
@@ -716,40 +722,61 @@ public class ScroggleAssignment5Fragment extends Fragment {
                         }
 
 
-                    }else{
-                        if(i==large){
-                            if(dest==smallx){
-                                TileAssignment5 tile = mSmallTiles[large][dest];
-                                tile.setOwner(TileAssignment5.Owner.CLICKED);
-                                if (mAvailable.contains(tile)) {
-                                    mAvailable.remove(tile);
+                    }else {
+                        if (!done) {
+                            if (i == large) {
+                                if (dest == smallx) {
+                                    TileAssignment5 tile = mSmallTiles[large][dest];
+                                    tile.setOwner(TileAssignment5.Owner.CLICKED);
+                                    if (mAvailable.contains(tile)) {
+                                        mAvailable.remove(tile);
+                                    }
+                                    tile.updateDrawableState('a', 0);
+
+                                } else {
+                                    TileAssignment5 tile = mSmallTiles[large][dest];
+                                   // if (!(tile.getOwner() == TileAssignment5.Owner.CLICKED)) {
+
+                                        tile.setOwner(TileAssignment5.Owner.FREEZED);
+                                    //}
+                                    if (mAvailable.contains(tile)) {
+                                        mAvailable.remove(tile);
+                                    }
+                                    tile.updateDrawableState('a', 0);
                                 }
-                                tile.updateDrawableState('a', 0);
-
-                            }else {
-                                TileAssignment5 tile = mSmallTiles[large][dest];
-                                tile.setOwner(TileAssignment5.Owner.FREEZED);
-                                if (mAvailable.contains(tile)) {
-                                    mAvailable.remove(tile);
-                                }
-                                tile.updateDrawableState('a', 0);
-                            }
 
 
-                        }
-                        else {
+                            } else {
+
 
                                 TileAssignment5 tile = mSmallTiles[i][dest];
-                            if(!(tile.getOwner()==TileAssignment5.Owner.CLICKED))
-                            {tile.setOwner(TileAssignment5.Owner.NOTCLICKED);}
+                                if (!(tile.getOwner() == TileAssignment5.Owner.CLICKED)) {
+                                    tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                                }
                                 if (!mAvailable.contains(tile)) {
                                     mAvailable.add(tile);
                                 }
                                 tile.updateDrawableState('a', 0);
 
 
-                        }
+                            }
 
+                        } else {
+                            TileAssignment5 tile = mSmallTiles[i][dest];
+                            if(tile.getOwner()== TileAssignment5.Owner.CLICKED){
+                                tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                                ((Button)mSmallTiles[i][dest].getView()).setText("");
+                                if (mAvailable.contains(tile)) {
+                                    mAvailable.remove(tile);
+                                }
+                                tile.updateDrawableState('a', 0);
+                            }else{
+                                addAvailable(tile);
+                                tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                                tile.updateDrawableState('a', 0);
+                            }
+
+                        }
                     }
                 }
             }
