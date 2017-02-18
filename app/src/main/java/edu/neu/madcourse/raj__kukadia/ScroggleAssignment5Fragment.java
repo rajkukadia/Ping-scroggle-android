@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 public class ScroggleAssignment5Fragment extends Fragment {
     static private int mLargeIds[] = {R.id.largescroggle1, R.id.largescroggle2, R.id.largescroggle3,
@@ -52,13 +53,19 @@ public class ScroggleAssignment5Fragment extends Fragment {
     public static int touchedLargeTile =0;
     public static int [] touchedSmallTiles=new int[9];
     private TextView e;
+    private TextView v1;
+
     private AlertDialog.Builder builder;
     private AlertDialog mDialog;
     private HashSet<Integer> DoneTiles = new HashSet<Integer>();
     private ArrayList<int[]> adjacencyList = new ArrayList<int[]>();
     private static Boolean comingFirstTime = true;
-    int t = 90;
+    int t = 20;
     private TextView v;
+    private HashMap<String, Integer> score = new HashMap<String, Integer>();
+    private static int currentScore = 0;
+    private static boolean phaseTwo = false;
+    //private StringBuilder e= new StringBuilder();
 
 
 
@@ -87,6 +94,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         v = (TextView) getActivity().findViewById(R.id.counter_view);
+        v1 = (TextView) getActivity().findViewById(R.id.score_view);
         doneView= getActivity().findViewById(R.id.done);
         doneView.setOnClickListener(new View.OnClickListener(){
 
@@ -108,12 +116,15 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
         @Override
         public void run() {
-            v.setText(String.valueOf(t--));
+            v.setText("Time Left: "+String.valueOf(t--)+"  ");
+            v1.setText("Score: "+String.valueOf(currentScore)+"  ");
             //while(t!=0) {
 
 
             if(t==-1){
-
+                v.setText("");
+                v1.setText("Phase two begins..");
+                setPhasetwo();
             }else {
                 mHandler.postDelayed(mRunnable, 1000);
             }
@@ -128,6 +139,21 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private void addAvailable(TileAssignment5 tile) {
         tile.animate();
         mAvailable.add(tile);
+    }
+
+
+    private void setPhasetwo(){
+        phaseTwo = true;
+            for(int i = 0;i<9;i++){
+                for(int j = 0;j<9;j++){
+                    TileAssignment5 tile = mSmallTiles[i][j];
+                    tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                    addAvailable(tile);
+                    tile.updateDrawableState('a', 0);
+                    }
+            }
+
+
     }
 
     private void setAdjacencyList(){
@@ -164,11 +190,43 @@ public class ScroggleAssignment5Fragment extends Fragment {
         View rootView =
                 inflater.inflate(R.layout.large_board_scroggle, container, false);
         initViews(rootView);
+        loadScores();
         updateAllTiles();
 
 
 
         return rootView;
+    }
+
+
+    private void loadScores(){
+
+        score.put("A", 1);
+        score.put("B", 3);
+        score.put("C", 1);
+        score.put("D", 2);
+        score.put("E", 1);
+        score.put("F", 1);
+        score.put("G", 1);
+        score.put("H", 4);
+        score.put("I", 1);
+        score.put("J", 2);
+        score.put("K", 2);
+        score.put("L", 1);
+        score.put("M", 1);
+        score.put("N", 1);
+        score.put("O", 1);
+        score.put("P", 1);
+        score.put("Q", 4);
+        score.put("R", 1);
+        score.put("S", 1);
+        score.put("T", 1);
+        score.put("U", 3);
+        score.put("V", 1);
+        score.put("W", 4);
+        score.put("X", 1);
+        score.put("Y", 3);
+        score.put("Z", 2);
     }
 
     private String chooseRandomWord(){
@@ -310,16 +368,26 @@ public class ScroggleAssignment5Fragment extends Fragment {
         DictionaryAssignment3.mytext.setText(enteredStringSroggle);
 
         if ((enteredStringSroggle + "\n").equalsIgnoreCase(DictionaryAssignment3.result.getText().toString())) {
+           //Entering text to the screen
             e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
             e.append(enteredStringSroggle + " ");
+
+            //Clearing off redundant buttons
             for(int i = 0; i<9 ;i++) {
                 TileAssignment5 tile = mSmallTiles[touchedLargeTile][i];
-            if(tile.getOwner()!=TileAssignment5.Owner.CLICKED)
-                    tile.updateDrawableState(' ', 1);
+            if(tile.getOwner()!=TileAssignment5.Owner.CLICKED) {
+                tile.updateDrawableState(' ', 1);
+            }else{
+               updateScore (((Button)mSmallTiles[touchedLargeTile][i].getView()).getText().toString());
+            }
             }
            setAvailableFromLastMove(touchedLargeTile, 0);
+
+
             DoneTiles.add(touchedLargeTile);
+
             DictionaryAssignment3.result.setText("");
+
             enteredStringSroggle = "";
             // done = false;
             for (int x = 0; x < touchedSmallTiles.length; x++) {
@@ -368,6 +436,13 @@ public class ScroggleAssignment5Fragment extends Fragment {
             //touchedLargeTile = 0;
 
         }
+    }
+
+    private void updateScore(String x){
+
+        currentScore += score.get(x);
+        Log.d(String.valueOf(currentScore), "Score");
+
     }
     private void checkUnPressed(){
 
@@ -490,12 +565,15 @@ public class ScroggleAssignment5Fragment extends Fragment {
         done = false;
         if(e!=null){
         e.setText("");}
+        currentScore =0;
         initViews(getView());
+        t=90;
         updateAllTiles();
     }
 
     public void initGame() {
         Log.d("UT3", "init game");
+        phaseTwo = false;
         mEntireBoard = new TileAssignment5(this);
         // Create all the tiles
         for (int large = 0; large < 9; large++) {
@@ -521,117 +599,158 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
             for (int i = 0; i < 9; i++) {
                 for (int dest = 0; dest < 9; dest++) {
-                    if(!done){
-                    if(i==large) {
-                        TileAssignment5 tile = mSmallTiles[large][dest];
-                        if ((tile.getOwner() == TileAssignment5.Owner.NOTCLICKED))
-                            addAvailable(tile);
+                    if (!phaseTwo) {
+                        if (!done) {
+                            if (i == large) {
+                                TileAssignment5 tile = mSmallTiles[large][dest];
+                                if ((tile.getOwner() == TileAssignment5.Owner.NOTCLICKED))
+                                    addAvailable(tile);
 
-                            switch (smallx) {
-                                case 0:
-                                    int a[] = adjacencyList.get(0);
+                                switch (smallx) {
+                                    case 0:
+                                        int a[] = adjacencyList.get(0);
 
-                                    for (int x : a) {
-                                        TileAssignment5 tile1 = mSmallTiles[large][x];
-                                        //if(mAvailable.contains(tile1)) {
+                                        for (int x : a) {
+                                            TileAssignment5 tile1 = mSmallTiles[large][x];
+                                            //if(mAvailable.contains(tile1)) {
                                             mAvailable.remove(tile1);
-                                        //}
-                                    }
-                                    break;
-                                case 1:
-                                    int a1[] = adjacencyList.get(1);
+                                            //}
+                                        }
+                                        break;
+                                    case 1:
+                                        int a1[] = adjacencyList.get(1);
 
-                                    for (int x : a1) {
-                                        TileAssignment5 tile2 = mSmallTiles[large][x];
-                                       // if(mAvailable.contains(tile2)) {
+                                        for (int x : a1) {
+                                            TileAssignment5 tile2 = mSmallTiles[large][x];
+                                            // if(mAvailable.contains(tile2)) {
                                             mAvailable.remove(tile2);
-                                        //}
-                                    }
-                                    break;
-                                case 2:
-                                    int a2[] = adjacencyList.get(2);
-                                    for (int x : a2) {
-                                        TileAssignment5 tile3 = mSmallTiles[large][x];
-                                       // if(mAvailable.contains(tile3)) {
+                                            //}
+                                        }
+                                        break;
+                                    case 2:
+                                        int a2[] = adjacencyList.get(2);
+                                        for (int x : a2) {
+                                            TileAssignment5 tile3 = mSmallTiles[large][x];
+                                            // if(mAvailable.contains(tile3)) {
                                             mAvailable.remove(tile3);
-                                       // }
-                                    }
-                                    break;
-                                case 3:
-                                    int a3[] = adjacencyList.get(3);
-                                    for (int x : a3) {
-                                        TileAssignment5 tile4 = mSmallTiles[large][x];
-                                        //if(mAvailable.contains(tile4)) {
+                                            // }
+                                        }
+                                        break;
+                                    case 3:
+                                        int a3[] = adjacencyList.get(3);
+                                        for (int x : a3) {
+                                            TileAssignment5 tile4 = mSmallTiles[large][x];
+                                            //if(mAvailable.contains(tile4)) {
                                             mAvailable.remove(tile4);
-                                       // }
-                                    }
-                                    break;
-                                case 4:
-                                    int a4[] = adjacencyList.get(4);
-                                    for (int x : a4) {
-                                        TileAssignment5 tile5 = mSmallTiles[large][x];
-                                        //if(mAvailable.contains(tile5)) {
-                                        mAvailable.remove(tile5);//}
+                                            // }
+                                        }
+                                        break;
+                                    case 4:
+                                        int a4[] = adjacencyList.get(4);
+                                        for (int x : a4) {
+                                            TileAssignment5 tile5 = mSmallTiles[large][x];
+                                            //if(mAvailable.contains(tile5)) {
+                                            mAvailable.remove(tile5);//}
 
-                                    }
-                                    break;
-                                case 5:
-                                    int a5[] = adjacencyList.get(5);
-                                    for (int x : a5) {
-                                        TileAssignment5 tile6 = mSmallTiles[large][x];
-                                        //if(mAvailable.contains(tile6)) {
-                                        mAvailable.remove(tile6);//}
+                                        }
+                                        break;
+                                    case 5:
+                                        int a5[] = adjacencyList.get(5);
+                                        for (int x : a5) {
+                                            TileAssignment5 tile6 = mSmallTiles[large][x];
+                                            //if(mAvailable.contains(tile6)) {
+                                            mAvailable.remove(tile6);//}
 
-                                    }
-                                    break;
-                                case 6:
-                                    int a6[] = adjacencyList.get(6);
-                                    for (int x : a6) {
-                                        TileAssignment5 tile7 = mSmallTiles[large][x];
-                                        //if(mAvailable.contains(tile7)) {
-                                        mAvailable.remove(tile7);//}
+                                        }
+                                        break;
+                                    case 6:
+                                        int a6[] = adjacencyList.get(6);
+                                        for (int x : a6) {
+                                            TileAssignment5 tile7 = mSmallTiles[large][x];
+                                            //if(mAvailable.contains(tile7)) {
+                                            mAvailable.remove(tile7);//}
 
-                                    }
-                                    break;
-                                case 7:
-                                    int a7[] = adjacencyList.get(7);
-                                    for (int x : a7) {
-                                        TileAssignment5 tile8 = mSmallTiles[large][x];
-                                       // if(mAvailable.contains(tile8)) {
-                                        mAvailable.remove(tile8);//}
+                                        }
+                                        break;
+                                    case 7:
+                                        int a7[] = adjacencyList.get(7);
+                                        for (int x : a7) {
+                                            TileAssignment5 tile8 = mSmallTiles[large][x];
+                                            // if(mAvailable.contains(tile8)) {
+                                            mAvailable.remove(tile8);//}
 
-                                    }
-                                    break;
-                                case 8:
-                                    int a8[] = adjacencyList.get(8);
-                                    for (int x : a8) {
-                                        TileAssignment5 tile9 = mSmallTiles[large][x];
-                                        //if(mAvailable.contains(tile9)) {
-                                        mAvailable.remove(tile9);//}
+                                        }
+                                        break;
+                                    case 8:
+                                        int a8[] = adjacencyList.get(8);
+                                        for (int x : a8) {
+                                            TileAssignment5 tile9 = mSmallTiles[large][x];
+                                            //if(mAvailable.contains(tile9)) {
+                                            mAvailable.remove(tile9);//}
 
-                                    }
-                                    break;
+                                        }
+                                        break;
+                                }
+
+                            } else {
+                                if (DoneTiles.contains(i)) {
+                                    continue;
+                                }
+                                TileAssignment5 tile = mSmallTiles[i][dest];
+                                tile.setOwner(TileAssignment5.Owner.FREEZED);
+                                tile.updateDrawableState('a', 0);
+                            }
+                        } else { //OnDOnePressed
+                            if (DoneTiles.contains(i)) {
+                                continue;
                             }
 
+                            //  Log.d("Comes ", "Hereeee");
+                            if (i != large) {//Correct answer
+                                TileAssignment5 tile = mSmallTiles[i][dest];
+                                tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                                addAvailable(tile);
+                                tile.updateDrawableState('a', 0);
+                                //done =false;
+                            }
+                        }
+
+
                     }else{
-                        if(DoneTiles.contains(i)){continue;}
-                        TileAssignment5 tile = mSmallTiles[i][dest];
-                        tile.setOwner(TileAssignment5.Owner.FREEZED);
-                        tile.updateDrawableState('a',0);
-                    }}else{ //OnDOnePressed
-                        if(DoneTiles.contains(i)){continue;}
+                        if(i==large){
+                            if(dest==smallx){
+                                TileAssignment5 tile = mSmallTiles[large][dest];
+                                tile.setOwner(TileAssignment5.Owner.CLICKED);
+                                if (mAvailable.contains(tile)) {
+                                    mAvailable.remove(tile);
+                                }
+                                tile.updateDrawableState('a', 0);
 
-                      //  Log.d("Comes ", "Hereeee");
-                        if(i!=large){//Correct answer
-                            TileAssignment5 tile = mSmallTiles[i][dest];
-                            tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
-                            addAvailable(tile);
-                            tile.updateDrawableState('a', 0);
-                            //done =false;
-                        }}
+                            }else {
+                                TileAssignment5 tile = mSmallTiles[large][dest];
+                                tile.setOwner(TileAssignment5.Owner.FREEZED);
+                                if (mAvailable.contains(tile)) {
+                                    mAvailable.remove(tile);
+                                }
+                                tile.updateDrawableState('a', 0);
+                            }
 
 
+                        }
+                        else {
 
+                                TileAssignment5 tile = mSmallTiles[i][dest];
+                            if(!(tile.getOwner()==TileAssignment5.Owner.CLICKED))
+                            {tile.setOwner(TileAssignment5.Owner.NOTCLICKED);}
+                                if (!mAvailable.contains(tile)) {
+                                    mAvailable.add(tile);
+                                }
+                                tile.updateDrawableState('a', 0);
+
+
+                        }
+
+                    }
                 }
             }
         }
