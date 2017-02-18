@@ -61,11 +61,14 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private TextView v;
 
 
+
     private String[] nineNineLetterWords = new String[9];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
         initGame();
@@ -84,7 +87,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         v = (TextView) getActivity().findViewById(R.id.counter_view);
-
         doneView= getActivity().findViewById(R.id.done);
         doneView.setOnClickListener(new View.OnClickListener(){
 

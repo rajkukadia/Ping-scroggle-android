@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -35,7 +36,6 @@ public class DictionaryAssignment3 extends Activity {
     public static EditText mytext;
     public static EditText result;
 
-   // private static DictionaryAssignment3 instance = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +43,13 @@ public class DictionaryAssignment3 extends Activity {
         getActionBar().setTitle("Test Dictionary");
         setContentView(R.layout.activity_dictionary_ass3);
 
-        //createStreams();
-        //setthreewordfile();
-        //setfourwordfile();
+
+        Bundle b = getIntent().getExtras();
+        if(b.getString("CallingActivity").equals(UT3MainActivityScroggleAssignment5.class.toString())){
+            finish();
+        }
         setButtonListeners();
         setDictListener();
-
     }
 
     public DictionaryAssignment3(){

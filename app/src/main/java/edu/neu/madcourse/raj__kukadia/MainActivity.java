@@ -212,6 +212,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DictionaryAssignment3.class);
+
                 startActivity(intent);
             }
         });
@@ -220,6 +221,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(MainActivity.this, UT3MainActivityScroggleAssignment5.class);
                 startActivity(intent);
             }
@@ -283,10 +285,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             createStreams();
             Message mg = Message.obtain();
             mg.arg1 = 0;
-
-            //Intent intent = new Intent(MainActivity.this, DictionaryAssignment3.class);
-           //startActivity(intent);
-
 
             // handleLoadingDictionary.sendMessage(mg);
           //  handleLoadingDictionary;

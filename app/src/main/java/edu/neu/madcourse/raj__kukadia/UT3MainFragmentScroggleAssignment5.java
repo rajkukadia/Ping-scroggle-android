@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,11 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+              //  Log.d(UT3MainActivityScroggleAssignment5.class.toString(),"whats this");
+                //System.exit(0);
+              Thread t = new Thread(new myThread());
+                t.start();
+
                 Intent intent = new Intent(getActivity(), ScroggleAssignment5.class);
                 getActivity().startActivity(intent);
             }
@@ -65,4 +71,16 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
         if (mDialog != null)
             mDialog.dismiss();
     }
+
+class myThread implements Runnable{
+
+
+    @Override
+    public void run() {
+        Intent intent1 = new Intent(getActivity(), DictionaryAssignment3.class);
+        intent1.putExtra("CallingActivity", UT3MainActivityScroggleAssignment5.class.toString());
+        getActivity().startActivity(intent1);
+    }
+}
+
 }
