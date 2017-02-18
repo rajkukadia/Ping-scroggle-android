@@ -124,7 +124,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
             if(t==-1){
                 v.setText("");
-                v1.setText("Phase two begins..");
+              v1.setText("Phase two begins..");
                 setPhasetwo();
             }else {
                 mHandler.postDelayed(mRunnable, 1000);
@@ -144,8 +144,10 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
     private void setPhasetwo(){
+        t=180;
+        getCounter();
         phaseTwo = true;
-        done = false;
+        //done = false;
             for(int i = 0;i<9;i++){
                 for(int j = 0;j<9;j++){
                     TileAssignment5 tile = mSmallTiles[i][j];
@@ -375,7 +377,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
             e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
             e.append(enteredStringSroggle + " ");
 
-            if (!phaseTwo) {
+         //   if (!phaseTwo) {
                 //Clearing off redundant buttons
                 for (int i = 0; i < 9; i++) {
                     TileAssignment5 tile = mSmallTiles[touchedLargeTile][i];
@@ -394,14 +396,9 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
                 DictionaryAssignment3.result.setText("");
 
-                enteredStringSroggle = "";
-                // done = false;
-                for (int x = 0; x < touchedSmallTiles.length; x++) {
-                    touchedSmallTiles[x] = 0;
-                }
-                touchedLargeTile = 0;
 
-            } }else {
+
+             }else {
                 e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
                 e.append(" ");
                 TileAssignment5 tile = mLargeTiles[touchedLargeTile];
@@ -441,7 +438,37 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 //touchedLargeTile = 0;
 
             }
+        if(phaseTwo){
+
+            for(int i = 0; i<9 ; i++) {
+                for (int dest = 0; dest < 9; dest++) {
+                    TileAssignment5 tile = mSmallTiles[i][dest];
+                    if (tile.getOwner() == TileAssignment5.Owner.CLICKED) {
+                        tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                        ((Button) mSmallTiles[i][dest].getView()).setText("");
+                        if (mAvailable.contains(tile)) {
+                            mAvailable.remove(tile);
+                        }
+                        tile.updateDrawableState('a', 0);
+                    } else {
+                        addAvailable(tile);
+                        tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                        tile.updateDrawableState('a', 0);
+                    }
+                }
+            }
+
         }
+
+        // done = false;
+        for (int x = 0; x < touchedSmallTiles.length; x++) {
+            touchedSmallTiles[x] = 0;
+        }
+        touchedLargeTile = 0;
+        enteredStringSroggle = "";
+
+    }
+
 
 
     private void updateScore(String x){
@@ -544,7 +571,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
         TileAssignment5 largeTile = mLargeTiles[large];
         smallTile.setOwner(mPlayer);
         //setAvailableFromLastMove(small);
-        done = false;
+        if(!phaseTwo){
+        done = false;}
         setAvailableFromLastMove(large, small); //changed from small to large
         smallTile.updateDrawableState('a', 0);
 
@@ -723,7 +751,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
                     }else {
-                        if (!done) {
+
                             if (i == large) {
                                 if (dest == smallx) {
                                     TileAssignment5 tile = mSmallTiles[large][dest];
@@ -735,15 +763,15 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
                                 } else {
                                     TileAssignment5 tile = mSmallTiles[large][dest];
-                                   // if (!(tile.getOwner() == TileAssignment5.Owner.CLICKED)) {
+                                    if (!(tile.getOwner() == TileAssignment5.Owner.CLICKED)) {
 
                                         tile.setOwner(TileAssignment5.Owner.FREEZED);
-                                    //}
+                                    }
                                     if (mAvailable.contains(tile)) {
                                         mAvailable.remove(tile);
                                     }
                                     tile.updateDrawableState('a', 0);
-                                }
+                            }
 
 
                             } else {
@@ -761,22 +789,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
                             }
 
-                        } else {
-                            TileAssignment5 tile = mSmallTiles[i][dest];
-                            if(tile.getOwner()== TileAssignment5.Owner.CLICKED){
-                                tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
-                                ((Button)mSmallTiles[i][dest].getView()).setText("");
-                                if (mAvailable.contains(tile)) {
-                                    mAvailable.remove(tile);
-                                }
-                                tile.updateDrawableState('a', 0);
-                            }else{
-                                addAvailable(tile);
-                                tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
-                                tile.updateDrawableState('a', 0);
-                            }
 
-                        }
                     }
                 }
             }
