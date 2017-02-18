@@ -7,8 +7,11 @@ import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 public class ScroggleAssignment5 extends Activity {
 
@@ -21,6 +24,8 @@ public class ScroggleAssignment5 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         //getActionBar().setTitle("Ultimate Tic Tac Toe");
         setContentView(R.layout.activity_scroggle_assignment5);
         mGameFragment = (ScroggleAssignment5Fragment) getFragmentManager()
@@ -33,6 +38,10 @@ public class ScroggleAssignment5 extends Activity {
                 mGameFragment.putState(gameData);
             }
         }
+
+
+
+
         Log.d("UT3", "restore = " + restore);
     }
 
@@ -106,4 +115,7 @@ public class ScroggleAssignment5 extends Activity {
                 .commit();
         Log.d("UT3", "state = " + gameData);
     }
+
+
+
 }

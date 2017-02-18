@@ -6,8 +6,11 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.service.quicksettings.Tile;
 import android.text.Editable;
 import android.util.Log;
@@ -54,7 +57,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private HashSet<Integer> DoneTiles = new HashSet<Integer>();
     private ArrayList<int[]> adjacencyList = new ArrayList<int[]>();
     private static Boolean comingFirstTime = true;
-
+    int t = 90;
+    private TextView v;
 
 
     private String[] nineNineLetterWords = new String[9];
@@ -66,6 +70,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         setRetainInstance(true);
         initGame();
         setAdjacencyList();
+        getCounter();
 
 
         mSoundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
@@ -78,6 +83,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        v = (TextView) getActivity().findViewById(R.id.counter_view);
+
         doneView= getActivity().findViewById(R.id.done);
         doneView.setOnClickListener(new View.OnClickListener(){
 
@@ -89,6 +96,29 @@ public class ScroggleAssignment5Fragment extends Fragment {
         });
     }
 
+    private void getCounter(){
+        mHandler = new Handler();
+        mHandler.postDelayed(mRunnable, 1000);
+
+    }
+
+    private Runnable mRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            v.setText(String.valueOf(t--));
+            //while(t!=0) {
+
+
+            if(t==-1){
+
+            }else {
+                mHandler.postDelayed(mRunnable, 1000);
+            }
+                }
+
+
+    };
     private void clearAvailable() {
         mAvailable.clear();
     }
@@ -133,6 +163,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 inflater.inflate(R.layout.large_board_scroggle, container, false);
         initViews(rootView);
         updateAllTiles();
+
 
 
         return rootView;
@@ -279,6 +310,11 @@ public class ScroggleAssignment5Fragment extends Fragment {
         if ((enteredStringSroggle + "\n").equalsIgnoreCase(DictionaryAssignment3.result.getText().toString())) {
             e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
             e.append(enteredStringSroggle + " ");
+            for(int i = 0; i<9 ;i++) {
+                TileAssignment5 tile = mSmallTiles[touchedLargeTile][i];
+            if(tile.getOwner()!=TileAssignment5.Owner.CLICKED)
+                    tile.updateDrawableState(' ', 1);
+            }
            setAvailableFromLastMove(touchedLargeTile, 0);
             DoneTiles.add(touchedLargeTile);
             DictionaryAssignment3.result.setText("");
@@ -781,6 +817,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
     /** Create a string containing the state of the game. */
     public String getState() {
         StringBuilder builder = new StringBuilder();
+        builder.append(v.getText());
+        builder.append(',');
         Object a[] = DoneTiles.toArray();
         builder.append(a.length);
         builder.append(',');
@@ -809,6 +847,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
     public void putState(String gameData) {
         String[] fields = gameData.split(",");
         int index = 0;
+        String counter = fields[index++];
+        v.setText(counter);
         int length = Integer.parseInt((fields[index++]));
         int a[ ]= new int[length];
         for(int i=0;i<length;i++){
@@ -830,5 +870,9 @@ public class ScroggleAssignment5Fragment extends Fragment {
       //  setAvailableFromLastMove(mLastLarge, mLastSmall);
         //updateAllTiles();
     }
+
+
+
+
 }
 
