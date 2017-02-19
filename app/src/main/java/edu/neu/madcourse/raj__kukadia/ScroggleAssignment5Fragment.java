@@ -201,10 +201,19 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 if(!phaseTwo) {
 
                     v.setText("");
-                    v1.setText("Phase two begins..");
+                    if(DoneTiles.size()!=0){
+                        //for(int i = 0; i<3;i++){
+                            v1.setText("Phase two begins..");
+                            RunAnimation(v1);
 
-                    setPhasetwo();
+                       // }
+                    setPhasetwo();}else{
+                        Intent i = new Intent(getActivity(), ScroggleStatusAssignment5.class);
+                        getActivity().startActivity(i);
+                    }
                 }else{
+
+                    clearAvailable();
                     phaseTwo=false;
                     Intent i = new Intent(getActivity(), ScroggleStatusAssignment5.class);
                     getActivity().startActivity(i);
@@ -479,23 +488,27 @@ public class ScroggleAssignment5Fragment extends Fragment {
         // if(!phaseTwo) {
         checkUnPressed();
         //}
-        DictionaryAssignment3.mytext.setText(enteredStringSroggle);
+        try {
+            DictionaryAssignment3.mytext.setText(enteredStringSroggle);
+        }catch(Exception e){
+
+        }
 
         if ((enteredStringSroggle + "\n").equalsIgnoreCase(DictionaryAssignment3.result.getText().toString())) {
             //Entering text to the screen
             e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
             e.append(enteredStringSroggle + " ");
 
-         //   if (!phaseTwo) {
+            if (!phaseTwo) {
                 //Clearing off redundant buttons
                 for (int i = 0; i < 9; i++) {
                     TileAssignment5 tile = mSmallTiles[touchedLargeTile][i];
                     if (tile.getOwner() != TileAssignment5.Owner.CLICKED) {
-                        if (!phaseTwo) {
-                            tile.updateDrawableState(' ', 1);
-                        }
+                        //  if (!phaseTwo) {
+                        tile.updateDrawableState(' ', 1);
+                        // }
                     } else {
-                        switch(enteredStringSroggle.length()){
+                        switch (enteredStringSroggle.length()) {
                             case 9:
                                 updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 50);
                                 break;
@@ -524,7 +537,38 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 DictionaryAssignment3.result.setText("");
 
 
+            }
+            else{
+                for(int i = 0;i<9;i++){
+                    for(int j =0 ;j<9;j++){
+                        TileAssignment5 tile = mSmallTiles[i][j];
+                        if(tile.getOwner()== TileAssignment5.Owner.CLICKED){
 
+                            switch (enteredStringSroggle.length()) {
+                                case 9:
+                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 50);
+                                    break;
+                                case 5:
+                                case 6:
+                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 5);
+                                    break;
+                                case 7:
+                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 20);
+                                    break;
+                                case 8:
+                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 30);
+                                    break;
+
+                                default:
+                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 1);
+
+                            }
+                            DictionaryAssignment3.result.setText("");
+
+                        }
+                    }
+                }
+            }
              }else {
                 e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
                 e.append(" ");
@@ -548,13 +592,29 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 //  e1.printStackTrace();
                 //}}
 
+if(!phaseTwo) {
+    for (int i = 0; i < 9; i++) {
+        TileAssignment5 tiles = mSmallTiles[touchedLargeTile][i];
+        tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
+        tiles.updateDrawableState('a', 0);
+        addAvailable(tiles);
+    }
+}
+            else{
+    for(int i =0; i<9;i++){
+        for (int j = 0; j<9; j++){
+            TileAssignment5 tiles = mSmallTiles[i][j];
+            if(tiles.getOwner()== TileAssignment5.Owner.CLICKED){
+                tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
+            }
+            tiles.updateDrawableState('a', 0);
 
-                for (int i = 0; i < 9; i++) {
-                    TileAssignment5 tiles = mSmallTiles[touchedLargeTile][i];
-                    tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
-                    tiles.updateDrawableState('a', 0);
-                    addAvailable(tiles);
-                }
+
+        }
+    }
+            }
+
+
                 DictionaryAssignment3.result.setText("");
                 enteredStringSroggle = "";
                 // done = false;
@@ -571,13 +631,15 @@ public class ScroggleAssignment5Fragment extends Fragment {
                     TileAssignment5 tile = mSmallTiles[i][dest];
                     if (tile.getOwner() == TileAssignment5.Owner.CLICKED) {
                         tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
-                        ((Button) mSmallTiles[i][dest].getView()).setText("");
                         if (mAvailable.contains(tile)) {
                             mAvailable.remove(tile);
                         }
-                        tile.updateDrawableState('a', 0);
+                        tile.updateDrawableState(' ', 1);
                     } else {
-                        addAvailable(tile);
+                        if(((Button)mSmallTiles[i][dest].getView()).getText().charAt(0)==' '){
+                            mAvailable.remove(tile);
+                        }else{
+                        addAvailable(tile);}
                         tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
                         tile.updateDrawableState('a', 0);
                     }
@@ -884,7 +946,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
 
-
                         if (i == large) {
                                 if (dest == smallx) {
                                     TileAssignment5 tile1 = mSmallTiles[large][dest];
@@ -914,12 +975,34 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                 if (!(tile3.getOwner() == TileAssignment5.Owner.CLICKED)) {
                                     tile3.setOwner(TileAssignment5.Owner.NOTCLICKED);
                                 }
-                                if (!mAvailable.contains(tile3)) {
+                          //  if(((((Button)mSmallTiles[i][dest].getView()).getText().toString().equals(null))||((Button)mSmallTiles[i][dest].getView()).getText().toString().charAt(0)==' ')||(((Button)mSmallTiles[i][dest].getView()).getText().toString().equals(""))){
+
+                                if ((!mAvailable.contains(tile3))&&(tile3.getView().toString().charAt(0)!=' ')){
                                     mAvailable.add(tile3);
                                 }
+
                                 tile3.updateDrawableState('a', 0);
+/*
+                            TileAssignment5 tile = mSmallTiles[i][dest];
+                            TileAssignment5 tile = mSmallTiles[i][dest];
+                            try{
+                                if(((((Button)mSmallTiles[i][dest].getView()).getText().toString().equals(null))||((Button)mSmallTiles[i][dest].getView()).getText().toString().charAt(0)==' ')||(((Button)mSmallTiles[i][dest].getView()).getText().toString().equals(""))){
+                                    // Log.d("Yes ", "it came");
+                                    if(mAvailable.contains(tile)){
+                                        mAvailable.remove(tile);
+                                    }
+                                }
+                                else{
+                                    if(!mAvailable.contains(tile)){
+                                        addAvailable(tile);}
+                                }}catch (ArrayIndexOutOfBoundsException e){
 
 
+                            }catch ( StringIndexOutOfBoundsException e){
+
+                            }
+
+*/
                             }
 
                     }

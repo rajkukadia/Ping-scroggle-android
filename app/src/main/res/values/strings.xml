@@ -31,10 +31,10 @@
     <string name="scroggle_pause_label">Pause</string>
     <string name="resume_label">Resume</string>
     <string name="scroggle_ack_label">Things that I did not create from the scratch:\n\n
-    \n  >Game UI code and logic behind the level-list that I did not know before this was taken from the
+    \n  > Game UI code and logic behind the level-list that I did not know before this was taken from the
         Hello Android Text and the code from the Ultimate Tic Tac Toe game. \n\n
         > I did not create the code for managing Handlers, reference: http://androidtrainningcenter.blogspot.com/2013/12/handler-vs-timer-fixed-period-execution.html \n\n
-
+        > Text animation reference, http://stackoverflow.com/questions/34089093/how-to-add-animation-to-a-text-view-in-android \n\n
 
     </string>
 
