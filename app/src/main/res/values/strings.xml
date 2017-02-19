@@ -19,7 +19,7 @@
     <string name="long_app_name">Ultimate Tic Tac Toe</string>
     <string name="action_settings">Settings</string>
     <string name="restart_label">Restart</string>
-    <string name="main_menu_label">Main Menu</string>
+    <string name="main_menu_label">Menu</string>
     <string name="declare_winner">%1$s is the winner</string>
     <string name="continue_label">Continue</string>
     <string name="new_game_label">New Game</string>
@@ -35,7 +35,7 @@
         Hello Android Text and the code from the Ultimate Tic Tac Toe game. \n\n
         > I did not create the code for managing Handlers, reference: http://androidtrainningcenter.blogspot.com/2013/12/handler-vs-timer-fixed-period-execution.html \n\n
         > Text animation reference, http://stackoverflow.com/questions/34089093/how-to-add-animation-to-a-text-view-in-android \n\n
-
+        > Resizing .png images to hdpi, xxhdpi, xhdpi, ldpi, xxxhdpi, mdpi : https://www.img-bak.in/DQOzACpDQmzxV3IcE3QHQoXoInGgRyZU/
     </string>
 
 
