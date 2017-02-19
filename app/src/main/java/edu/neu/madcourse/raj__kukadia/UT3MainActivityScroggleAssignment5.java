@@ -11,7 +11,7 @@ public class UT3MainActivityScroggleAssignment5 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getActionBar().setTitle("Ultimate Tic Tac Toe");
+        getActionBar().setTitle("Word Game");
         setContentView(R.layout.activity_main_scroggle_assignment5);
     }
 

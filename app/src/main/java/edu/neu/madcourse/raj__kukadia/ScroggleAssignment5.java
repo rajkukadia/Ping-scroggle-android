@@ -30,6 +30,7 @@ public class ScroggleAssignment5 extends Activity {
         setContentView(R.layout.activity_scroggle_assignment5);
         mGameFragment = (ScroggleAssignment5Fragment) getFragmentManager()
                 .findFragmentById(R.id.fragment_game_assignment5);
+
         boolean restore = getIntent().getBooleanExtra(KEY_RESTORE, false);
         if (restore) {
             String gameData = getPreferences(MODE_PRIVATE)

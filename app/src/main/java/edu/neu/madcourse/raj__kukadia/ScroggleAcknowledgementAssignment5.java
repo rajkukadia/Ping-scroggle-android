@@ -5,9 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-public class ScroggleStatusAssignment5 extends Activity{
+public class ScroggleAcknowledgementAssignment5 extends Activity{
 
     private TextView t1;
     private TextView t2;

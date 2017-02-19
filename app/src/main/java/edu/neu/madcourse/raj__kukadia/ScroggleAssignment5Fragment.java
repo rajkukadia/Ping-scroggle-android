@@ -62,7 +62,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private HashSet<Integer> DoneTiles = new HashSet<Integer>();
     private ArrayList<int[]> adjacencyList = new ArrayList<int[]>();
     private static Boolean comingFirstTime = true;
-    int t = 20;
+    int t = 90;
     private TextView v;
     private HashMap<String, Integer> score = new HashMap<String, Integer>();
     public static int currentScore = 0;
@@ -200,7 +200,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
     private void setPhasetwo(){
-        t=10;
+        t=90;
         getCounter();
         phaseTwo = true;
         //done = false;
@@ -264,30 +264,30 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
         score.put("A", 1);
         score.put("B", 3);
-        score.put("C", 1);
+        score.put("C", 3);
         score.put("D", 2);
         score.put("E", 1);
-        score.put("F", 1);
-        score.put("G", 1);
+        score.put("F", 4);
+        score.put("G", 2);
         score.put("H", 4);
         score.put("I", 1);
-        score.put("J", 2);
-        score.put("K", 2);
+        score.put("J", 8);
+        score.put("K", 5);
         score.put("L", 1);
-        score.put("M", 1);
+        score.put("M", 3);
         score.put("N", 1);
         score.put("O", 1);
-        score.put("P", 1);
-        score.put("Q", 4);
+        score.put("P", 3);
+        score.put("Q", 10);
         score.put("R", 1);
         score.put("S", 1);
         score.put("T", 1);
         score.put("U", 3);
-        score.put("V", 1);
+        score.put("V", 4);
         score.put("W", 4);
-        score.put("X", 1);
-        score.put("Y", 3);
-        score.put("Z", 2);
+        score.put("X", 8);
+        score.put("Y", 4);
+        score.put("Z", 10);
     }
 
     private String chooseRandomWord(){
@@ -444,7 +444,25 @@ public class ScroggleAssignment5Fragment extends Fragment {
                             tile.updateDrawableState(' ', 1);
                         }
                     } else {
-                        updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString());
+                        switch(enteredStringSroggle.length()){
+                            case 9:
+                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 50);
+                                break;
+                            case 5:
+                            case 6:
+                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 5);
+                                break;
+                            case 7:
+                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 20);
+                                break;
+                            case 8:
+                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 30);
+                                break;
+
+                            default:
+                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 1);
+
+                        }
                     }
                 }
                 setAvailableFromLastMove(touchedLargeTile, 0);
@@ -528,9 +546,9 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
 
-    private void updateScore(String x){
+    private void updateScore(String x, int bonus){
 
-        currentScore += score.get(x);
+        currentScore += (score.get(x))*bonus;
         Log.d(String.valueOf(currentScore), "Score");
 
     }
@@ -660,7 +678,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         e.setText("");}
         currentScore =0;
         initViews(getView());
-        t=20;
+        t=90;
         mHandler.postDelayed(mRunnable, 1000);
 
         updateAllTiles();
