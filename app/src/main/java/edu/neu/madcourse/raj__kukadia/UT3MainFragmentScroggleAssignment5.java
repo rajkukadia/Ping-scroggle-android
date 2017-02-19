@@ -24,6 +24,7 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
         View newButton = rootView.findViewById(R.id.new_button);
         View continueButton = rootView.findViewById(R.id.continue_button);
         View aboutButton = rootView.findViewById(R.id.about_button);
+        View quitButton = rootView.findViewById(R.id.scroggle_quit_button);
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +59,13 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
                             }
                         });
                 mDialog = builder.show();
+            }
+        });
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+               getActivity().finish();
             }
         });
         return rootView;

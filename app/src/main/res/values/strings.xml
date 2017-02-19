@@ -28,6 +28,10 @@
     <string name="dict_label">Dictionary</string>
     <string name="scroggle_label">Scroggle</string>
     <string name="scroggle_done_label">Done !</string>
+    <string name="scroggle_pause_label">Pause</string>
+    <string name="resume_label">Resume</string>
+
+
 
     <string name="search_label">Search</string>
     <string name="save_label">Save</string>

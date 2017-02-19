@@ -4,6 +4,7 @@ package edu.neu.madcourse.raj__kukadia;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.AsyncTask;
@@ -53,7 +54,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private static Boolean donePhaseTwo = false;
     public static int touchedLargeTile =0;
     public static int [] touchedSmallTiles=new int[9];
-    private TextView e;
+    public static TextView e;
     private TextView v1;
 
     private AlertDialog.Builder builder;
@@ -64,8 +65,10 @@ public class ScroggleAssignment5Fragment extends Fragment {
     int t = 20;
     private TextView v;
     private HashMap<String, Integer> score = new HashMap<String, Integer>();
-    private static int currentScore = 0;
+    public static int currentScore = 0;
     private static boolean phaseTwo = false;
+    public static int totalClicks = 0;
+    private Button pause;
     //private StringBuilder e= new StringBuilder();
 
 
@@ -96,6 +99,15 @@ public class ScroggleAssignment5Fragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         v = (TextView) getActivity().findViewById(R.id.counter_view);
         v1 = (TextView) getActivity().findViewById(R.id.score_view);
+        pause = (Button) getActivity().findViewById(R.id.pause);
+        pause.setOnClickListener(new View.OnClickListener(){
+
+                                     @Override
+                                     public void onClick(View v) {
+                                   pausePressed();
+                                     }
+                                 });
+
         doneView= getActivity().findViewById(R.id.done);
         doneView.setOnClickListener(new View.OnClickListener(){
 
@@ -107,9 +119,45 @@ public class ScroggleAssignment5Fragment extends Fragment {
         });
     }
 
+    private void noVisibility(){
+        for(int i = 0;i<9;i++){
+            for(int j = 0; j<9;j++){
+                TileAssignment5 tile = mSmallTiles[i][j];
+                View v = tile.getView();
+                v.setVisibility(View.INVISIBLE);
+            }
+        }
+
+    }
+
+    private void pausePressed(){
+        noVisibility();
+        mHandler.removeCallbacks(mRunnable);
+        builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Game Paused !");
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.resume_label,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        mHandler.postDelayed(mRunnable, 1000);
+                        for (int k = 0; k < 9; k++) {
+                            for (int j = 0; j < 9; j++) {
+                                TileAssignment5 tile = mSmallTiles[k][j];
+                                View v = tile.getView();
+                                v.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                });
+        mDialog = builder.show();
+        //make the large tile available again
+    }
+
     private void getCounter(){
         mHandler = new Handler();
         mHandler.postDelayed(mRunnable, 1000);
+
 
     }
 
@@ -117,15 +165,23 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
         @Override
         public void run() {
-            v.setText("Time Left: "+String.valueOf(t--)+"  ");
+            t--;
+            v.setText("Time Left: "+String.valueOf(t)+"  ");
             v1.setText("Score: "+String.valueOf(currentScore)+"  ");
             //while(t!=0) {
 
 
-            if(t==-1){
-                v.setText("");
-              v1.setText("Phase two begins..");
-                setPhasetwo();
+            if(t==0){
+                if(!phaseTwo) {
+                    v.setText("");
+                    v1.setText("Phase two begins..");
+                    setPhasetwo();
+                }else{
+                    phaseTwo=false;
+                    Intent i = new Intent(getActivity(), ScroggleStatusAssignment5.class);
+                    getActivity().startActivity(i);
+
+                }
             }else {
                 mHandler.postDelayed(mRunnable, 1000);
             }
@@ -138,13 +194,13 @@ public class ScroggleAssignment5Fragment extends Fragment {
     }
 
     private void addAvailable(TileAssignment5 tile) {
-        tile.animate();
+//        tile.animate();
         mAvailable.add(tile);
     }
 
 
     private void setPhasetwo(){
-        t=180;
+        t=10;
         getCounter();
         phaseTwo = true;
         //done = false;
@@ -193,6 +249,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView =
                 inflater.inflate(R.layout.large_board_scroggle, container, false);
+
         initViews(rootView);
         loadScores();
         updateAllTiles();
@@ -326,6 +383,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         smallTile.animate();
+                        totalClicks++;
+
                         // ...
 
                         if (isAvailable(smallTile)) {
@@ -334,7 +393,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
                             makeMove(fLarge, fSmall); //makes the move and sets available the corresponding tile
-
 
                             touchedLargeTile =fLarge;
                             touchedSmallTiles[fSmall] = fSmall+1;
@@ -402,6 +460,17 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
                 e.append(" ");
                 TileAssignment5 tile = mLargeTiles[touchedLargeTile];
+            builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Not a Valid Word !");
+            builder.setCancelable(false);
+            builder.setPositiveButton(R.string.ok_label,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+            mDialog = builder.show();
                 // for(int i =0;i<3;i++){
                 tile.animate();
                 //try {
@@ -409,19 +478,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 //} catch (InterruptedException e1) {
                 //  e1.printStackTrace();
                 //}}
-                builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Not a valid word !");
-                builder.setCancelable(false);
-                builder.setPositiveButton(R.string.ok_label,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // nothing
-                            }
 
-                        });
-                mDialog = builder.show();
-                //make the large tile available again
 
                 for (int i = 0; i < 9; i++) {
                     TileAssignment5 tiles = mSmallTiles[touchedLargeTile][i];
@@ -595,13 +652,17 @@ public class ScroggleAssignment5Fragment extends Fragment {
     public void restartGame() {
         mSoundPool.play(mSoundRewind, mVolume, mVolume, 1, 0, 1f);
         // ...
+       mHandler.removeCallbacks(mRunnable);
+        //mHandler.postDelayed(mRunnable, 1000);
         initGame();
         done = false;
         if(e!=null){
         e.setText("");}
         currentScore =0;
         initViews(getView());
-        t=90;
+        t=20;
+        mHandler.postDelayed(mRunnable, 1000);
+
         updateAllTiles();
     }
 
@@ -789,7 +850,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
                             }
 
-
                     }
                 }
             }
@@ -948,10 +1008,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 mSmallTiles[large][7].updateDrawableState((char) (finalSequenceOfCharacters[3]-32), 1);
                 mSmallTiles[large][8].updateDrawableState((char) (finalSequenceOfCharacters[4]-32), 1);
                 break;
-
         }
-
-
     }
 
     private void updateAllTiles() {
@@ -975,11 +1032,19 @@ public class ScroggleAssignment5Fragment extends Fragment {
         }
     }
 
+
+
     /** Create a string containing the state of the game. */
     public String getState() {
+
         StringBuilder builder = new StringBuilder();
-        builder.append(v.getText());
+        mHandler.removeCallbacks(mRunnable);
+        builder.append(phaseTwo);
         builder.append(',');
+        builder.append(currentScore); //storing current score
+        builder.append(',');
+       builder.append(t); //storing timer state
+     builder.append(',');
         Object a[] = DoneTiles.toArray();
         builder.append(a.length);
         builder.append(',');
@@ -998,7 +1063,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 builder.append((((Button)mSmallTiles[large][small].getView()).getText()).toString());
                 builder.append(',');
                 //Log.d(DoneTiles);
-
             }
         }
         return builder.toString();
@@ -1008,8 +1072,13 @@ public class ScroggleAssignment5Fragment extends Fragment {
     public void putState(String gameData) {
         String[] fields = gameData.split(",");
         int index = 0;
-        String counter = fields[index++];
-        v.setText(counter);
+
+        phaseTwo =Boolean.parseBoolean(fields[index++]);
+
+
+        Log.d(String.valueOf(phaseTwo), " check phaseTwo value");
+        currentScore = Integer.parseInt(fields[index++]);
+       t = Integer.parseInt(fields[index++]);
         int length = Integer.parseInt((fields[index++]));
         int a[ ]= new int[length];
         for(int i=0;i<length;i++){
@@ -1024,7 +1093,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 TileAssignment5.Owner owner = TileAssignment5.Owner.valueOf(fields[index++]);
                 mSmallTiles[large][small].setOwner(owner);
                 mSmallTiles[large][small].updateDrawableState(fields[index++].charAt(0), 1);
-                Log.d(DoneTiles.toString(), "checkkk");
+                //Log.d(DoneTiles.toString(), "checkkk");
                 // mSmallTiles[large][small].updateDrawableState('a', 0);
             }
         }

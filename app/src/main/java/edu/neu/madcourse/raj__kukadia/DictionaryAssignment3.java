@@ -43,10 +43,14 @@ public class DictionaryAssignment3 extends Activity {
         getActionBar().setTitle("Test Dictionary");
         setContentView(R.layout.activity_dictionary_ass3);
 
+        try {
+            Bundle b = getIntent().getExtras();
+            if (b.getString("CallingActivity").equals(UT3MainActivityScroggleAssignment5.class.toString())) {
+                finish();
+            }
+        }
+        catch(Exception e){
 
-        Bundle b = getIntent().getExtras();
-        if(b.getString("CallingActivity").equals(UT3MainActivityScroggleAssignment5.class.toString())){
-            finish();
         }
         setButtonListeners();
         setDictListener();
