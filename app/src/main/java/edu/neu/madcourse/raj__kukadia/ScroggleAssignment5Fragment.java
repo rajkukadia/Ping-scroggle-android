@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.media.ToneGenerator;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +19,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -130,6 +133,15 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
     }
 
+    private void RunAnimation(TextView v)
+    {
+        Animation a = AnimationUtils.loadAnimation(getActivity(), R.anim.text_animator);
+        a.reset();
+        //TextView tv = (TextView) findViewById(R.id.firstTextView);
+        v.clearAnimation();
+        v.startAnimation(a);
+    }
+
     private void pausePressed(){
         noVisibility();
         mHandler.removeCallbacks(mRunnable);
@@ -155,11 +167,18 @@ public class ScroggleAssignment5Fragment extends Fragment {
     }
 
     private void getCounter(){
+
         mHandler = new Handler();
         mHandler.postDelayed(mRunnable, 1000);
 
 
     }
+
+    private void beep() {
+        ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+        toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 200);
+    }
+
 
     private Runnable mRunnable = new Runnable() {
 
@@ -168,13 +187,18 @@ public class ScroggleAssignment5Fragment extends Fragment {
             t--;
             v.setText("Time Left: "+String.valueOf(t)+"  ");
             v1.setText("Score: "+String.valueOf(currentScore)+"  ");
+            if(t<11){
+                beep();
+            RunAnimation(v);}
             //while(t!=0) {
 
 
             if(t==0){
                 if(!phaseTwo) {
+
                     v.setText("");
                     v1.setText("Phase two begins..");
+
                     setPhasetwo();
                 }else{
                     phaseTwo=false;
@@ -424,6 +448,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     }
 
     private void donePressed() {
+
         Log.d("Done pressed", " ");
         // if(!phaseTwo) {
         checkUnPressed();

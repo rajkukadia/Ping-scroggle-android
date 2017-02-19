@@ -49,6 +49,10 @@
             android:name=".ScroggleStatusAssignment5"
             android:parentActivityName=".ScroggleAssignment5"
             android:theme="@style/NoTitle" />
+        <activity
+            android:name=".ScroggleAcknowledgementAssignment5"
+            android:parentActivityName=".ScroggleAssignment5"
+            android:theme="@style/NoTitle" />
 
 
 
