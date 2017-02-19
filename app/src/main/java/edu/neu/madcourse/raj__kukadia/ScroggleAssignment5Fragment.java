@@ -175,8 +175,12 @@ public class ScroggleAssignment5Fragment extends Fragment {
     }
 
     private void beep() {
-        ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
-        toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 200);
+        try {
+            ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+            toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 200);
+        }catch (RuntimeException e){
+
+        }
     }
 
 
@@ -229,12 +233,34 @@ public class ScroggleAssignment5Fragment extends Fragment {
         phaseTwo = true;
         //done = false;
             for(int i = 0;i<9;i++){
-                for(int j = 0;j<9;j++){
-                    TileAssignment5 tile = mSmallTiles[i][j];
-                    tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
-                    addAvailable(tile);
-                    tile.updateDrawableState('a', 0);
+                for(int j = 0;j<9;j++) {
+
+                    if (DoneTiles.contains(i)) {
+                        TileAssignment5 tile = mSmallTiles[i][j];
+                        tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                        addAvailable(tile);
+                        tile.updateDrawableState('a', 0);
+                    }else{
+                        TileAssignment5 tile = mSmallTiles[i][j];
+                        tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                        //((Button)tile.getView()).setText("");
+                        tile.updateDrawableState(' ', 1);
                     }
+
+                    TileAssignment5 tile = mSmallTiles[i][j];
+                    if(((Button)mSmallTiles[i][j].getView()).getText().toString().charAt(0)==' '){
+                       // Log.d("Yes ", "it came");
+                        if(mAvailable.contains(tile)){
+                            mAvailable.remove(tile);
+                        }
+
+                    }
+                    else{
+                        if(!mAvailable.contains(tile)){
+                        addAvailable(tile);}
+                    }
+
+                }
             }
 
 
@@ -856,39 +882,42 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
                     }else {
 
-                            if (i == large) {
+
+
+
+                        if (i == large) {
                                 if (dest == smallx) {
-                                    TileAssignment5 tile = mSmallTiles[large][dest];
-                                    tile.setOwner(TileAssignment5.Owner.CLICKED);
-                                    if (mAvailable.contains(tile)) {
-                                        mAvailable.remove(tile);
+                                    TileAssignment5 tile1 = mSmallTiles[large][dest];
+                                    tile1.setOwner(TileAssignment5.Owner.CLICKED);
+                                    if (mAvailable.contains(tile1)) {
+                                        mAvailable.remove(tile1);
                                     }
-                                    tile.updateDrawableState('a', 0);
+                                    tile1.updateDrawableState('a', 0);
 
                                 } else {
-                                    TileAssignment5 tile = mSmallTiles[large][dest];
-                                    if (!(tile.getOwner() == TileAssignment5.Owner.CLICKED)) {
+                                    TileAssignment5 tile2 = mSmallTiles[large][dest];
+                                    if (!(tile2.getOwner() == TileAssignment5.Owner.CLICKED)) {
 
-                                        tile.setOwner(TileAssignment5.Owner.FREEZED);
+                                        tile2.setOwner(TileAssignment5.Owner.FREEZED);
                                     }
-                                    if (mAvailable.contains(tile)) {
-                                        mAvailable.remove(tile);
+                                    if (mAvailable.contains(tile2)) {
+                                        mAvailable.remove(tile2);
                                     }
-                                    tile.updateDrawableState('a', 0);
+                                    tile2.updateDrawableState('a', 0);
                             }
 
 
                             } else {
 
 
-                                TileAssignment5 tile = mSmallTiles[i][dest];
-                                if (!(tile.getOwner() == TileAssignment5.Owner.CLICKED)) {
-                                    tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                                TileAssignment5 tile3 = mSmallTiles[i][dest];
+                                if (!(tile3.getOwner() == TileAssignment5.Owner.CLICKED)) {
+                                    tile3.setOwner(TileAssignment5.Owner.NOTCLICKED);
                                 }
-                                if (!mAvailable.contains(tile)) {
-                                    mAvailable.add(tile);
+                                if (!mAvailable.contains(tile3)) {
+                                    mAvailable.add(tile3);
                                 }
-                                tile.updateDrawableState('a', 0);
+                                tile3.updateDrawableState('a', 0);
 
 
                             }
