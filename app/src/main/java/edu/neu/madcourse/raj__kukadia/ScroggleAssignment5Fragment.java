@@ -41,6 +41,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
             R.id.smallscroggle4, R.id.smallscroggle5, R.id.smallscroggle6, R.id.smallscroggle7, R.id.smallscroggle8,
             R.id.smallscroggle9,};
     private Handler mHandler = new Handler();
+    private Handler m1Handler = new Handler();
+
     private TileAssignment5 mEntireBoard = new TileAssignment5(this);
     private TileAssignment5 mLargeTiles[] = new TileAssignment5[9];
     private TileAssignment5 mSmallTiles[][] = new TileAssignment5[9][9];
@@ -65,13 +67,16 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private HashSet<Integer> DoneTiles = new HashSet<Integer>();
     private ArrayList<int[]> adjacencyList = new ArrayList<int[]>();
     private static Boolean comingFirstTime = true;
-    int t = 90;
+    int t = 20;
     private TextView v;
     private HashMap<String, Integer> score = new HashMap<String, Integer>();
     public static int currentScore = 0;
     private static boolean phaseTwo = false;
     public static int totalClicks = 0;
     private Button pause;
+    private HashSet<String> wordsDetectedByUser = new HashSet<String>();
+    private int counterForRepeatedWord = 0;
+    boolean notValidWord = false;
     //private StringBuilder e= new StringBuilder();
 
 
@@ -182,6 +187,27 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
         }
     }
+
+
+    private Runnable m1Runnable = new Runnable() {
+
+        @Override
+        public void run() {
+          counterForRepeatedWord++;
+            v.setText("Not using this again !");
+            v1.setText("");
+
+                if(counterForRepeatedWord==5){
+                    counterForRepeatedWord=0;
+                 m1Handler.removeCallbacks(m1Runnable);
+                 mHandler.postDelayed(mRunnable, 1000);
+                }else {
+
+                    m1Handler.postDelayed(m1Runnable, 1000);
+                }
+            }
+
+    };
 
 
     private Runnable mRunnable = new Runnable() {
@@ -497,9 +523,23 @@ public class ScroggleAssignment5Fragment extends Fragment {
         if ((enteredStringSroggle + "\n").equalsIgnoreCase(DictionaryAssignment3.result.getText().toString())) {
             //Entering text to the screen
             e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
-            e.append(enteredStringSroggle + " ");
 
-            if (!phaseTwo) {
+            if(!wordsDetectedByUser.contains(enteredStringSroggle)) {
+                wordsDetectedByUser.add(enteredStringSroggle);
+                e.append(enteredStringSroggle + " ");
+            }else
+            {
+               // Thread showWordAlreadyDetected = new Thread(new WordcantAccept());
+                notValidWord = true;
+                mHandler.removeCallbacks(mRunnable);
+                m1Handler.postDelayed(m1Runnable, 300);
+
+
+
+                // showWordAlreadyDetected.start();
+
+            }
+            if (!phaseTwo && !notValidWord ) {
                 //Clearing off redundant buttons
                 for (int i = 0; i < 9; i++) {
                     TileAssignment5 tile = mSmallTiles[touchedLargeTile][i];
@@ -508,26 +548,28 @@ public class ScroggleAssignment5Fragment extends Fragment {
                         tile.updateDrawableState(' ', 1);
                         // }
                     } else {
-                        switch (enteredStringSroggle.length()) {
-                            case 9:
-                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 50);
-                                break;
-                            case 5:
-                            case 6:
-                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 5);
-                                break;
-                            case 7:
-                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 20);
-                                break;
-                            case 8:
-                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 30);
-                                break;
 
-                            default:
-                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 1);
+                            switch (enteredStringSroggle.length()) {
+                                case 9:
+                                    updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 50);
+                                    break;
+                                case 5:
+                                case 6:
+                                    updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 5);
+                                    break;
+                                case 7:
+                                    updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 20);
+                                    break;
+                                case 8:
+                                    updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 30);
+                                    break;
 
+                                default:
+                                    updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 1);
+
+                            }
                         }
-                    }
+
                 }
                 setAvailableFromLastMove(touchedLargeTile, 0);
 
@@ -538,52 +580,55 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
             }
-            else{
-                for(int i = 0;i<9;i++){
-                    for(int j =0 ;j<9;j++){
-                        TileAssignment5 tile = mSmallTiles[i][j];
-                        if(tile.getOwner()== TileAssignment5.Owner.CLICKED){
+            else {
+                if (!notValidWord) {
+                    for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 9; j++) {
+                            TileAssignment5 tile = mSmallTiles[i][j];
+                            if (tile.getOwner() == TileAssignment5.Owner.CLICKED) {
 
-                            switch (enteredStringSroggle.length()) {
-                                case 9:
-                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 50);
-                                    break;
-                                case 5:
-                                case 6:
-                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 5);
-                                    break;
-                                case 7:
-                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 20);
-                                    break;
-                                case 8:
-                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 30);
-                                    break;
+                                switch (enteredStringSroggle.length()) {
+                                    case 9:
+                                        updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 50);
+                                        break;
+                                    case 5:
+                                    case 6:
+                                        updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 5);
+                                        break;
+                                    case 7:
+                                        updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 20);
+                                        break;
+                                    case 8:
+                                        updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 30);
+                                        break;
 
-                                default:
-                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 1);
+                                    default:
+                                        updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 1);
+
+                                }
+                                DictionaryAssignment3.result.setText("");
 
                             }
-                            DictionaryAssignment3.result.setText("");
-
                         }
                     }
                 }
             }
              }else {
+            if (!notValidWord) {
                 e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
                 e.append(" ");
                 TileAssignment5 tile = mLargeTiles[touchedLargeTile];
-            builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Not a Valid Word !");
-            builder.setCancelable(false);
-            builder.setPositiveButton(R.string.ok_label,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Not a Valid Word !");
+                builder.setCancelable(false);
+                builder.setPositiveButton(R.string.ok_label,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
 
-                        }
-                    });
-            mDialog = builder.show();
+                            }
+                        });
+                mDialog = builder.show();
                 // for(int i =0;i<3;i++){
                 tile.animate();
                 //try {
@@ -592,27 +637,26 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 //  e1.printStackTrace();
                 //}}
 
-if(!phaseTwo) {
-    for (int i = 0; i < 9; i++) {
-        TileAssignment5 tiles = mSmallTiles[touchedLargeTile][i];
-        tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
-        tiles.updateDrawableState('a', 0);
-        addAvailable(tiles);
-    }
-}
-            else{
-    for(int i =0; i<9;i++){
-        for (int j = 0; j<9; j++){
-            TileAssignment5 tiles = mSmallTiles[i][j];
-            if(tiles.getOwner()== TileAssignment5.Owner.CLICKED){
-                tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
-            }
-            tiles.updateDrawableState('a', 0);
+                if (!phaseTwo) {
+                    for (int i = 0; i < 9; i++) {
+                        TileAssignment5 tiles = mSmallTiles[touchedLargeTile][i];
+                        tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                        tiles.updateDrawableState('a', 0);
+                        addAvailable(tiles);
+                    }
+                } else {
+                    for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 9; j++) {
+                            TileAssignment5 tiles = mSmallTiles[i][j];
+                            if (tiles.getOwner() == TileAssignment5.Owner.CLICKED) {
+                                tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                            }
+                            tiles.updateDrawableState('a', 0);
 
 
-        }
-    }
-            }
+                        }
+                    }
+                }
 
 
                 DictionaryAssignment3.result.setText("");
@@ -624,7 +668,8 @@ if(!phaseTwo) {
                 //touchedLargeTile = 0;
 
             }
-        if(phaseTwo){
+        }
+        if(phaseTwo && !notValidWord){
 
             for(int i = 0; i<9 ; i++) {
                 for (int dest = 0; dest < 9; dest++) {
@@ -648,13 +693,30 @@ if(!phaseTwo) {
 
         }
 
-        // done = false;
-        for (int x = 0; x < touchedSmallTiles.length; x++) {
-            touchedSmallTiles[x] = 0;
+        //if same word is entered again
+        if(notValidWord){
+            notValidWord = false;
+            for(int i = 0; i<9 ; i++) {
+                for (int dest = 0; dest < 9; dest++) {
+                    TileAssignment5 tile = mSmallTiles[i][dest];
+                    if((tile.getOwner()== TileAssignment5.Owner.CLICKED)||(tile.getOwner()== TileAssignment5.Owner.FREEZED)){
+                        tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                        tile.updateDrawableState('a', 0);
+                    }
+                    if(((Button)tile.getView()).getText().charAt(0)==' '){
+                        mAvailable.remove(tile);
+                    }else {
+                        addAvailable(tile);
+                    }
+                }
+            }
         }
-        touchedLargeTile = 0;
-        enteredStringSroggle = "";
-
+    // done = false;
+    for (int x = 0; x < touchedSmallTiles.length; x++) {
+        touchedSmallTiles[x] = 0;
+    }
+    touchedLargeTile = 0;
+    enteredStringSroggle = "";
     }
 
 
@@ -792,6 +854,8 @@ if(!phaseTwo) {
         currentScore =0;
         initViews(getView());
         t=90;
+      //  wordsDetectedByUser.
+       // wordsDetectedByUser.clear();
         mHandler.postDelayed(mRunnable, 1000);
 
         updateAllTiles();
@@ -1256,6 +1320,17 @@ if(!phaseTwo) {
         //updateAllTiles();
     }
 
+
+    class WordcantAccept implements Runnable{
+
+
+        @Override
+        public void run() {
+            v1.setText(" ");
+            v.setText("Word Already used !");
+
+        }
+    }
 
 
 
