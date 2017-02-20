@@ -46,7 +46,7 @@
         <item name="android:background">#00000000</item>
         <item name="android:padding">@dimen/tile_padding</item>
         <item name="android:scaleType">centerCrop</item>
-        <item name="android:src">@drawable/tile_background</item>
+        <item name="android:src">@drawable/tile_background_scroggle</item>
     </style>
 
 

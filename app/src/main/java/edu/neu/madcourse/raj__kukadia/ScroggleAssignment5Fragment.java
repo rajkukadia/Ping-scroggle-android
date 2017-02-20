@@ -67,16 +67,18 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private HashSet<Integer> DoneTiles = new HashSet<Integer>();
     private ArrayList<int[]> adjacencyList = new ArrayList<int[]>();
     private static Boolean comingFirstTime = true;
-    int t = 20;
+    int t = 10;
     private TextView v;
     private HashMap<String, Integer> score = new HashMap<String, Integer>();
     public static int currentScore = 0;
     private static boolean phaseTwo = false;
     public static int totalClicks = 0;
     private Button pause;
-    private HashSet<String> wordsDetectedByUser = new HashSet<String>();
+    private HashMap<Integer, String> wordsDetectedByUser = new HashMap<Integer, String>();
     private int counterForRepeatedWord = 0;
-    boolean notValidWord = false;
+    private static boolean notValidWord = false;
+    private static boolean canShowDialogBox = false;
+    public static int hashKey = 0;
     //private StringBuilder e= new StringBuilder();
 
 
@@ -95,6 +97,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         getCounter();
 
 
+
         mSoundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
         mSoundX = mSoundPool.load(getActivity(), R.raw.sergenious_movex, 1);
         mSoundO = mSoundPool.load(getActivity(), R.raw.sergenious_moveo, 1);
@@ -107,6 +110,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         v = (TextView) getActivity().findViewById(R.id.counter_view);
         v1 = (TextView) getActivity().findViewById(R.id.score_view);
+        e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
+
         pause = (Button) getActivity().findViewById(R.id.pause);
         pause.setOnClickListener(new View.OnClickListener(){
 
@@ -188,7 +193,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         }
     }
 
-
+/*
     private Runnable m1Runnable = new Runnable() {
 
         @Override
@@ -197,7 +202,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
             v.setText("Not using this again !");
             v1.setText("");
 
-                if(counterForRepeatedWord==5){
+                if(counterForRepeatedWord==4){
                     counterForRepeatedWord=0;
                  m1Handler.removeCallbacks(m1Runnable);
                  mHandler.postDelayed(mRunnable, 1000);
@@ -209,7 +214,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
     };
 
-
+*/
     private Runnable mRunnable = new Runnable() {
 
         @Override
@@ -265,6 +270,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private void setPhasetwo(){
         t=90;
         getCounter();
+      //
         phaseTwo = true;
         //done = false;
             for(int i = 0;i<9;i++){
@@ -476,7 +482,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
                            //((ScroggleAssignment5)getActivity()).startThinking();
                             mSoundPool.play(mSoundX, mVolume, mVolume, 1, 0, 1f);
 
-
                             makeMove(fLarge, fSmall); //makes the move and sets available the corresponding tile
 
                             touchedLargeTile =fLarge;
@@ -515,31 +520,28 @@ public class ScroggleAssignment5Fragment extends Fragment {
         checkUnPressed();
         //}
         try {
+            DictionaryAssignment3.result.setText("");
+
             DictionaryAssignment3.mytext.setText(enteredStringSroggle);
         }catch(Exception e){
 
         }
 
-        if ((enteredStringSroggle + "\n").equalsIgnoreCase(DictionaryAssignment3.result.getText().toString())) {
+        if (((enteredStringSroggle + "\n").equalsIgnoreCase(DictionaryAssignment3.result.getText().toString()))&&(!wordsDetectedByUser.containsValue(enteredStringSroggle))) {
             //Entering text to the screen
-            e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
 
-            if(!wordsDetectedByUser.contains(enteredStringSroggle)) {
-                wordsDetectedByUser.add(enteredStringSroggle);
+          //  if(!wordsDetectedByUser.containsValue(enteredStringSroggle)) {
+                wordsDetectedByUser.put(hashKey, enteredStringSroggle);
                 e.append(enteredStringSroggle + " ");
-            }else
-            {
+                hashKey++;
+            //}else
+            //{
                // Thread showWordAlreadyDetected = new Thread(new WordcantAccept());
-                notValidWord = true;
-                mHandler.removeCallbacks(mRunnable);
-                m1Handler.postDelayed(m1Runnable, 300);
-
-
-
-                // showWordAlreadyDetected.start();
-
-            }
-            if (!phaseTwo && !notValidWord ) {
+                //notValidWord = true;
+                //mHandler.removeCallbacks(mRunnable);
+               // m1Handler.postDelayed(m1Runnable, 300);
+          //  }
+            if (!phaseTwo) {
                 //Clearing off redundant buttons
                 for (int i = 0; i < 9; i++) {
                     TileAssignment5 tile = mSmallTiles[touchedLargeTile][i];
@@ -581,7 +583,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
             }
             else {
-                if (!notValidWord) {
+
                     for (int i = 0; i < 9; i++) {
                         for (int j = 0; j < 9; j++) {
                             TileAssignment5 tile = mSmallTiles[i][j];
@@ -611,12 +613,14 @@ public class ScroggleAssignment5Fragment extends Fragment {
                             }
                         }
                     }
-                }
+
             }
              }else {
-            if (!notValidWord) {
+          // canShowDialogBox= true;
+       //    if (!notValidWord ) {
+             //  canShowDialogBox =false;
                 e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
-                e.append(" ");
+               // e.append(" ");
                 TileAssignment5 tile = mLargeTiles[touchedLargeTile];
                 builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage("Not a Valid Word !");
@@ -667,9 +671,9 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 //}
                 //touchedLargeTile = 0;
 
-            }
+         //   }
         }
-        if(phaseTwo && !notValidWord){
+        if(phaseTwo){
 
             for(int i = 0; i<9 ; i++) {
                 for (int dest = 0; dest < 9; dest++) {
@@ -694,7 +698,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         }
 
         //if same word is entered again
-        if(notValidWord){
+   /*     if(notValidWord){
             notValidWord = false;
             for(int i = 0; i<9 ; i++) {
                 for (int dest = 0; dest < 9; dest++) {
@@ -710,13 +714,15 @@ public class ScroggleAssignment5Fragment extends Fragment {
                     }
                 }
             }
-        }
+       }*/
     // done = false;
     for (int x = 0; x < touchedSmallTiles.length; x++) {
         touchedSmallTiles[x] = 0;
     }
     touchedLargeTile = 0;
-    enteredStringSroggle = "";
+        DictionaryAssignment3.result.setText("");
+
+        enteredStringSroggle = "";
     }
 
 
@@ -845,7 +851,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     public void restartGame() {
         mSoundPool.play(mSoundRewind, mVolume, mVolume, 1, 0, 1f);
         // ...
-       mHandler.removeCallbacks(mRunnable);
+        mHandler.removeCallbacks(mRunnable);
         //mHandler.postDelayed(mRunnable, 1000);
         initGame();
         done = false;
@@ -854,8 +860,12 @@ public class ScroggleAssignment5Fragment extends Fragment {
         currentScore =0;
         initViews(getView());
         t=90;
-      //  wordsDetectedByUser.
-       // wordsDetectedByUser.clear();
+        enteredStringSroggle="";
+        notValidWord=false;
+      //  canShowDialogBox =false;
+        phaseTwo=false;
+        hashKey=0;
+        wordsDetectedByUser.clear();
         mHandler.postDelayed(mRunnable, 1000);
 
         updateAllTiles();
@@ -863,7 +873,9 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
     public void initGame() {
         Log.d("UT3", "init game");
-        phaseTwo = false;
+      //
+        //
+        // phaseTwo = false;
         mEntireBoard = new TileAssignment5(this);
         // Create all the tiles
         for (int large = 0; large < 9; large++) {
@@ -1007,7 +1019,13 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
                     }else {
-
+/*
+                        TileAssignment5 thistile = mSmallTiles[i][dest];
+                        if(((Button)thistile.getView()).getText().charAt(0)==' '){
+                            mAvailable.remove(thistile);
+                            thistile.updateDrawableState('a', 0);
+                        }
+*/
 
 
                         if (i == large) {
@@ -1045,8 +1063,39 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                     mAvailable.add(tile3);
                                 }
 
+
                                 tile3.updateDrawableState('a', 0);
-/*
+
+
+
+                            TileAssignment5 tile = mSmallTiles[i][dest];
+                            if(((Button)mSmallTiles[i][dest].getView()).getText().toString().charAt(0)==' '){
+                                // Log.d("Yes ", "it came");
+                                if(mAvailable.contains(tile)){
+                                    mAvailable.remove(tile);
+                                }
+
+                            }
+                            else{
+                                if(!mAvailable.contains(tile)){
+                                    addAvailable(tile);}
+                            }
+
+
+
+
+
+
+
+
+
+                            /*
+
+
+
+
+
+
                             TileAssignment5 tile = mSmallTiles[i][dest];
                             TileAssignment5 tile = mSmallTiles[i][dest];
                             try{
@@ -1076,6 +1125,26 @@ public class ScroggleAssignment5Fragment extends Fragment {
         // If there were none available, make all squares available
         if (mAvailable.isEmpty()&&large==-1) {
             setAllAvailable();
+        }
+    }
+
+    private void setPhaseTwoLogic() {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                TileAssignment5 tile = mSmallTiles[i][j];
+                if (((Button) mSmallTiles[i][j].getView()).getText().toString().charAt(0) == ' ') {
+                    // Log.d("Yes ", "it came");
+                    if (mAvailable.contains(tile)) {
+                        mAvailable.remove(tile);
+                    }
+
+                } else {
+                    if (!mAvailable.contains(tile)) {
+                        addAvailable(tile);
+                    }
+
+                }
+            }
         }
     }
 
@@ -1251,12 +1320,48 @@ public class ScroggleAssignment5Fragment extends Fragment {
         }
     }
 
+private void setAvailableAccordingToGamePhase(boolean phaseTwo){
+    if(phaseTwo){
+        for(int i =0; i<9;i++){
+            for(int j = 0; j<9;j++){
+                TileAssignment5 tile = mSmallTiles[i][j];
+                if(((Button)tile.getView()).getText().charAt(0)==' '){
+                     mAvailable.remove(tile);
+
+                }
+                if(tile.getOwner()==TileAssignment5.Owner.FREEZED){
+                   mAvailable.remove(tile);
+                }
+            }
+        }
+
+
+    }
+}
 
 
     /** Create a string containing the state of the game. */
     public String getState() {
 
         StringBuilder builder = new StringBuilder();
+
+      //  TileAssignment5[] availableTiles = (TileAssignment5[])mAvailable.toArray();
+        //builder.append(availableTiles.length);
+        //builder.append(',');
+        //for(int i =0;i<availableTiles.length;i++){
+          //  builder.append(availableTiles[i]);
+            //builder.append(',');
+        //}
+       // builder.append(e);
+        //builder.append(',');
+        builder.append(wordsDetectedByUser.size());
+        builder.append(',');
+        for(int i =0;i<wordsDetectedByUser.size();i++)
+        { builder.append(wordsDetectedByUser.get(i));
+        builder.append(',');}
+        builder.append(notValidWord);
+        builder.append(',');
+     //   m1Handler.removeCallbacks(m1Runnable);
         mHandler.removeCallbacks(mRunnable);
         builder.append(phaseTwo);
         builder.append(',');
@@ -1290,9 +1395,30 @@ public class ScroggleAssignment5Fragment extends Fragment {
     /** Restore the state of the game from the given string. */
     public void putState(String gameData) {
         String[] fields = gameData.split(",");
+        //setPhaseTwoLogic();
         int index = 0;
+       // Object n = (Object)fields[index++];
+        //e=(TextView)n;
 
+        //int availabletilessize = Integer.parseInt((fields[index++]));
+        //for(int i =0;i<availabletilessize;i++){
+          //  mAvailable.add(fields[index++]);
+        //}
+        int size = Integer.parseInt(fields[index++]);
+        e.setText(" ");
+        e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
+
+        for(int i = 0; i<size; i++){
+
+            wordsDetectedByUser.put(i, fields[index++]);
+
+            e.append(wordsDetectedByUser.get(i)+" ");
+
+            Log.d(wordsDetectedByUser.get(i), " valuessss");
+        }
+        notValidWord =Boolean.parseBoolean(fields[index++]);
         phaseTwo =Boolean.parseBoolean(fields[index++]);
+
 
 
         Log.d(String.valueOf(phaseTwo), " check phaseTwo value");
@@ -1318,21 +1444,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
         }
       //  setAvailableFromLastMove(mLastLarge, mLastSmall);
         //updateAllTiles();
+        setAvailableAccordingToGamePhase(phaseTwo);
     }
-
-
-    class WordcantAccept implements Runnable{
-
-
-        @Override
-        public void run() {
-            v1.setText(" ");
-            v.setText("Word Already used !");
-
-        }
-    }
-
-
 
 }
 
