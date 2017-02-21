@@ -14,6 +14,8 @@
     </string>
     <string name="IMEI_label">IMEI</string>
     <string name="ok_label">OK</string>
+    <string name="titlebar_label">Raj Kukadia</string>
+
 
     <!-- Game-->
     <string name="long_app_name">Ultimate Tic Tac Toe</string>

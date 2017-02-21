@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:layout_margin="@dimen/menu_button_margin"
-    android:background="@color/Linen"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -24,9 +23,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/menu_button_margin"
-                android:background="@color/Khaki"
                 android:padding="@dimen/menu_button_padding"
-                android:text="@string/about_mainactivity_label" />
+                android:text="@string/about_mainactivity_label"
+                style="@style/Widget.AppCompat.Button"
+                android:backgroundTint="@android:color/white" />
 
             <Button
                 android:id="@+id/dict_button"
@@ -34,9 +34,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/menu_button_margin"
-                android:background="@color/Khaki"
                 android:padding="@dimen/menu_button_padding"
-                android:text="@string/dict_label" />
+                android:text="@string/dict_label"
+                style="@style/Widget.AppCompat.Button"
+                android:backgroundTint="@android:color/white" />
 
             <Button
                 android:id="@+id/scroggle_button"
@@ -44,9 +45,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/menu_button_margin"
-                android:background="@color/Khaki"
                 android:padding="@dimen/menu_button_padding"
-                android:text="@string/scroggle_label" />
+                android:text="@string/scroggle_label"
+
+                style="@style/Widget.AppCompat.Button"
+                android:backgroundTint="@android:color/white" />
 
             <Button
                 android:id="@+id/game_enter_button"
@@ -54,9 +57,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/menu_button_margin"
-                android:background="@color/Khaki"
                 android:padding="@dimen/menu_button_padding"
-                android:text="@string/game_enter_label" />
+                android:text="@string/game_enter_label"
+
+                style="@style/Widget.AppCompat.Button"
+                android:backgroundTint="@android:color/white" />
+
 
             <Button
                 android:id="@+id/generate_error_button"
@@ -64,9 +70,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/menu_button_margin"
-                android:background="@color/Khaki"
                 android:padding="@dimen/menu_button_padding"
-                android:text="@string/generate_error_label" />
+                android:text="@string/generate_error_label"
+                style="@style/Widget.AppCompat.Button"
+                android:backgroundTint="@android:color/white" />
 
             <Button
                 android:id="@+id/quit_button"
@@ -74,9 +81,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/menu_button_margin"
-                android:background="@color/Khaki"
                 android:padding="@dimen/menu_button_padding"
-                android:text="@string/quit_label" />
+                android:text="@string/quit_label"
+                style="@style/Widget.AppCompat.Button"
+                android:backgroundTint="@android:color/white" />
 
 
         </LinearLayout>

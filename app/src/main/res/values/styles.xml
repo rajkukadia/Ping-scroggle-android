@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="MainActivityTheme" parent="android:Theme.Holo.Light">
+
+    <item name="android:windowActionBar">false</item>
+        <item name="android:windowTitleSize">45dp</item>
+        <item name="android:windowTitleBackgroundStyle">@android:color/transparent</item>
+    </style>
+
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light">
 
@@ -27,7 +35,11 @@
         parent="android:Theme.Holo.Light.NoActionBar.Fullscreen">
          Customize your theme here.
     </style>
--->
+--><style name="My_Theme">
+    <item name="android:windowTitleSize">35dp</item>
+    <item name="android:windowTitleBackgroundStyle">@android:color/black</item>
+</style>
+
     <style name="TileButton">
         <item name="android:layout_width">@dimen/tile_size</item>
         <item name="android:layout_height">@dimen/tile_size</item>

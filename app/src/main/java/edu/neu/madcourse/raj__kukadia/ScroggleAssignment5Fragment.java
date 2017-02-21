@@ -133,8 +133,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                      @Override
                                      public void onClick(View v) {
                                    pausePressed();
-
-
                                      }
                                  });
 
@@ -184,7 +182,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         mHandler.postDelayed(mRunnable, 1000);
-                        if(!ScroggleAssignment5.mMediaPlayer.isPlaying()&&muteClicked){
+                        if((!ScroggleAssignment5.mMediaPlayer.isPlaying())&&muteClicked){
 
                         ScroggleAssignment5.mMediaPlayer.start();}
                         for (int k = 0; k < 9; k++) {
@@ -541,18 +539,17 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
     private void donePressed() {
 
-        Log.d("Done pressed", " ");
+     //   Log.d("Done pressed", " ");
         // if(!phaseTwo) {
         checkUnPressed();
         //}
         try {
             DictionaryAssignment3.result.setText("");
-
+           // DictionaryAssignment3.mytext.setText("");
             DictionaryAssignment3.mytext.setText(enteredStringSroggle);
         }catch(Exception e){
 
         }
-
         if (((enteredStringSroggle + "\n").equalsIgnoreCase(DictionaryAssignment3.result.getText().toString()))&&(!wordsDetectedByUser.containsValue(enteredStringSroggle))) {
             //Entering text to the screen
 
@@ -881,8 +878,9 @@ public class ScroggleAssignment5Fragment extends Fragment {
         //mHandler.postDelayed(mRunnable, 1000);
         initGame();
         done = false;
-        if(e!=null){
-        e.setText("");}
+        //if(e!=null){
+        e.setText("");
+        //}
         currentScore =0;
         initViews(getView());
         t=90;
@@ -1536,7 +1534,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
         int size = Integer.parseInt(fields[index++]);
         e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
 
-        e.setText(" ");
+        e.setText("");
 
         for(int i = 0; i<size; i++){
 

@@ -39,6 +39,9 @@ public class ScroggleAssignment5 extends Activity {
                 mGameFragment.putState(gameData);
             }
         }
+        else{
+            ScroggleAssignment5Fragment.currentScore=0;
+        }
 
 
 
