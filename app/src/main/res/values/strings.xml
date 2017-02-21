@@ -30,6 +30,8 @@
     <string name="scroggle_done_label">Done !</string>
     <string name="scroggle_pause_label">Pause</string>
     <string name="resume_label">Resume</string>
+    <string name="mute_label">Sound</string>
+
     <string name="scroggle_ack_label">Things that I did not create from the scratch:\n\n
     \n  > Game UI code and logic behind the level-list that I did not know before this was taken from the
         Hello Android Text and the code from the Ultimate Tic Tac Toe game. \n\n

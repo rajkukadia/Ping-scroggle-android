@@ -2,6 +2,7 @@ package edu.neu.madcourse.raj__kukadia;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -39,5 +40,15 @@ public class ScroggleStatusAssignment5 extends Activity{
        t5.setText("Total Valid Clicks\n"+String.valueOf(ScroggleAssignment5Fragment.totalClicks));
 
 
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Intent intent = new Intent(this, ScroggleAssignment5.class);
+        intent.putExtra(ScroggleAssignment5.KEY_RESTORE, true);
+        //startActivity(intent);
     }
 }

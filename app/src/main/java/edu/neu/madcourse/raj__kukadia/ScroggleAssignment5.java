@@ -17,7 +17,7 @@ public class ScroggleAssignment5 extends Activity {
 
     public static final String KEY_RESTORE = "key_restore";
     public static final String PREF_RESTORE = "pref_restore";
-    private MediaPlayer mMediaPlayer;
+    public static MediaPlayer mMediaPlayer;
     private Handler mHandler = new Handler();
     private ScroggleAssignment5Fragment mGameFragment;
 
@@ -115,6 +115,7 @@ public class ScroggleAssignment5 extends Activity {
                 .putString(PREF_RESTORE, gameData)
                 .commit();
         Log.d("UT3", "state = " + gameData);
+     //   System.exit(0);
     }
 
 
