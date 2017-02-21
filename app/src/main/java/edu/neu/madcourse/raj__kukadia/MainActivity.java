@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -74,8 +75,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //getActionBar().setTitle("Raj Kukadia");
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_main);
+
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.mytitlebar);
 
+        TextView titleName = (TextView)findViewById(R.id.title_name);
+        titleName.setText("Raj Kukadia");
         setHashMap();
         setMap();
         setListner(viewMap);

@@ -1,5 +1,6 @@
 package edu.neu.madcourse.raj__kukadia;
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.app.Activity;
@@ -9,10 +10,15 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -40,8 +46,17 @@ public class DictionaryAssignment3 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setTitle("Test Dictionary");
+       // getActionBar().setTitle("Test Dictionary");
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_dictionary_ass3);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.mytitlebar);
+        TextView titleName = (TextView)findViewById(R.id.title_name);
+        titleName.setText("Dictionary");
+        TextView dictAnswer = (TextView) findViewById(R.id.anstext);
+        dictAnswer.setEnabled(false);
+        TextView dictSearch = (TextView) findViewById(R.id.searchtext);
+
+
 
         try {
             Bundle b = getIntent().getExtras();

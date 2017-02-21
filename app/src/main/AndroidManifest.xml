@@ -21,7 +21,7 @@
         <activity
             android:name=".AboutActivity"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/MainActivityTheme" />
         <activity
             android:name=".UT3MainActivity"
             android:theme="@style/NoTitle" />
@@ -31,7 +31,7 @@
         <activity
             android:name=".DictionaryAssignment3"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/MainActivityTheme" />
         <activity
             android:name=".UT3MainActivityScroggleAssignment5"
             android:theme="@style/AppTheme" />

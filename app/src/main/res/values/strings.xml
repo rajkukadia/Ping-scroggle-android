@@ -47,7 +47,7 @@
 
     <string name="search_label">Search</string>
     <string name="save_label">Save</string>
-    <string name="return_label">Return</string>
+    <string name="return_label">Main Menu</string>
     <string name="clear_label">Clear</string>
     <string name="ack_label">Acknowledgement</string>
     <string name="ack_info_label">Info</string>

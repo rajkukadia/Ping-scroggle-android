@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_margin="@dimen/menu_button_margin"
-    android:background="@color/Linen"
     tools:context=".AboutActivity">
 
     <TextView
@@ -28,8 +27,9 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/menu_button_margin"
         android:padding="@dimen/menu_button_padding"
-        android:background="@color/Khaki"
-        android:text="@string/IMEI_label"/>
+        android:text="@string/IMEI_label"
+        style="@style/Widget.AppCompat.Button"
+        android:backgroundTint="@android:color/white" />
 
     <ImageView
         android:id="@+id/image_about"

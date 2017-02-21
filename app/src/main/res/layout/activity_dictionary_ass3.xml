@@ -7,8 +7,10 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:layout_margin="@dimen/menu_button_margin"
-    android:background="@color/Linen"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".DictionaryAssignment3">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -20,13 +22,12 @@
 
         <EditText
         android:id="@+id/searchtext"
+            android:hint="Enter Text Here.."
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <requestFocus></requestFocus>
-    </EditText>
+        android:layout_height="wrap_content"
 
-
-
+            >
+        </EditText>
 
     <TextView
         android:layout_width="match_parent"
@@ -57,28 +58,31 @@
         android:id="@+id/button_clear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/Khaki"
         android:layout_margin="@dimen/menu_button_margin"
         android:padding="@dimen/menu_button_padding"
-        android:text="@string/clear_label"/>
+        android:text="@string/clear_label"
+        style="@style/Widget.AppCompat.Button"
+        android:backgroundTint="@android:color/white" />
 
     <Button
         android:id="@+id/button_return"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/menu_button_margin"
-        android:background="@color/Khaki"
         android:padding="@dimen/menu_button_padding"
-        android:text="@string/return_label"/>
+        android:text="@string/return_label"
+        style="@style/Widget.AppCompat.Button"
+        android:backgroundTint="@android:color/white" />
 
     <Button
         android:id="@+id/button_ack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/menu_button_margin"
-        android:background="@color/Khaki"
         android:padding="@dimen/menu_button_padding"
-        android:text="@string/ack_label"/>
+        android:text="@string/ack_label"
+        android:backgroundTint="@android:color/white"
+        style="@style/Widget.AppCompat.Button" />
     </LinearLayout>
     </ScrollView>
 

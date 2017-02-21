@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.TextView;
 
 public class AboutActivity extends Activity implements View.OnClickListener {
 
@@ -19,8 +21,12 @@ public class AboutActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setTitle("About me");
+       // getActionBar().setTitle("About me");
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_about);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.mytitlebar);
+        TextView titleName = (TextView)findViewById(R.id.title_name);
+        titleName.setText("About");
         View v = findViewById(R.id.IMEI_button);
         builder = new AlertDialog.Builder(AboutActivity.this);
 
