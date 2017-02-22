@@ -446,7 +446,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 */
 
         private void setsevenfile(){
-            for (int data = 0; data <= 47523; data++) {
+            for (int data = 0; data <47523; data++) {
                 Long d = null;
                 try {
                     d = din9.readLong();
@@ -466,7 +466,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
 
         private void seteightfile(){
-            for (int data = 0; data <= 58447; data++) {
+            for (int data = 0; data < 58447; data++) {
                 Long d = null;
                 try {
                     d = din10.readLong();
@@ -487,7 +487,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
             private void setninefile() {
-                for (int data = 0; data <= 60121; data++) {
+                for (int data = 0; data < 60121; data++) {
                     Long d = null;
                     try {
                         d = din11.readLong();
@@ -507,7 +507,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
             }
         private void settenfile(){
-            for (int data = 0; data <= 55061; data++) {
+            for (int data = 0; data < 55061; data++) {
                 Long d = null;
                 try {
                     d = din12.readLong();
@@ -528,7 +528,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
         private void setelevenfile(){
-            for (int data = 0; data <= 45675; data++) {
+            for (int data = 0; data < 45675; data++) {
                 Long d = null;
                 try {
                     d = din13.readLong();
@@ -547,7 +547,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
 
         private void settwelvefile(){
-            for (int data = 0; data <= 35470; data++) {
+            for (int data = 0; data < 35470; data++) {
                 Long d = null;
                 try {
                     d = din14.readLong();
@@ -568,7 +568,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
         private void setthirteenfile(){
-            for (int data = 0; data <= 25593; data++) {
+            for (int data = 0; data < 25593; data++) {
                 Long d = null;
                 try {
                     d = din15.readLong();
@@ -587,7 +587,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
 
         private void setfourteenfile(){
-            for (int data = 0; data <= 17591; data++) {
+            for (int data = 0; data < 17591; data++) {
                 Long d = null;
                 try {
                     d = din16.readLong();
@@ -607,7 +607,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
 
         private void setfifteenfile(){
-            for (int data = 0; data <= 11256; data++) {
+            for (int data = 0; data <11256; data++) {
                 Long d = null;
                 try {
                     d = din17.readLong();

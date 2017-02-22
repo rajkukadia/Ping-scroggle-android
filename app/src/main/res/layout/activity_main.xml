@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/menu_button_margin"
                 android:padding="@dimen/menu_button_padding"
+                android:layout_gravity="center"
                 android:text="@string/about_mainactivity_label"
                 style="@style/Widget.AppCompat.Button"
                 android:backgroundTint="@android:color/white" />

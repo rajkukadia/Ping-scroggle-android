@@ -67,7 +67,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private HashSet<Integer> DoneTiles = new HashSet<Integer>();
     private ArrayList<int[]> adjacencyList = new ArrayList<int[]>();
     private static Boolean comingFirstTime = true;
-    int t = 90;
+    int t = 80;
     private TextView v;
     private HashMap<String, Integer> score = new HashMap<String, Integer>();
     public static int currentScore = 0;
@@ -80,7 +80,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private static boolean notValidWord = false;
     private static boolean canShowDialogBox = false;
     public static int hashKey = 0;
-    private Button muteMusic;
+    private static Button muteMusic;
+    private boolean gameOver = false;
     //private StringBuilder e= new StringBuilder();
 
 
@@ -96,7 +97,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         setRetainInstance(true);
         initGame();
         setAdjacencyList();
-        getCounter();
+
 
 
 
@@ -114,11 +115,18 @@ public class ScroggleAssignment5Fragment extends Fragment {
         v1 = (TextView) getActivity().findViewById(R.id.score_view);
         e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
         muteMusic = (Button) getActivity().findViewById((R.id.mute));
+        muteMusic.getBackground().setLevel(1);
         muteMusic.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
+
                   muteClicked =!muteClicked;
+                if(muteClicked==false){
+                    muteMusic.getBackground().setLevel(1);
+                }else{
+                    muteMusic.getBackground().setLevel(0);
+                }
                 if(ScroggleAssignment5.mMediaPlayer.isPlaying()){
                 ScroggleAssignment5.mMediaPlayer.pause();}
                 else{
@@ -158,6 +166,17 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(muteClicked){
+         ScroggleAssignment5.mMediaPlayer.pause();
+            muteMusic.getBackground().setLevel(0);
+        }
+        if(!gameOver){
+        getCounter();}
+    }
+
     private void RunAnimation(TextView v)
     {
         Animation a = AnimationUtils.loadAnimation(getActivity(), R.anim.text_animator);
@@ -168,6 +187,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     }
 
     private void pausePressed(){
+
         if(ScroggleAssignment5.mMediaPlayer.isPlaying()) {
             ScroggleAssignment5.mMediaPlayer.pause();
         }
@@ -181,8 +201,9 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        mHandler.postDelayed(mRunnable, 1000);
-                        if((!ScroggleAssignment5.mMediaPlayer.isPlaying())&&muteClicked){
+                        if(!gameOver){
+                        mHandler.postDelayed(mRunnable, 1000);}
+                        if((!ScroggleAssignment5.mMediaPlayer.isPlaying())&&!muteClicked){
 
                         ScroggleAssignment5.mMediaPlayer.start();}
                         for (int k = 0; k < 9; k++) {
@@ -211,7 +232,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
             ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
             toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 200);
         }catch (RuntimeException e){
-
+            e.printStackTrace();
         }
     }
 
@@ -261,13 +282,15 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
                        // }
                     setPhasetwo();}else{
+                        gameOver = true;
+                        mHandler.removeCallbacks(mRunnable);
                         clearAvailable();
                         Intent i = new Intent(getActivity(), ScroggleStatusAssignment5.class);
                         getActivity().startActivity(i);
                     }
                 }else{
-
-
+                    gameOver = true;
+                    mHandler.removeCallbacks(mRunnable);
                     //mEntireBoard.getView().setVisibility(View.INVISIBLE);
                   clearAvailable();
                     phaseTwo=false;
@@ -292,7 +315,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
     private void setPhasetwo(){
-        t=90;
+        t=80;
         getCounter();
       //
         phaseTwo = true;
@@ -438,11 +461,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         long ninthCharProgress = stopper<<59;
         long ninthChar = ninthCharProgress>>>59;
         stringInMaking[8] = MainActivity.reverseletterMap.get(ninthChar);
-
         String returnValue = new String(stringInMaking);
-
-        Log.d(returnValue, " Is this a word?");
-
         return returnValue;
 
     }
@@ -464,12 +483,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
             i++;
         }
         while (i<9);
-
-        //Log.d(chooseRandomWord(), " HashMap Size");
-
-        for(int j = 0;j<nineNineLetterWords.length;j++) {
-            Log.d(nineNineLetterWords[j].toString(), " answer");
-        }
         return nineNineLetterWords;
     }
 
@@ -502,7 +515,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
                         // ...
 
-                        if (isAvailable(smallTile)) {
+                        if (isAvailable(smallTile)&&(!gameOver)) {
                            //((ScroggleAssignment5)getActivity()).startThinking();
                             mSoundPool.play(mSoundX, mVolume, mVolume, 1, 0, 1f);
 
@@ -532,23 +545,17 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private void getButtonText(TileAssignment5 smallTile){
         Button temp = (Button) smallTile.mView;
             enteredStringSroggle += temp.getText();
-
-            Log.d(enteredStringSroggle, "check plz");
-
     }
 
     private void donePressed() {
 
-     //   Log.d("Done pressed", " ");
-        // if(!phaseTwo) {
         checkUnPressed();
-        //}
+
         try {
             DictionaryAssignment3.result.setText("");
-           // DictionaryAssignment3.mytext.setText("");
             DictionaryAssignment3.mytext.setText(enteredStringSroggle);
         }catch(Exception e){
-
+            e.printStackTrace();
         }
         if (((enteredStringSroggle + "\n").equalsIgnoreCase(DictionaryAssignment3.result.getText().toString()))&&(!wordsDetectedByUser.containsValue(enteredStringSroggle))) {
             //Entering text to the screen
@@ -753,7 +760,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private void updateScore(String x, int bonus){
 
         currentScore += (score.get(x))*bonus;
-        Log.d(String.valueOf(currentScore), "Score");
 
     }
     private void checkUnPressed(){
@@ -877,13 +883,14 @@ public class ScroggleAssignment5Fragment extends Fragment {
         mHandler.removeCallbacks(mRunnable);
         //mHandler.postDelayed(mRunnable, 1000);
         initGame();
+        gameOver = false;
         done = false;
         //if(e!=null){
         e.setText("");
         //}
         currentScore =0;
         initViews(getView());
-        t=90;
+        t=80;
         enteredStringSroggle="";
         notValidWord=false;
       //  canShowDialogBox =false;
@@ -896,7 +903,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
     }
 
     public void initGame() {
-        Log.d("UT3", "init game");
       //
         //
         // phaseTwo = false;
@@ -1203,7 +1209,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
         switch(finalPattern){
 
             case 0:
-                Log.d("case 0 ", "called");
                 mSmallTiles[large][0].updateDrawableState((char) (finalSequenceOfCharacters[0]-32), 1);
                 mSmallTiles[large][1].updateDrawableState((char) (finalSequenceOfCharacters[1]-32), 1);
                 mSmallTiles[large][2].updateDrawableState((char) (finalSequenceOfCharacters[8]-32), 1);
@@ -1215,7 +1220,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 mSmallTiles[large][8].updateDrawableState((char) (finalSequenceOfCharacters[6]-32), 1);
                 break;
             case 1:
-                Log.d("case 1 ", "called");
                 mSmallTiles[large][0].updateDrawableState((char) (finalSequenceOfCharacters[0]-32), 1);
                 mSmallTiles[large][1].updateDrawableState((char) (finalSequenceOfCharacters[1]-32), 1);
                 mSmallTiles[large][2].updateDrawableState((char) (finalSequenceOfCharacters[3]-32), 1);
@@ -1228,7 +1232,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 break;
 
             case 2:
-                Log.d("case 2 ", "called");
                 mSmallTiles[large][0].updateDrawableState((char) (finalSequenceOfCharacters[2]-32), 1);
                 mSmallTiles[large][1].updateDrawableState((char) (finalSequenceOfCharacters[3]-32), 1);
                 mSmallTiles[large][2].updateDrawableState((char) (finalSequenceOfCharacters[4]-32), 1);
@@ -1241,7 +1244,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 break;
 
             case 3:
-                Log.d("case 3 ", "called");
                 mSmallTiles[large][0].updateDrawableState((char) (finalSequenceOfCharacters[7]-32), 1);
                 mSmallTiles[large][1].updateDrawableState((char) (finalSequenceOfCharacters[8]-32), 1);
                 mSmallTiles[large][2].updateDrawableState((char) (finalSequenceOfCharacters[1]-32), 1);
@@ -1254,7 +1256,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 break;
 
             case 4:
-                Log.d("case 4 ", "called");
                 mSmallTiles[large][0].updateDrawableState((char) (finalSequenceOfCharacters[3]-32), 1);
                 mSmallTiles[large][1].updateDrawableState((char) (finalSequenceOfCharacters[1]-32), 1);
                 mSmallTiles[large][2].updateDrawableState((char) (finalSequenceOfCharacters[0]-32), 1);
@@ -1267,7 +1268,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 break;
 
             case 5:
-                Log.d("case 5 ", "called");
                 mSmallTiles[large][0].updateDrawableState((char) (finalSequenceOfCharacters[0]-32), 1);
                 mSmallTiles[large][1].updateDrawableState((char) (finalSequenceOfCharacters[1]-32), 1);
                 mSmallTiles[large][2].updateDrawableState((char) (finalSequenceOfCharacters[2]-32), 1);
@@ -1280,7 +1280,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 break;
 
             case 6:
-                Log.d("case 6 ", "called");
 
                 mSmallTiles[large][0].updateDrawableState((char) (finalSequenceOfCharacters[6]-32), 1);
                 mSmallTiles[large][1].updateDrawableState((char) (finalSequenceOfCharacters[5]-32), 1);
@@ -1294,7 +1293,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 break;
 
             case 7:
-                Log.d("case 7 ", "called");
 
                 mSmallTiles[large][0].updateDrawableState((char) (finalSequenceOfCharacters[4]-32), 1);
                 mSmallTiles[large][1].updateDrawableState((char) (finalSequenceOfCharacters[3]-32), 1);
@@ -1308,7 +1306,6 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 break;
 
             case 8:
-                Log.d("case 8 ", "called");
 
                 mSmallTiles[large][0].updateDrawableState((char) (finalSequenceOfCharacters[8]-32), 1);
                 mSmallTiles[large][1].updateDrawableState((char) (finalSequenceOfCharacters[7]-32), 1);
@@ -1472,15 +1469,12 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
 
         StringBuilder builder = new StringBuilder();
 
-      //  TileAssignment5[] availableTiles = (TileAssignment5[])mAvailable.toArray();
-        //builder.append(availableTiles.length);
-        //builder.append(',');
-        //for(int i =0;i<availableTiles.length;i++){
-          //  builder.append(availableTiles[i]);
-            //builder.append(',');
-        //}
-       // builder.append(e);
-        //builder.append(',');
+     //   builder.append(muteMusic.getBackground().getLevel());
+      //  builder.append(',');
+        builder.append(muteClicked);
+        builder.append(',');
+        builder.append(gameOver);
+        builder.append(',');
         builder.append(wordsDetectedByUser.size());
         builder.append(',');
         for(int i =0;i<wordsDetectedByUser.size();i++)
@@ -1531,6 +1525,17 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
         //for(int i =0;i<availabletilessize;i++){
           //  mAvailable.add(fields[index++]);
         //}
+      //   muteMusic = (Button)getActivity().findViewById((R.id.mute));
+       // int level = Integer.parseInt(fields[index++]);
+        //muteMusic.getBackground().setLevel(level);
+        muteClicked = Boolean.parseBoolean(fields[index++]);
+      //  if(muteClicked){
+
+           // ScroggleAssignment5.mMediaPlayer.pause();
+     //   }
+        gameOver = Boolean.parseBoolean(fields[index++]);
+
+
         int size = Integer.parseInt(fields[index++]);
         e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
 
@@ -1542,14 +1547,11 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
 
             e.append(wordsDetectedByUser.get(i)+" ");
 
-            Log.d(wordsDetectedByUser.get(i), " valuessss");
         }
         notValidWord =Boolean.parseBoolean(fields[index++]);
         phaseTwo =Boolean.parseBoolean(fields[index++]);
 
 
-
-        Log.d(String.valueOf(phaseTwo), " check phaseTwo value");
         currentScore = Integer.parseInt(fields[index++]);
        t = Integer.parseInt(fields[index++]);
         int length = Integer.parseInt((fields[index++]));
