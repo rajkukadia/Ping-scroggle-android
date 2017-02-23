@@ -41,11 +41,17 @@ public class TileAssignment5 {
    private static final String LEVEL_I = "I";
    //private static final int LEVEL_ = 1;
 
+   //private final InstructionsActivityAssignment5 iGame;
 
    private final ScroggleAssignment5Fragment mGame;
    private Owner mOwner = Owner.NOTCLICKED;
    public View mView;
    private TileAssignment5 mSubTiles[];
+
+   //public TileAssignment5(InstructionsActivityAssignment5 game) {
+     // this.iGame = game;
+//   }
+
 
    public TileAssignment5(ScroggleAssignment5Fragment game) {
       this.mGame = game;

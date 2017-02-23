@@ -68,7 +68,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private HashSet<Integer> DoneTiles = new HashSet<Integer>();
     private ArrayList<int[]> adjacencyList = new ArrayList<int[]>();
     private static Boolean comingFirstTime = true;
-    int t = 80;
+    int t = 90;
     private TextView v;
     private HashMap<String, Integer> score = new HashMap<String, Integer>();
     public static int currentScore = 0;
@@ -316,7 +316,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
     private void setPhasetwo(){
-        t=80;
+        t=90;
         atLeastOneClicked =false;
         getCounter();
       //
@@ -551,6 +551,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
     private void donePressed() {
 
+        //specially for first large tile touchedLargeTile = 0;
+
         checkUnPressed();
 
         try {
@@ -561,6 +563,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
         }
         if (((enteredStringSroggle + "\n").equalsIgnoreCase(DictionaryAssignment3.result.getText().toString())) && (!wordsDetectedByUser.containsValue(enteredStringSroggle))) {
             //Entering text to the screen
+
+
 
             //  if(!wordsDetectedByUser.containsValue(enteredStringSroggle)) {
             wordsDetectedByUser.put(hashKey, enteredStringSroggle);
@@ -728,15 +732,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
                     //  e1.printStackTrace();
                     //}}
 
-/*
-                if (!phaseTwo) {
-                    for (int i = 0; i < 9; i++) {
-                        TileAssignment5 tiles = mSmallTiles[touchedLargeTile][i];
-                        tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
-                        tiles.updateDrawableState('a', 0);
-                        addAvailable(tiles);
-                    }
-                } else {
+
+                /*else {
                     for (int i = 0; i < 9; i++) {
                         for (int j = 0; j < 9; j++) {
                             TileAssignment5 tiles = mSmallTiles[i][j];
@@ -749,8 +746,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
                         }
                     }
                 }
-
 */
+
                 DictionaryAssignment3.result.setText("");
                 enteredStringSroggle = "";
                 // done = false;
@@ -806,6 +803,19 @@ public class ScroggleAssignment5Fragment extends Fragment {
             }
        }*/
     // done = false;
+
+        if (!phaseTwo) {
+            if (touchedLargeTile == 0) {
+                for (int i = 0; i < 9; i++) {
+                    TileAssignment5 tiles = mSmallTiles[touchedLargeTile][i];
+                    if ((tiles.getOwner() == TileAssignment5.Owner.NOTCLICKED)&&(((Button)tiles.getView()).getText().charAt(0)!=' ')) {
+
+                        addAvailable(tiles);
+                    }
+                }
+
+            }
+        }
     for (int x = 0; x < touchedSmallTiles.length; x++) {
         touchedSmallTiles[x] = 0;
     }
@@ -952,7 +962,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         atLeastOneClicked =false;
         currentScore =0;
         initViews(getView());
-        t=80;
+        t=90;
         enteredStringSroggle="";
         notValidWord=false;
       //  canShowDialogBox =false;
