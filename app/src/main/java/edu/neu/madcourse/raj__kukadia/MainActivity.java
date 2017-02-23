@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -80,6 +81,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         TextView titleName = (TextView)findViewById(R.id.title_name);
         titleName.setText("Raj Kukadia");
+        //titleName.setAllCaps(true);
+        //titleName.setTextAppearance(0);
+        titleName.setTextSize(20);
         setHashMap();
         setMap();
         setListner(viewMap);

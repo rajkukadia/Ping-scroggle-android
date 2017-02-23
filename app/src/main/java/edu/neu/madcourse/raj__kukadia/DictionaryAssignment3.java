@@ -52,6 +52,9 @@ public class DictionaryAssignment3 extends Activity {
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.mytitlebar);
         TextView titleName = (TextView)findViewById(R.id.title_name);
         titleName.setText("Dictionary");
+        //titleName.setAllCaps(true);
+        //titleName.setTextAppearance(0);
+        titleName.setTextSize(20);
         TextView dictAnswer = (TextView) findViewById(R.id.anstext);
         dictAnswer.setEnabled(false);
         TextView dictSearch = (TextView) findViewById(R.id.searchtext);

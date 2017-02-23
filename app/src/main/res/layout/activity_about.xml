@@ -28,8 +28,8 @@
         android:layout_margin="@dimen/menu_button_margin"
         android:padding="@dimen/menu_button_padding"
         android:text="@string/IMEI_label"
-        style="@style/Widget.AppCompat.Button"
-        android:backgroundTint="@android:color/white" />
+        android:background="@drawable/button_style"
+        />
 
     <ImageView
         android:id="@+id/image_about"

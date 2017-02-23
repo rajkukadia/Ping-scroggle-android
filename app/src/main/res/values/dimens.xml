@@ -6,6 +6,9 @@
     <dimen name="menu_button_margin">8dp</dimen>
     <dimen name="about_text_size">15sp</dimen>
     <dimen name="about_margin_space">20dp</dimen>
+    <dimen name="button_radius">100dp</dimen>
+    <dimen name="button_border">3dp</dimen>
+
 
     <!-- Game -->
     <dimen name="activity_horizontal_margin_game">8dp</dimen>

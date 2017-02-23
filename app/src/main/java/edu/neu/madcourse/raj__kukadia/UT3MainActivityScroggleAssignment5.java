@@ -20,6 +20,9 @@ public class UT3MainActivityScroggleAssignment5 extends Activity {
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.mytitlebar);
         TextView titleName = (TextView)findViewById(R.id.title_name);
         titleName.setText("Word Game");
+      //  titleName.setAllCaps(true);
+        //titleName.setTextAppearance(0);
+        titleName.setTextSize(20);
 
     }
 

@@ -26,8 +26,8 @@
                 android:padding="@dimen/menu_button_padding"
                 android:layout_gravity="center"
                 android:text="@string/about_mainactivity_label"
-                style="@style/Widget.AppCompat.Button"
-                android:backgroundTint="@android:color/white" />
+                android:background="@drawable/button_style"
+                 />
 
             <Button
                 android:id="@+id/dict_button"
@@ -37,8 +37,9 @@
                 android:layout_margin="@dimen/menu_button_margin"
                 android:padding="@dimen/menu_button_padding"
                 android:text="@string/dict_label"
-                style="@style/Widget.AppCompat.Button"
-                android:backgroundTint="@android:color/white" />
+                android:background="@drawable/button_style"
+
+                />
 
             <Button
                 android:id="@+id/scroggle_button"
@@ -48,9 +49,8 @@
                 android:layout_margin="@dimen/menu_button_margin"
                 android:padding="@dimen/menu_button_padding"
                 android:text="@string/scroggle_label"
-
-                style="@style/Widget.AppCompat.Button"
-                android:backgroundTint="@android:color/white" />
+                android:background="@drawable/button_style"
+                />
 
             <Button
                 android:id="@+id/game_enter_button"
@@ -60,9 +60,8 @@
                 android:layout_margin="@dimen/menu_button_margin"
                 android:padding="@dimen/menu_button_padding"
                 android:text="@string/game_enter_label"
-
-                style="@style/Widget.AppCompat.Button"
-                android:backgroundTint="@android:color/white" />
+                android:background="@drawable/button_style"
+                />
 
 
             <Button
@@ -73,8 +72,8 @@
                 android:layout_margin="@dimen/menu_button_margin"
                 android:padding="@dimen/menu_button_padding"
                 android:text="@string/generate_error_label"
-                style="@style/Widget.AppCompat.Button"
-                android:backgroundTint="@android:color/white" />
+                android:background="@drawable/button_style"
+                />
 
             <Button
                 android:id="@+id/quit_button"
@@ -84,8 +83,8 @@
                 android:layout_margin="@dimen/menu_button_margin"
                 android:padding="@dimen/menu_button_padding"
                 android:text="@string/quit_label"
-                style="@style/Widget.AppCompat.Button"
-                android:backgroundTint="@android:color/white" />
+                android:background="@drawable/button_style"
+                />
 
 
         </LinearLayout>

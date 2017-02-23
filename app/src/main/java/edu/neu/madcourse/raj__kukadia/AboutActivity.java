@@ -27,6 +27,9 @@ public class AboutActivity extends Activity implements View.OnClickListener {
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.mytitlebar);
         TextView titleName = (TextView)findViewById(R.id.title_name);
         titleName.setText("About");
+       // titleName.setAllCaps(true);
+        //titleName.setTextAppearance(0);
+        titleName.setTextSize(20);
         View v = findViewById(R.id.IMEI_button);
         builder = new AlertDialog.Builder(AboutActivity.this);
 

@@ -22,14 +22,12 @@
 
         <EditText
         android:id="@+id/searchtext"
-            android:hint="Enter Text Here.."
+        android:hint="Enter Text Here.."
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-            >
+        android:layout_height="wrap_content">
         </EditText>
 
-    <TextView
+      <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -61,8 +59,8 @@
         android:layout_margin="@dimen/menu_button_margin"
         android:padding="@dimen/menu_button_padding"
         android:text="@string/clear_label"
-        style="@style/Widget.AppCompat.Button"
-        android:backgroundTint="@android:color/white" />
+        android:background="@drawable/button_style"
+        />
 
     <Button
         android:id="@+id/button_return"
@@ -71,8 +69,8 @@
         android:layout_margin="@dimen/menu_button_margin"
         android:padding="@dimen/menu_button_padding"
         android:text="@string/return_label"
-        style="@style/Widget.AppCompat.Button"
-        android:backgroundTint="@android:color/white" />
+        android:background="@drawable/button_style"
+        />
 
     <Button
         android:id="@+id/button_ack"
@@ -81,8 +79,8 @@
         android:layout_margin="@dimen/menu_button_margin"
         android:padding="@dimen/menu_button_padding"
         android:text="@string/ack_label"
-        android:backgroundTint="@android:color/white"
-        style="@style/Widget.AppCompat.Button" />
+        android:background="@drawable/button_style"
+        />
     </LinearLayout>
     </ScrollView>
 
