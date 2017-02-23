@@ -58,10 +58,11 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private static Boolean done = false;
     private static Boolean donePhaseTwo = false;
     public static int touchedLargeTile =0;
+    private boolean atLeastOneClicked = false;
     public static int [] touchedSmallTiles=new int[9];
     public static TextView e;
     private TextView v1;
-
+    private boolean popup = false;
     private AlertDialog.Builder builder;
     private AlertDialog mDialog;
     private HashSet<Integer> DoneTiles = new HashSet<Integer>();
@@ -316,6 +317,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
     private void setPhasetwo(){
         t=80;
+        atLeastOneClicked =false;
         getCounter();
       //
         phaseTwo = true;
@@ -554,23 +556,23 @@ public class ScroggleAssignment5Fragment extends Fragment {
         try {
             DictionaryAssignment3.result.setText("");
             DictionaryAssignment3.mytext.setText(enteredStringSroggle);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        if (((enteredStringSroggle + "\n").equalsIgnoreCase(DictionaryAssignment3.result.getText().toString()))&&(!wordsDetectedByUser.containsValue(enteredStringSroggle))) {
+        if (((enteredStringSroggle + "\n").equalsIgnoreCase(DictionaryAssignment3.result.getText().toString())) && (!wordsDetectedByUser.containsValue(enteredStringSroggle))) {
             //Entering text to the screen
 
-          //  if(!wordsDetectedByUser.containsValue(enteredStringSroggle)) {
-                wordsDetectedByUser.put(hashKey, enteredStringSroggle);
-                e.append(enteredStringSroggle + " ");
-                hashKey++;
+            //  if(!wordsDetectedByUser.containsValue(enteredStringSroggle)) {
+            wordsDetectedByUser.put(hashKey, enteredStringSroggle);
+            e.append(enteredStringSroggle + " ");
+            hashKey++;
             //}else
             //{
-               // Thread showWordAlreadyDetected = new Thread(new WordcantAccept());
-                //notValidWord = true;
-                //mHandler.removeCallbacks(mRunnable);
-               // m1Handler.postDelayed(m1Runnable, 300);
-          //  }
+            // Thread showWordAlreadyDetected = new Thread(new WordcantAccept());
+            //notValidWord = true;
+            //mHandler.removeCallbacks(mRunnable);
+            // m1Handler.postDelayed(m1Runnable, 300);
+            //  }
             if (!phaseTwo) {
                 //Clearing off redundant buttons
                 for (int i = 0; i < 9; i++) {
@@ -581,26 +583,26 @@ public class ScroggleAssignment5Fragment extends Fragment {
                         // }
                     } else {
 
-                            switch (enteredStringSroggle.length()) {
-                                case 9:
-                                    updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 50);
-                                    break;
-                                case 5:
-                                case 6:
-                                    updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 5);
-                                    break;
-                                case 7:
-                                    updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 20);
-                                    break;
-                                case 8:
-                                    updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 30);
-                                    break;
+                        switch (enteredStringSroggle.length()) {
+                            case 9:
+                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 50);
+                                break;
+                            case 5:
+                            case 6:
+                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 5);
+                                break;
+                            case 7:
+                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 20);
+                                break;
+                            case 8:
+                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 30);
+                                break;
 
-                                default:
-                                    updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 1);
+                            default:
+                                updateScore(((Button) mSmallTiles[touchedLargeTile][i].getView()).getText().toString(), 1);
 
-                            }
                         }
+                    }
 
                 }
                 setAvailableFromLastMove(touchedLargeTile, 0);
@@ -611,66 +613,122 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 DictionaryAssignment3.result.setText("");
 
 
-            }
-            else {
+            } else {
 
-                    for (int i = 0; i < 9; i++) {
-                        for (int j = 0; j < 9; j++) {
-                            TileAssignment5 tile = mSmallTiles[i][j];
-                            if (tile.getOwner() == TileAssignment5.Owner.CLICKED) {
+                for (int i = 0; i < 9; i++) {
+                    for (int j = 0; j < 9; j++) {
+                        TileAssignment5 tile = mSmallTiles[i][j];
+                        if (tile.getOwner() == TileAssignment5.Owner.CLICKED) {
 
-                                switch (enteredStringSroggle.length()) {
-                                    case 9:
-                                        updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 50);
-                                        break;
-                                    case 5:
-                                    case 6:
-                                        updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 5);
-                                        break;
-                                    case 7:
-                                        updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 20);
-                                        break;
-                                    case 8:
-                                        updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 30);
-                                        break;
+                            switch (enteredStringSroggle.length()) {
+                                case 9:
+                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 50);
+                                    break;
+                                case 5:
+                                case 6:
+                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 5);
+                                    break;
+                                case 7:
+                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 20);
+                                    break;
+                                case 8:
+                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 30);
+                                    break;
 
-                                    default:
-                                        updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 1);
-
-                                }
-                                DictionaryAssignment3.result.setText("");
+                                default:
+                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 1);
 
                             }
+                            DictionaryAssignment3.result.setText("");
+
+                        }
+                    }
+                }
+
+            }
+        } else {
+            // canShowDialogBox= true;
+            //    if (!notValidWord ) {
+            //  canShowDialogBox =false;
+
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    TileAssignment5 tile = mSmallTiles[i][j];
+                    if (tile.getOwner() == TileAssignment5.Owner.CLICKED) {
+                        if(!DoneTiles.contains(i)){popup = true;}
+                        atLeastOneClicked = true;
+                    }
+                    if (atLeastOneClicked&&popup) break;
+                }
+            }
+            if (atLeastOneClicked) {
+                atLeastOneClicked = false;
+                if(!phaseTwo){
+                if(popup) {
+                    popup = false;
+                    e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
+                    // e.a ppend(" ");
+                    TileAssignment5 tile = mLargeTiles[touchedLargeTile];
+                    builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Not a Valid Word !");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton(R.string.ok_label,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+                    mDialog = builder.show();
+
+                    // for(int i =0;i<3;i++){
+                    tile.animate();
+
+                    for (int i = 0; i < 9; i++) {
+                        TileAssignment5 tiles = mSmallTiles[touchedLargeTile][i];
+                        tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                        tiles.updateDrawableState('a', 0);
+                        addAvailable(tiles);}
+                }}
+                else{
+                    e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
+                    // e.a ppend(" ");
+                    TileAssignment5 tile = mLargeTiles[touchedLargeTile];
+                    builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Not a Valid Word !");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton(R.string.ok_label,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+                    mDialog = builder.show();
+
+                    // for(int i =0;i<3;i++){
+                   // tile.animate();
+                    for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 9; j++) {
+                            TileAssignment5 tiles = mSmallTiles[i][j];
+                            if (tiles.getOwner() == TileAssignment5.Owner.CLICKED) {
+                                tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                            }
+                            tiles.updateDrawableState('a', 0);
+
+
                         }
                     }
 
-            }
-             }else {
-          // canShowDialogBox= true;
-       //    if (!notValidWord ) {
-             //  canShowDialogBox =false;
-                e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
-               // e.append(" ");
-                TileAssignment5 tile = mLargeTiles[touchedLargeTile];
-                builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Not a Valid Word !");
-                builder.setCancelable(false);
-                builder.setPositiveButton(R.string.ok_label,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                }
 
-                            }
-                        });
-                mDialog = builder.show();
-                // for(int i =0;i<3;i++){
-                tile.animate();
-                //try {
-                //Thread.sleep(500);
-                //} catch (InterruptedException e1) {
-                //  e1.printStackTrace();
-                //}}
+                    //try {
+                    //Thread.sleep(500);
+                    //} catch (InterruptedException e1) {
+                    //  e1.printStackTrace();
+                    //}}
 
+/*
                 if (!phaseTwo) {
                     for (int i = 0; i < 9; i++) {
                         TileAssignment5 tiles = mSmallTiles[touchedLargeTile][i];
@@ -692,7 +750,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                     }
                 }
 
-
+*/
                 DictionaryAssignment3.result.setText("");
                 enteredStringSroggle = "";
                 // done = false;
@@ -701,7 +759,9 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 //}
                 //touchedLargeTile = 0;
 
-         //   }
+                //   }
+            }
+
         }
         if(phaseTwo){
 
@@ -888,6 +948,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
         //if(e!=null){
         e.setText("");
         //}
+        popup =false;
+        atLeastOneClicked =false;
         currentScore =0;
         initViews(getView());
         t=80;
