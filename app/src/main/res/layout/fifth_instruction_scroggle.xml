@@ -1,0 +1,44 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/menu_button_margin"
+    tools:context=".AboutActivity">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/about_margin_space"
+        android:layout_marginRight="@dimen/about_margin_space"
+        android:layout_marginTop="@dimen/about_margin_space"
+        android:textColor="@android:color/white"
+        android:text="@string/fifth_instruction_scroggle"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="25sp"/>
+
+    <Button
+        android:id="@+id/coolOK5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/instruction_button_style"
+        android:textColor="@android:color/white"
+        android:text="Cool..OK"
+        />
+
+    </LinearLayout>
+</ScrollView>
+
+</LinearLayout>

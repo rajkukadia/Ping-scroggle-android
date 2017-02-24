@@ -44,7 +44,7 @@
         <activity
             android:name=".AcknowledgementAssignment3"
             android:parentActivityName=".DictionaryAssignment3"
-            android:theme="@style/NoTitle" />
+            android:theme="@style/Theme.Transparent" />
         <activity
             android:name=".ScroggleStatusAssignment5"
             android:parentActivityName=".ScroggleAssignment5"
@@ -52,8 +52,12 @@
         <activity
             android:name=".ScroggleAcknowledgementAssignment5"
             android:parentActivityName=".ScroggleAssignment5"
-            android:theme="@style/NoTitle" />
+            android:theme="@style/Theme.Transparent" />
 
+        <activity
+            android:name=".InstructionsActivityAssignment5"
+            android:parentActivityName=".ScroggleAssignment5"
+            android:theme="@style/NoTitle" />
 
 
 

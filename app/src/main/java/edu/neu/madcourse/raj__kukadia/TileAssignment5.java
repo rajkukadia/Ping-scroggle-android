@@ -41,9 +41,9 @@ public class TileAssignment5 {
    private static final String LEVEL_I = "I";
    //private static final int LEVEL_ = 1;
 
-   //private final InstructionsActivityAssignment5 iGame;
+   private InstructionsActivityAssignment5 iGame;
 
-   private final ScroggleAssignment5Fragment mGame;
+   private ScroggleAssignment5Fragment mGame;
    private Owner mOwner = Owner.NOTCLICKED;
    public View mView;
    private TileAssignment5 mSubTiles[];
@@ -52,13 +52,17 @@ public class TileAssignment5 {
      // this.iGame = game;
 //   }
 
+   public TileAssignment5(InstructionsActivityAssignment5 game) {
+      this.iGame = game;
+   }
+
 
    public TileAssignment5(ScroggleAssignment5Fragment game) {
       this.mGame = game;
    }
 
    public TileAssignment5 deepCopy() {
-      TileAssignment5 tile = new TileAssignment5(mGame);
+      TileAssignment5 tile = new TileAssignment5(iGame);
       tile.setOwner(getOwner());
       if (getSubTiles() != null) {
          TileAssignment5 newTiles[] = new TileAssignment5[9];

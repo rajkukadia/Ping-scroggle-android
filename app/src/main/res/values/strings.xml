@@ -33,6 +33,7 @@
     <string name="scroggle_pause_label">Pause</string>
     <string name="resume_label">Resume</string>
     <string name="mute_label">Sound</string>
+    <string name="how_to_play_label">How to play</string>
 
     <string name="scroggle_ack_label">Things that I did not create from the scratch:\n\n
     \n  > Game UI code and logic behind the level-list that I did not know before this was taken from the
@@ -42,6 +43,43 @@
         > Resizing .png images to hdpi, xxhdpi, xhdpi, ldpi, xxxhdpi, mdpi : https://www.img-bak.in/DQOzACpDQmzxV3IcE3QHQoXoInGgRyZU/
     </string>
 
+
+    <string name="first_instruction_scroggle">
+
+        The task is to make 9 different words..\n\n
+
+        Choose any one letter from the 9 boards..\n\n
+    </string>
+
+
+     <string name="second_instruction_scroggle">
+          Great !\n\n
+         Minimum length of a word should be 3 letters..\n\n
+         Now choose more two letters to form a word..\n\n
+         You can\'t choose from the pink tiles..they are freezed ! \n\n
+         Choose letters that are connected diagonally, vertically or horizontally only ! \n\n
+
+    </string>
+      <string name="third_instruction_scroggle">
+
+        Press this button to confirm your word..\n\n
+
+    </string>
+     <string name="fourth_instruction_scroggle">
+
+         Good ! \n\n
+
+         Other tiles are unlocked for you ! \n\n
+
+         Go ahead and make one more word and you are good to play the game ! \n\n
+
+    </string>
+     <string name="fifth_instruction_scroggle">
+
+         Excellent ! \n\n
+
+         You get this now ! \n\n
+    </string>
 
 
 

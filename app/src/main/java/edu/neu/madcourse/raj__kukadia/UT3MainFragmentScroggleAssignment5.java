@@ -26,6 +26,7 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
         View aboutButton = rootView.findViewById(R.id.about_button);
         View quitButton = rootView.findViewById(R.id.scroggle_quit_button);
         View ackButton = rootView.findViewById(R.id.scroggle_ack_button);
+        View howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
 
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +67,16 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
                 mDialog = builder.show();
             }
         });
+
+        howToPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), InstructionsActivityAssignment5.class);
+                getActivity().startActivity(intent);
+            }
+        });
+
+
         ackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
