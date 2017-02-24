@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class InstructionsActivityAssignment5 extends Activity implements View.On
     private AlertDialog mDialog;
     private HashMap<String, Integer> score = new HashMap<String, Integer>();
     private int counter = 0;
-    private  Button doneButton;
+    private ImageButton doneButton;
     private int doneCounter = 0;
 
 
@@ -102,7 +103,7 @@ public class InstructionsActivityAssignment5 extends Activity implements View.On
         updateAllTiles();
         setAdjacencyList();
         e = (TextView) findViewById(R.id.instruction_text_view);
-        doneButton = (Button) findViewById(R.id.done_instruction);
+        doneButton = (ImageButton) findViewById(R.id.done_instruction);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,7 +206,7 @@ public class InstructionsActivityAssignment5 extends Activity implements View.On
 
                         if (isAvailable(smallTile)) {
                             counter++;
-                            if(counter==4){
+                            if(counter==5){
                             showThirdInstruction();}
                             //((ScroggleAssignment5)getActivity()).startThinking();
                           //  mSoundPool.play(mSoundX, mVolume, mVolume, 1, 0, 1f);

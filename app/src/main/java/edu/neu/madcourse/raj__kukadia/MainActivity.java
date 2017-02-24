@@ -232,7 +232,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             @Override
             public void onClick(View v) {
-
+                Thread t = new Thread(new myThread());
+                t.start();
                 Intent intent = new Intent(MainActivity.this, UT3MainActivityScroggleAssignment5.class);
                 startActivity(intent);
             }
@@ -741,6 +742,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
 
+    }
+
+
+    class myThread implements Runnable{
+
+
+        @Override
+        public void run() {
+            Intent intent1 = new Intent(MainActivity.this, DictionaryAssignment3.class);
+            intent1.putExtra("CallingActivity", MainActivity.class.toString());
+            startActivity(intent1);
+        }
     }
 
 

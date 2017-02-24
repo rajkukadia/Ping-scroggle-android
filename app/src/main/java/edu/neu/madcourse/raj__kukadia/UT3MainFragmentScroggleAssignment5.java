@@ -33,8 +33,6 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
             public void onClick(View view) {
               //  Log.d(UT3MainActivityScroggleAssignment5.class.toString(),"whats this");
                 //System.exit(0);
-              Thread t = new Thread(new myThread());
-                t.start();
 
                 Intent intent = new Intent(getActivity(), ScroggleAssignment5.class);
                 getActivity().startActivity(intent);
@@ -43,8 +41,6 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Thread t1 = new Thread(new myThread());
-                t1.start();
 
                 Intent intent = new Intent(getActivity(), ScroggleAssignment5.class);
                 intent.putExtra(ScroggleAssignment5.KEY_RESTORE, true);
@@ -55,7 +51,7 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(R.string.about_text);
+                builder.setMessage(R.string.about_text_scroggle);
                 builder.setCancelable(false);
                 builder.setPositiveButton(R.string.ok_label,
                         new DialogInterface.OnClickListener() {
@@ -103,15 +99,5 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
             mDialog.dismiss();
     }
 
-class myThread implements Runnable{
-
-
-    @Override
-    public void run() {
-        Intent intent1 = new Intent(getActivity(), DictionaryAssignment3.class);
-        intent1.putExtra("CallingActivity", UT3MainActivityScroggleAssignment5.class.toString());
-        getActivity().startActivity(intent1);
-    }
-}
 
 }

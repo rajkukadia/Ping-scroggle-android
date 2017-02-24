@@ -22,7 +22,7 @@
              android:layout_height="wrap_content"
              />
 
-            <Button
+            <ImageButton
                 android:id="@+id/done_instruction"
                 android:layout_width="wrap_content"
                 android:layout_height="72dp"
@@ -31,7 +31,7 @@
                 android:padding="@dimen/menu_button_padding"
                 android:elevation="@dimen/elevation_low"
                 android:visibility="gone"
-                android:drawableTop="@drawable/done_image" />
+                android:src="@drawable/done_image" />
 
              <TextView
                  android:id="@+id/instruction_text_view"

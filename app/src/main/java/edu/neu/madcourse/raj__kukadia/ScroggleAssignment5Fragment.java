@@ -54,7 +54,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private int mLastLarge;
     private int mLastSmall;
     private String enteredStringSroggle="";
-    private View doneView;
+    private ImageButton doneView;
     private static Boolean done = false;
     private static Boolean donePhaseTwo = false;
     public static int touchedLargeTile =0;
@@ -74,14 +74,14 @@ public class ScroggleAssignment5Fragment extends Fragment {
     public static int currentScore = 0;
     private static boolean phaseTwo = false;
     public static int totalClicks = 0;
-    private Button pause;
+    private ImageButton pause;
     private Boolean muteClicked = false;
     private HashMap<Integer, String> wordsDetectedByUser = new HashMap<Integer, String>();
     private int counterForRepeatedWord = 0;
     private static boolean notValidWord = false;
     private static boolean canShowDialogBox = false;
     public static int hashKey = 0;
-    private static Button muteMusic;
+    private static ImageButton muteMusic;
     private boolean gameOver = false;
     //private StringBuilder e= new StringBuilder();
 
@@ -115,8 +115,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
         v = (TextView) getActivity().findViewById(R.id.counter_view);
         v1 = (TextView) getActivity().findViewById(R.id.score_view);
         e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
-        muteMusic = (Button) getActivity().findViewById((R.id.mute));
-        muteMusic.getBackground().setLevel(1);
+        muteMusic = (ImageButton) getActivity().findViewById((R.id.mute));
+        muteMusic.setImageLevel(1);
         muteMusic.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -124,9 +124,9 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
                   muteClicked =!muteClicked;
                 if(muteClicked==false){
-                    muteMusic.getBackground().setLevel(1);
+                    muteMusic.setImageLevel(1);
                 }else{
-                    muteMusic.getBackground().setLevel(0);
+                    muteMusic.setImageLevel(0);
                 }
                 if(ScroggleAssignment5.mMediaPlayer.isPlaying()){
                 ScroggleAssignment5.mMediaPlayer.pause();}
@@ -136,7 +136,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
         });
 
-        pause = (Button) getActivity().findViewById(R.id.pause);
+        pause = (ImageButton) getActivity().findViewById(R.id.pause);
         pause.setOnClickListener(new View.OnClickListener(){
 
                                      @Override
@@ -145,7 +145,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                      }
                                  });
 
-        doneView= getActivity().findViewById(R.id.done);
+        doneView= (ImageButton)getActivity().findViewById(R.id.done);
         doneView.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -172,7 +172,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         super.onResume();
         if(muteClicked){
          ScroggleAssignment5.mMediaPlayer.pause();
-            muteMusic.getBackground().setLevel(0);
+            muteMusic.setImageLevel(0);
         }
         if(!gameOver){
         getCounter();}

@@ -63,7 +63,7 @@ public class DictionaryAssignment3 extends Activity {
 
         try {
             Bundle b = getIntent().getExtras();
-            if (b.getString("CallingActivity").equals(UT3MainActivityScroggleAssignment5.class.toString())) {
+            if (b.getString("CallingActivity").equals(MainActivity.class.toString())) {
                 finish();
             }
         }

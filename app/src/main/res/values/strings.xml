@@ -98,7 +98,14 @@ A tie happens when there are no further moves.
 In the case of a tie in a small board, that will count as a win for
 both sides in the larger game.
 </string>
+    <string name="about_text_scroggle">\
+        This is a word game. You have to make as many words as you can.\n
+        There are two phases in this game.\n
+        Using for this game for the first time ? Touch "How to play"
 
+
+
+</string>
     <string name="ack_content_label">
         <title>ACKNOWLEDGEMENT \n</title>
     </string>
@@ -123,7 +130,7 @@ both sides in the larger game.
     Code for requesting run time permission: https://developer.android.com/training/permissions/requesting.html \n \n
     App icon: Google Images \n \n
     Sound: http://www.tannerhelland.com/music-directory/ \n\n
-    Special thanks to my friend Dharak Savalia who helped me comming with a better idea for loading the dictionary efficiently.
+    Special thanks to my friend Dharak Savalia who helped me coming with a better idea for loading the dictionary efficiently.
 </p>
 
 
