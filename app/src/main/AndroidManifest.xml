@@ -60,6 +60,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitle" />
 
+        <service android:name=".WordGameMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".WordGameInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+
+
 
 
     </application>

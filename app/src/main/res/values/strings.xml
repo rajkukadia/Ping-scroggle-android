@@ -89,6 +89,8 @@
     <string name="clear_label">Clear</string>
     <string name="ack_label">Acknowledgement</string>
     <string name="ack_info_label">Info</string>
+    <string name="communication_label">Communication</string>
+
     <string name="about_text">\
 This game is played just like
 regular Tic Tac Toe with one difference: to win a tile

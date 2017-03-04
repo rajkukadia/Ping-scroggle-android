@@ -230,10 +230,10 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
     private void beep() {
         try {
-            ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
-            toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 200);
+       //     ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+         //   toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 200);
         }catch (RuntimeException e){
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
 
@@ -264,7 +264,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         @Override
         public void run() {
             t--;
-            v.setText("Time Left: "+String.valueOf(t)+"  ");
+            v.setText("Time left: "+String.valueOf(t)+"  ");
             v1.setText("Score: "+String.valueOf(currentScore)+"  ");
             if(t<11){
                 beep();
