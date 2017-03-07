@@ -72,6 +72,9 @@
         </service>
 
 
+        <activity android:name=".FCMActivity"
+            android:theme="@style/AppTheme"/>
+
 
 
 

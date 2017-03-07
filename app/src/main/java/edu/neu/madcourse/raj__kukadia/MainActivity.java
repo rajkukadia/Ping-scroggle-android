@@ -181,6 +181,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         viewMap.put(5, v);
         v=findViewById(R.id.scroggle_button);
         viewMap.put(6, v);
+        v= findViewById(R.id.communication_button);
+        viewMap.put(7, v);
 
     }
 
@@ -238,6 +240,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(intent);
             }
         });
+
+        v=(View) view.get(7);
+        v.setOnClickListener((new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                    startActivity(new Intent(MainActivity.this, FCMActivity.class));
+            }
+        }));
     }
 
     @Override

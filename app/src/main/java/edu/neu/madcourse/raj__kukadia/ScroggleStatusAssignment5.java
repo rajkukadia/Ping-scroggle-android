@@ -1,12 +1,9 @@
 package edu.neu.madcourse.raj__kukadia;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 public class ScroggleStatusAssignment5 extends Activity{
 
