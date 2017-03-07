@@ -1,11 +1,14 @@
 
-package edu.neu.madcourse.raj__kukadia;
+package edu.neu.madcourse.raj__kukadia.assignment5;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleAssignment5;
 
 public class ControlFragmentAssignment5 extends Fragment {
 

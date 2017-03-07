@@ -1,5 +1,5 @@
 
-package edu.neu.madcourse.raj__kukadia;
+package edu.neu.madcourse.raj__kukadia.assignment5;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,6 +22,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
+import edu.neu.madcourse.raj__kukadia.DictionaryAssignment3;
+import edu.neu.madcourse.raj__kukadia.MainActivity;
+import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.assignment5.TileAssignment5;
 
 public class InstructionsActivityAssignment5 extends Activity implements View.OnClickListener {
 
@@ -208,7 +213,7 @@ public class InstructionsActivityAssignment5 extends Activity implements View.On
                             counter++;
                             if(counter==5){
                             showThirdInstruction();}
-                            //((ScroggleAssignment5)getActivity()).startThinking();
+                            //((ScroggeAssignment5)getActivity()).startThinking();
                           //  mSoundPool.play(mSoundX, mVolume, mVolume, 1, 0, 1f);
 
                             makeMove(fLarge, fSmall); //makes the move and sets available the corresponding tile
@@ -249,8 +254,8 @@ public class InstructionsActivityAssignment5 extends Activity implements View.On
         smallTile.updateDrawableState('a', 0);
 
         /*
-        TileAssignment5.Owner oldWinner = largeTile.getOwner();
-        TileAssignment5.Owner winner = largeTile.findWinner();
+        ileAssignment5.Owner oldWinner = largeTile.getOwner();
+        ileAssignment5.Owner winner = largeTile.findWinner();
         if (winner != oldWinner) {
             largeTile.animate();
             largeTile.setOwner(winner);
@@ -258,8 +263,8 @@ public class InstructionsActivityAssignment5 extends Activity implements View.On
         winner = mEntireBoard.findWinner();
         mEntireBoard.setOwner(winner);
         updateAllTiles();
-        if (winner != TileAssignment5.Owner.NOTCLICKED) {
-            ((ScroggleAssignment5)getActivity()).reportWinner(winner);
+        if (winner != ileAssignment5.Owner.NOTCLICKED) {
+            ((croggleAsignment5)getActivity()).reportWinner(winner);
         }
         */
     }
@@ -642,7 +647,7 @@ public class InstructionsActivityAssignment5 extends Activity implements View.On
 
                     }else {
 /*
-                        TileAssignment5 thistile = mSmallTiles[i][dest];
+                        ileAssignment5 thistile = mSmallTiles[i][dest];
                         if(((Button)thistile.getView()).getText().charAt(0)==' '){
                             mAvailable.remove(thistile);
                             thistile.updateDrawableState('a', 0);
@@ -718,8 +723,8 @@ public class InstructionsActivityAssignment5 extends Activity implements View.On
 
 
 
-                            TileAssignment5 tile = mSmallTiles[i][dest];
-                            TileAssignment5 tile = mSmallTiles[i][dest];
+                            ileAssignment5 tile = mSmallTiles[i][dest];
+                            ileAssignment5 tile = mSmallTiles[i][dest];
                             try{
                                 if(((((Button)mSmallTiles[i][dest].getView()).getText().toString().equals(null))||((Button)mSmallTiles[i][dest].getView()).getText().toString().charAt(0)==' ')||(((Button)mSmallTiles[i][dest].getView()).getText().toString().equals(""))){
                                     // Log.d("Yes ", "it came");
@@ -1013,9 +1018,9 @@ public class InstructionsActivityAssignment5 extends Activity implements View.On
                 /*else {
                     for (int i = 0; i < 9; i++) {
                         for (int j = 0; j < 9; j++) {
-                            TileAssignment5 tiles = mSmallTiles[i][j];
-                            if (tiles.getOwner() == TileAssignment5.Owner.CLICKED) {
-                                tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                            ileAssignment5 tiles = mSmallTiles[i][j];
+                            if (tiles.getOwner() == ileAssignment5.Owner.CLICKED) {
+                                tiles.setOwner(ileAssignment5.Owner.NOTCLICKED);
                             }
                             tiles.updateDrawableState('a', 0);
 
@@ -1066,9 +1071,9 @@ public class InstructionsActivityAssignment5 extends Activity implements View.On
             notValidWord = false;
             for(int i = 0; i<9 ; i++) {
                 for (int dest = 0; dest < 9; dest++) {
-                    TileAssignment5 tile = mSmallTiles[i][dest];
-                    if((tile.getOwner()== TileAssignment5.Owner.CLICKED)||(tile.getOwner()== TileAssignment5.Owner.FREEZED)){
-                        tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                    ileAssignment5 tile = mSmallTiles[i][dest];
+                    if((tile.getOwner()== ileAssignment5.Owner.CLICKED)||(tile.getOwner()== ileAssignment5.Owner.FREEZED)){
+                        tile.setOwner(ileAssignment5.Owner.NOTCLICKED);
                         tile.updateDrawableState('a', 0);
                     }
                     if(((Button)tile.getView()).getText().charAt(0)==' '){
@@ -1117,7 +1122,7 @@ public class InstructionsActivityAssignment5 extends Activity implements View.On
                 TileAssignment5 demo = mSmallTiles[touchedLargeTile][j];
 
                 mAvailable.remove(demo);
-                //demo.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                //demo.setOwner(ileAssignment5.Owner.NOTCLICKED);
                 demo.updateDrawableState('a', 0);
             }
 

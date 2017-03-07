@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:layout_margin="@dimen/menu_button_margin"
-    tools:context=".ScroggleStatusAssignment5">
+    tools:context=".assignment5.ScroggleStatusAssignment5">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

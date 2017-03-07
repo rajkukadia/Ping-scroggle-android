@@ -1,17 +1,15 @@
 
-package edu.neu.madcourse.raj__kukadia;
+package edu.neu.madcourse.raj__kukadia.assignment5;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 
 import java.util.Random;
+
+import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleAssignment5Fragment;
 
 public class TileAssignment5 {
 
@@ -41,6 +39,7 @@ public class TileAssignment5 {
    private static final String LEVEL_I = "I";
    //private static final int LEVEL_ = 1;
 
+
    private InstructionsActivityAssignment5 iGame;
 
    private ScroggleAssignment5Fragment mGame;
@@ -48,9 +47,6 @@ public class TileAssignment5 {
    public View mView;
    private TileAssignment5 mSubTiles[];
 
-   //public TileAssignment5(InstructionsActivityAssignment5 game) {
-     // this.iGame = game;
-//   }
 
    public TileAssignment5(InstructionsActivityAssignment5 game) {
       this.iGame = game;

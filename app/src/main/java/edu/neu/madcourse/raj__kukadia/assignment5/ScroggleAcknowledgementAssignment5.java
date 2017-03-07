@@ -1,9 +1,10 @@
-package edu.neu.madcourse.raj__kukadia;
+package edu.neu.madcourse.raj__kukadia.assignment5;
 
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.TextView;
+
+import edu.neu.madcourse.raj__kukadia.R;
 
 public class ScroggleAcknowledgementAssignment5 extends Activity{
 

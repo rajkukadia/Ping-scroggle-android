@@ -1,4 +1,4 @@
-package edu.neu.madcourse.raj__kukadia;
+package edu.neu.madcourse.raj__kukadia.assignment5;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -7,11 +7,12 @@ import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
+
+import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleAssignment5Fragment;
+import edu.neu.madcourse.raj__kukadia.assignment5.TileAssignment5;
 
 public class ScroggleAssignment5 extends Activity {
 

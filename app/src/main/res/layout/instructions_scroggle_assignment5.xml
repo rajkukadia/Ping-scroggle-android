@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    tools:context=".ScroggleAssignment5">
+    tools:context=".assignment5.ScroggleAssignment5">
 
 
       <LinearLayout

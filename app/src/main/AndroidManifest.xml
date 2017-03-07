@@ -19,6 +19,27 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".assignment5.UT3MainActivityScroggleAssignment5"
+            android:theme="@style/MainActivityTheme" />
+
+        <activity
+            android:name=".assignment5.ScroggleStatusAssignment5"
+            android:theme="@style/NoTitle" />
+
+        <activity android:name=".assignment5.ScroggleAssignment5"
+            android:theme="@style/NoTitle" />
+
+        <activity android:name=".assignment5.InstructionsActivityAssignment5"
+            android:theme="@style/NoTitle" />
+
+        <activity android:name=".assignment5.ScroggleAcknowledgementAssignment5"
+            android:theme="@style/NoTitle" />
+
+
+
+
+
+        <activity
             android:name=".AboutActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/MainActivityTheme" />
@@ -32,33 +53,12 @@
             android:name=".DictionaryAssignment3"
             android:parentActivityName=".MainActivity"
             android:theme="@style/MainActivityTheme" />
-        <activity
-            android:name=".UT3MainActivityScroggleAssignment5"
-            android:theme="@style/MainActivityTheme" />
 
 
-        <activity
-            android:name=".ScroggleAssignment5"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoTitle" />
         <activity
             android:name=".AcknowledgementAssignment3"
             android:parentActivityName=".DictionaryAssignment3"
             android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name=".ScroggleStatusAssignment5"
-            android:parentActivityName=".ScroggleAssignment5"
-            android:theme="@style/NoTitle" />
-        <activity
-            android:name=".ScroggleAcknowledgementAssignment5"
-            android:parentActivityName=".ScroggleAssignment5"
-            android:theme="@style/Theme.Transparent" />
-
-        <activity
-            android:name=".InstructionsActivityAssignment5"
-            android:parentActivityName=".ScroggleAssignment5"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoTitle" />
 
         <service android:name=".WordGameMessagingService">
             <intent-filter>
@@ -72,10 +72,9 @@
         </service>
 
 
-        <activity android:name=".FCMActivity"
-            android:theme="@style/AppTheme"/>
-
-
+        <activity
+            android:name=".FCMActivity"
+            android:theme="@style/AppTheme" />
 
 
     </application>

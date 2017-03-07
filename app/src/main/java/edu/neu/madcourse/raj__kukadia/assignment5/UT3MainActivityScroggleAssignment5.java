@@ -1,10 +1,11 @@
-package edu.neu.madcourse.raj__kukadia;
+package edu.neu.madcourse.raj__kukadia.assignment5;
 
 import android.app.Activity;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.TextView;
+
+import edu.neu.madcourse.raj__kukadia.R;
 
 public class UT3MainActivityScroggleAssignment5 extends Activity {
   //  MediaPlayer mMediaPlayer;

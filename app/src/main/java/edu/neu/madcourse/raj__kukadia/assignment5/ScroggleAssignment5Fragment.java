@@ -1,5 +1,5 @@
 
-package edu.neu.madcourse.raj__kukadia;
+package edu.neu.madcourse.raj__kukadia.assignment5;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -7,14 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.media.ToneGenerator;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.service.quicksettings.Tile;
-import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +16,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -31,7 +24,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.StringTokenizer;
+
+import edu.neu.madcourse.raj__kukadia.DictionaryAssignment3;
+import edu.neu.madcourse.raj__kukadia.MainActivity;
+import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleStatusAssignment5;
+
+
 
 public class ScroggleAssignment5Fragment extends Fragment {
     static private int mLargeIds[] = {R.id.largescroggle1, R.id.largescroggle2, R.id.largescroggle3,
@@ -518,7 +517,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                         // ...
 
                         if (isAvailable(smallTile)&&(!gameOver)) {
-                           //((ScroggleAssignment5)getActivity()).startThinking();
+                           //(getActivity()).startThinking();
                             mSoundPool.play(mSoundX, mVolume, mVolume, 1, 0, 1f);
 
                             makeMove(fLarge, fSmall); //makes the move and sets available the corresponding tile
@@ -736,9 +735,9 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 /*else {
                     for (int i = 0; i < 9; i++) {
                         for (int j = 0; j < 9; j++) {
-                            TileAssignment5 tiles = mSmallTiles[i][j];
-                            if (tiles.getOwner() == TileAssignment5.Owner.CLICKED) {
-                                tiles.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                            TieAssignment5 tiles = mSmallTiles[i][j];
+                            if (tiles.getOwner() == ileAssignment5.Owner.CLICKED) {
+                                tiles.setOwner(ileAssignment5.Owner.NOTCLICKED);
                             }
                             tiles.updateDrawableState('a', 0);
 
@@ -789,9 +788,9 @@ public class ScroggleAssignment5Fragment extends Fragment {
             notValidWord = false;
             for(int i = 0; i<9 ; i++) {
                 for (int dest = 0; dest < 9; dest++) {
-                    TileAssignment5 tile = mSmallTiles[i][dest];
-                    if((tile.getOwner()== TileAssignment5.Owner.CLICKED)||(tile.getOwner()== TileAssignment5.Owner.FREEZED)){
-                        tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                    ileAssignment5 tile = mSmallTiles[i][dest];
+                    if((tile.getOwner()== ileAssignment5.Owner.CLICKED)||(tile.getOwner()== ileAssignment5.Owner.FREEZED)){
+                        tile.setOwner(ileAssignment5.Owner.NOTCLICKED);
                         tile.updateDrawableState('a', 0);
                     }
                     if(((Button)tile.getView()).getText().charAt(0)==' '){
@@ -840,7 +839,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 TileAssignment5 demo = mSmallTiles[touchedLargeTile][j];
 
                 mAvailable.remove(demo);
-                //demo.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                //demo.setOwner(T9leAssignment5.Owner.NOTCLICKED);
                 demo.updateDrawableState('a', 0);
             }
 
@@ -932,8 +931,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
         smallTile.updateDrawableState('a', 0);
 
         /*
-        TileAssignment5.Owner oldWinner = largeTile.getOwner();
-        TileAssignment5.Owner winner = largeTile.findWinner();
+        TileAsignment5.Owner oldWinner = largeTile.getOwner();
+        ileAssignment5.Owner winner = largeTile.findWinner();
         if (winner != oldWinner) {
             largeTile.animate();
             largeTile.setOwner(winner);
@@ -941,8 +940,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
         winner = mEntireBoard.findWinner();
         mEntireBoard.setOwner(winner);
         updateAllTiles();
-        if (winner != TileAssignment5.Owner.NOTCLICKED) {
-            ((ScroggleAssignment5)getActivity()).reportWinner(winner);
+        if (winner != ileAssignment5.Owner.NOTCLICKED) {
+            (getActivity()).reportWinner(winner);
         }
         */
     }
@@ -1122,7 +1121,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
                     }else {
 /*
-                        TileAssignment5 thistile = mSmallTiles[i][dest];
+                        ileAssignment5 thistile = mSmallTiles[i][dest];
                         if(((Button)thistile.getView()).getText().charAt(0)==' '){
                             mAvailable.remove(thistile);
                             thistile.updateDrawableState('a', 0);
@@ -1198,8 +1197,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
 
-                            TileAssignment5 tile = mSmallTiles[i][dest];
-                            TileAssignment5 tile = mSmallTiles[i][dest];
+                            ileAssignment5 tile = mSmallTiles[i][dest];
+                            ileAssignment5 tile = mSmallTiles[i][dest];
                             try{
                                 if(((((Button)mSmallTiles[i][dest].getView()).getText().toString().equals(null))||((Button)mSmallTiles[i][dest].getView()).getText().toString().charAt(0)==' ')||(((Button)mSmallTiles[i][dest].getView()).getText().toString().equals(""))){
                                     // Log.d("Yes ", "it came");
@@ -1603,7 +1602,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
         muteClicked = Boolean.parseBoolean(fields[index++]);
       //  if(muteClicked){
 
-           // ScroggleAssignment5.mMediaPlayer.pause();
+           // .mMediaPlayer.pause();
      //   }
         gameOver = Boolean.parseBoolean(fields[index++]);
 
