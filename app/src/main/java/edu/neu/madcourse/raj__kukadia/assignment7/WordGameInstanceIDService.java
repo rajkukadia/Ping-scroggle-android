@@ -1,4 +1,4 @@
-package edu.neu.madcourse.raj__kukadia;
+package edu.neu.madcourse.raj__kukadia.assignment7;
 
 import android.util.Log;
 

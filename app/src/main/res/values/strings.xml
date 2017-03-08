@@ -157,6 +157,12 @@ both sides in the larger game.
     <string name="add5">Add 5</string>
 
 
+    <string name="logout_label">Logout</string>
+    <string name="score_board_label">Score Board</string>
+    <string name="myfriends_label">My friends</string>
+    <string name="start_multiplayer_label">Start Mutiplayer Game</string>
+
+
 
 
 

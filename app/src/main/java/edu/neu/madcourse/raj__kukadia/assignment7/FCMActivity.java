@@ -1,9 +1,8 @@
-package edu.neu.madcourse.raj__kukadia;
+package edu.neu.madcourse.raj__kukadia.assignment7;
 
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,9 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +31,7 @@ public class FCMActivity extends Activity {
     private static final String SERVER_KEY = "key=AAAAIJKsPeE:APA91bHkUeOjkpMKSV9gmCv1kzJEadSJGPjaKSA5xjI-R2waz2RJRv1zqcHz-t4I9XSrB5HaCLNLQSW0TTvXkhkVHTDn0FFCOZop-2lP9cTWG1acrTYGxg9WuJjFygeQaLo7URrr9sQo";
 
     // This is the client registration token
-    private static final String CLIENT_REGISTRATION_TOKEN = "eTxar4ud1j8:APA91bFcdGw8xTh7tDDuhFaWsQbT9LDRgIGvTZxua1oYgkA09_0aiCHJpQjC3x1v717w4Y0XDqnVg9l1vaHMAX2aR8Irv28EiO9yYNWi9oXdozhpYmNEWEYjGKf59dpDaqH-sV4d3JBX";
+    private static final String CLIENT_REGISTRATION_TOKEN = "ffNkX9hGB-Q:APA91bFuEGwMcW6wSl1lA0WufLgb8tHTYUC-ZXUpxIF3N-BbUSulDX7dP8iykv9RuQ9K2Fm6PfgcylY0Rs-Irq8rmB9OL_lHbOcKPSuX7JJalodD4tpnbZqgMkRWB4nZ2OSJetaYLdNn";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

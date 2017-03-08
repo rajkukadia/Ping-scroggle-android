@@ -60,21 +60,27 @@
             android:parentActivityName=".DictionaryAssignment3"
             android:theme="@style/Theme.Transparent" />
 
-        <service android:name=".WordGameMessagingService">
+
+        <service android:name=".assignment7.WordGameMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".WordGameInstanceIDService">
+        <service android:name=".assignment7.WordGameInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
+        <activity android:name=".assignment7.FCMActivity"
+            android:theme="@style/NoTitle"/>
+        <activity android:name=".assignment7.GoogleSignInActivity"
+            android:theme="@style/Theme.AppCompat"/>
+        <activity android:name=".assignment7.MultiPlayerHomePageActivity"
+            android:theme="@style/NoTitle"/>
 
-        <activity
-            android:name=".FCMActivity"
-            android:theme="@style/AppTheme" />
+        <!--<activity android:name=".realtimedatabase.RealtimeDatabaseActivity"></activity>
+        -->
 
 
     </application>

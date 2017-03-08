@@ -24,7 +24,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import edu.neu.madcourse.raj__kukadia.assignment7.FCMActivity;
 import edu.neu.madcourse.raj__kukadia.assignment5.UT3MainActivityScroggleAssignment5;
+import edu.neu.madcourse.raj__kukadia.assignment7.GoogleSignInActivity;
+
 import java.util.logging.LogRecord;
 
 
@@ -245,7 +248,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         v.setOnClickListener((new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                    startActivity(new Intent(MainActivity.this, FCMActivity.class));
+                    startActivity(new Intent(MainActivity.this, GoogleSignInActivity.class));
             }
         }));
     }

@@ -1,4 +1,4 @@
-package edu.neu.madcourse.raj__kukadia;
+package edu.neu.madcourse.raj__kukadia.assignment7;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +11,8 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import edu.neu.madcourse.raj__kukadia.R;
 
 public class WordGameMessagingService extends FirebaseMessagingService {
     private static final String TAG = WordGameMessagingService.class.getSimpleName();
