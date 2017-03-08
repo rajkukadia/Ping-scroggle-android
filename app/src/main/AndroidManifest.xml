@@ -75,9 +75,11 @@
         <activity android:name=".assignment7.FCMActivity"
             android:theme="@style/NoTitle"/>
         <activity android:name=".assignment7.GoogleSignInActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.AppCompat"/>
         <activity android:name=".assignment7.MultiPlayerHomePageActivity"
-            android:theme="@style/NoTitle"/>
+
+            android:theme="@style/MainActivityTheme"/>
 
         <!--<activity android:name=".realtimedatabase.RealtimeDatabaseActivity"></activity>
         -->
