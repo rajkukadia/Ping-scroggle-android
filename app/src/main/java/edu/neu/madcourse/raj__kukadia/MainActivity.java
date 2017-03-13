@@ -90,7 +90,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setHashMap();
         setMap();
         setListner(viewMap);
-
         loadTheDictionary = new Thread(new Dictionary());
         loadTheDictionary.start();
 
@@ -594,7 +593,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 }
                 MainActivity.thirteenWords.put(d, d);
-
             }
 
             try {

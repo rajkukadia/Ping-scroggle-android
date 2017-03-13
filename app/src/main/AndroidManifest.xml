@@ -81,6 +81,11 @@
 
             android:theme="@style/MainActivityTheme"/>
 
+        <activity android:name=".assignment7.MyFriendsActivity"
+
+            android:theme="@style/MainActivityTheme"/>
+
+
         <!--<activity android:name=".realtimedatabase.RealtimeDatabaseActivity"></activity>
         -->
 
