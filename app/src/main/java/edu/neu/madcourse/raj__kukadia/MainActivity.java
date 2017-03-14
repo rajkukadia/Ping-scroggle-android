@@ -314,7 +314,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
           //  handleLoadingDictionary;
 
 
-
+/*
             setninefile();
             setthreewordfile();
             setfourwordfile();
@@ -331,6 +331,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             setsixteentotwentyfile();
             settwentyonetotwentyfivefile();
             set25abovewordfile();
+            */
         }
 
 
@@ -358,6 +359,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 MainActivity.threeWords.put(fourth, fourth);
 
             }
+            try{
+                din.close();
+                is.close();
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
 
         }
 
@@ -382,7 +390,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             }
             try {
-                din.close();
+                din1.close();
+                is1.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -411,6 +420,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             try {
                 din2.close();
+                is2.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -436,6 +446,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
             try {
                 din3.close();
+                is3.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -477,6 +488,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             try {
                 din9.close();
+                is9.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -497,6 +509,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             try {
                 din10.close();
+                is10.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -519,6 +532,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                 try {
                     din11.close();
+                    is11.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -528,6 +542,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Long d = null;
                 try {
                     d = din12.readLong();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -538,6 +553,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             try {
                 din12.close();
+                is12.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -549,6 +565,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Long d = null;
                 try {
                     d = din13.readLong();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -558,6 +575,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             try {
                 din13.close();
+                is13.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -578,6 +596,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             try {
                 din14.close();
+                is14.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -592,11 +611,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                MainActivity.thirteenWords.put(d, d);
-            }
+                //try {
+
+                  //  MainActivity.thirteenWords.put(d, d);
+                //}catch(OutOfMemoryError e){
+
+                //}
+                }
 
             try {
                 din15.close();
+                is15.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -617,6 +642,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             try {
                 din16.close();
+                is16.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -630,12 +656,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                MainActivity.fifteenWords.put(d, d);
+//                MainActivity.fifteenWords.put(d, d);
 
             }
 
             try {
                 din17.close();
+                is17.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -654,13 +681,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 }
 
-                MainActivity.sixteentotwentyWords.put(d, d);
+//                MainActivity.sixteentotwentyWords.put(d, d);
 
 
             }
 
             try {
                 din6.close();
+                is6.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -677,13 +705,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 }
 
-                MainActivity.twentyonetotwentyfiveWords.put(d, d);
+           //     MainActivity.twentyonetotwentyfiveWords.put(d, d);
 
 
             }
 
             try {
                 din7.close();
+                is7.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -709,8 +738,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             is1 = getResources().openRawResource(R.raw.fourwords);
             is2 = getResources().openRawResource(R.raw.fivewords);
             is3 = getResources().openRawResource(R.raw.sixwords);
-            is4 = getResources().openRawResource(R.raw.seventotenwords);
-            is5 = getResources().openRawResource(R.raw.eleventofifteenwords);
+         //   is4 = getResources().openRawResource(R.raw.seventotenwords);
+          //  is5 = getResources().openRawResource(R.raw.eleventofifteenwords);
             is6 = getResources().openRawResource(R.raw.sixteentotwentywords);
             is7 = getResources().openRawResource(R.raw.twentyonetotwentyfivewords);
             is8 = getResources().openRawResource(R.raw.twentyfiveabovewords);

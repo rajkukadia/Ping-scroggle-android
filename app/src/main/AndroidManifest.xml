@@ -83,6 +83,9 @@
 
         <activity android:name=".assignment7.MyFriendsActivity"
 
+        android:theme="@style/MainActivityTheme"/>
+        <activity android:name=".assignment7.OnlineOfflineActivity"
+
             android:theme="@style/MainActivityTheme"/>
 
 

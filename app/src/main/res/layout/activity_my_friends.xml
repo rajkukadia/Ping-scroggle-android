@@ -23,14 +23,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="My Friends"
-                android:textSize="@dimen/about_text_size"/>
+                android:text="My Friends\n"
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/friend_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="15sp"
                 />
 
         </LinearLayout>
