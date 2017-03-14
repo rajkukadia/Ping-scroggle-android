@@ -41,13 +41,13 @@
                 android:layout_gravity="center"
                 android:text="Offline Friends\n"
                 android:textSize="18sp"/>
-            <TextView
+            <LinearLayout
                 android:id="@+id/offline_friend_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textSize="15sp"
                 />
 
 

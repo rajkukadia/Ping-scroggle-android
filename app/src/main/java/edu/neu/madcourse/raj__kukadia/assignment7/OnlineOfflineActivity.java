@@ -16,7 +16,7 @@ import edu.neu.madcourse.raj__kukadia.R;
 public class OnlineOfflineActivity extends Activity{
 
 
-    private Button OnlineFriendButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,5 +47,26 @@ public class OnlineOfflineActivity extends Activity{
                 s.remove();
 
             }
-    }
+
+        LinearLayout OfflineFriendList = (LinearLayout)(findViewById(R.id.offline_friend_list));
+        OfflineFriendList.removeAllViews();
+
+        Iterator s1 = MultiPlayerHomePageActivity.OfflineFriends.entrySet().iterator();
+        while(s1.hasNext()) {
+            HashMap.Entry pair = (HashMap.Entry) s1.next();
+
+
+            Button button = new Button(this);
+            String friendName = MultiPlayerHomePageActivity.OfflineFriends.get(pair.getKey());
+            button.setText(friendName);
+            OfflineFriendList.addView(button);
+
+            s1.remove();
+
+        }
+
+
+
+
+        }
 }
