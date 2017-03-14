@@ -63,7 +63,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, FCMActivity.class);
+        Intent intent = new Intent(this, GoogleSignInActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -71,8 +71,9 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
               //  .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("FCM Message")
+                .setContentTitle("Want to play?")
                 .setContentText(messageBody)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
