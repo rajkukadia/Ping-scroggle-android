@@ -88,6 +88,14 @@
 
             android:theme="@style/MainActivityTheme"/>
 
+        <activity android:name=".assignment7.ScroggleMultiplayerActivity"
+
+            android:theme="@style/NoTitle"/>
+
+
+        <activity android:name=".assignment7.WaitingForOpponentActivity"
+
+            android:theme="@style/MainActivityTheme"/>
 
         <!--<activity android:name=".realtimedatabase.RealtimeDatabaseActivity"></activity>
         -->

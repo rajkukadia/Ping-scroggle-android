@@ -2,6 +2,7 @@ package edu.neu.madcourse.raj__kukadia.assignment7;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -37,9 +38,10 @@ public class OnlineOfflineActivity extends Activity{
 
     private static final String TAG = OnlineOfflineActivity.class.getSimpleName();
     private DatabaseReference mRootRef;
-    private String token;
+    private String tokenOnline;
+    private String tokenOffline;
     private static final String SERVER_KEY = "key=AAAAIJKsPeE:APA91bHkUeOjkpMKSV9gmCv1kzJEadSJGPjaKSA5xjI-R2waz2RJRv1zqcHz-t4I9XSrB5HaCLNLQSW0TTvXkhkVHTDn0FFCOZop-2lP9cTWG1acrTYGxg9WuJjFygeQaLo7URrr9sQo";
-
+    public static String gameMode = " ";
 
 
 
@@ -56,7 +58,7 @@ public class OnlineOfflineActivity extends Activity{
         titleName.setText("Play with ?");
         titleName.setTextSize(20);
 
-        LinearLayout OnlineFriendList = (LinearLayout)(findViewById(R.id.online_friend_list));
+        final LinearLayout OnlineFriendList = (LinearLayout)(findViewById(R.id.online_friend_list));
         OnlineFriendList.removeAllViews();
 
         int size = MultiPlayerHomePageActivity.OnlineFriends.size();
@@ -65,12 +67,81 @@ public class OnlineOfflineActivity extends Activity{
                 HashMap.Entry pair = (HashMap.Entry) s.next();
 
 
-                Button button = new Button(this);
-                String friendName = MultiPlayerHomePageActivity.OnlineFriends.get(pair.getKey());
-                button.setText(friendName);
-                OnlineFriendList.addView(button);
+                Button buttonOnline = new Button(this);
+                final String friendName = MultiPlayerHomePageActivity.OnlineFriends.get(pair.getKey());
+                buttonOnline.setText(friendName);
+                OnlineFriendList.addView(buttonOnline);
+
+                buttonOnline.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("onClick, Online", "pressed");
+
+                        mRootRef = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference r1 = mRootRef.child("All Users");
+
+                        r1.addValueEventListener(new ValueEventListener() {
+
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Log.d("Arrived.", "hereOnline");
+                                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                    Log.d("Arrived.", "here2On");
+
+                                    for (DataSnapshot finalvalue : child.getChildren()) {
+                                        Log.d("Arrived.", "here3On");
+
+                                        if (finalvalue.getValue().equals(friendName)) {
+                                            Log.d("Arrived.", "here4On");
+                                            Iterable<DataSnapshot> i = child.getChildren();
+
+                                            Iterator values = i.iterator();
+                                            while(values.hasNext()){
+
+
+                                                DataSnapshot d = (DataSnapshot) values.next();
+
+                                                if(d.getKey().equals("token")){
+                                                    tokenOnline =  d.getValue().toString();
+                                                    Log.d("Token req is: ", tokenOnline);
+                                                    pushNotification(0, tokenOnline);
+                                                    startActivity(new Intent(OnlineOfflineActivity.this, WaitingForOpponentActivity.class));
+                                                    break;
+                                                }
+                                                // values.remove();
+
+                                            }
+
+
+
+                                        }
+
+                                    }
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                       // gameMode = "online";
+                       // r1.child("yell");
+                      //  if(gameMode.equals("online")) {
+                          //  pushNotification(0, tokenOnline);
+                          //  startActivity(new Intent(OnlineOfflineActivity.this, WaitingForOpponentActivity.class));
+                       // }else {
+                       //     pushNotification(0, tokenOffline);
+                       // }
+
+
+                    }
+                });
 
                 s.remove();
+
+
 
             }
 
@@ -82,25 +153,31 @@ public class OnlineOfflineActivity extends Activity{
             HashMap.Entry pair = (HashMap.Entry) s1.next();
 
 
-            Button button = new Button(this);
+            Button buttonOffline = new Button(this);
             final String friendName = MultiPlayerHomePageActivity.OfflineFriends.get(pair.getKey());
-            button.setText(friendName);
-            OfflineFriendList.addView(button);
+            buttonOffline.setText(friendName);
+            OfflineFriendList.addView(buttonOffline);
+
+
+            buttonOffline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("onClick, Offline", "pressed");
             mRootRef = FirebaseDatabase.getInstance().getReference();
             DatabaseReference r1 = mRootRef.child("All Users");
             r1.addValueEventListener(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.d("Arrived.", "here");
+                    Log.d("Arrived.", "hereOff");
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        Log.d("Arrived.", "here2");
+                        Log.d("Arrived.", "here2Off");
 
                         for (DataSnapshot finalvalue : child.getChildren()) {
-                            Log.d("Arrived.", "here3");
+                            Log.d("Arrived.", "here3oFF");
 
                             if (finalvalue.getValue().equals(friendName)) {
-                                Log.d("Arrived.", "here4");
+                                Log.d("Arrived.", "here4Off");
                                 Iterable<DataSnapshot> i = child.getChildren();
 
                                 Iterator values = i.iterator();
@@ -110,8 +187,10 @@ public class OnlineOfflineActivity extends Activity{
                                     DataSnapshot d = (DataSnapshot) values.next();
 
                                     if(d.getKey().equals("token")){
-                                        token =  d.getValue().toString();
-                                        Log.d("Token req is: ", token);
+                                        tokenOffline =  d.getValue().toString();
+                                        Log.d("Token req is: ", tokenOffline);
+                                        pushNotification(0, tokenOffline);
+                                        break;
 
                                     }
                                    // values.remove();
@@ -132,24 +211,27 @@ public class OnlineOfflineActivity extends Activity{
 
                 }
             });
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pushNotification(v, token);
+                  //  gameMode = "offline";
+                  //  if(gameMode.equals("online")) {
+                       // pushNotification(0, tokenOnline);
+                      //  startActivity(new Intent(OnlineOfflineActivity.this, WaitingForOpponentActivity.class));
+                   // }else {
+                  //      pushNotification(0, tokenOffline);
+                  //  }
+
                 }
             });
             s1.remove();
 
-        }
-
-
-
 
         }
 
 
+        }
 
-    public void pushNotification(View type, String token) {
+
+
+    private void pushNotification(int i, String token) {
         final String final_token = token;
         new Thread(new Runnable() {
             @Override
@@ -170,6 +252,8 @@ public class OnlineOfflineActivity extends Activity{
             jNotification.put("click_action", "OPEN_ACTIVITY_1");
 
             // If sending to a single client
+           // if(token!=null){
+            //Log.d("finalllllll tokeennnn", token);}
             jPayload.put("to", token);
 
             /*

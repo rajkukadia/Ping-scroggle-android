@@ -1,5 +1,5 @@
 
-package edu.neu.madcourse.raj__kukadia.assignment5;
+package edu.neu.madcourse.raj__kukadia.assignment7;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -19,6 +19,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,11 +31,12 @@ import java.util.Set;
 import edu.neu.madcourse.raj__kukadia.DictionaryAssignment3;
 import edu.neu.madcourse.raj__kukadia.MainActivity;
 import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleAssignment5;
 import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleStatusAssignment5;
+import edu.neu.madcourse.raj__kukadia.assignment5.TileAssignment5;
 
 
-
-public class ScroggleAssignment5Fragment extends Fragment {
+public class ScroggleMultiplayerFragment extends Fragment {
     static private int mLargeIds[] = {R.id.largescroggle1, R.id.largescroggle2, R.id.largescroggle3,
             R.id.largescroggle4, R.id.largescroggle5, R.id.largescroggle6, R.id.largescroggle7, R.id.largescroggle8,
             R.id.largescroggle9,};
@@ -42,11 +46,11 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private Handler mHandler = new Handler();
     private Handler m1Handler = new Handler();
 
-    private TileAssignment5 mEntireBoard = new TileAssignment5(this);
-    private TileAssignment5 mLargeTiles[] = new TileAssignment5[9];
-    private TileAssignment5 mSmallTiles[][] = new TileAssignment5[9][9];
-    private TileAssignment5.Owner mPlayer = TileAssignment5.Owner.CLICKED;
-    private Set<TileAssignment5> mAvailable = new HashSet<TileAssignment5>();
+    private TileMultiplayer mEntireBoard = new TileMultiplayer(this);
+    private TileMultiplayer mLargeTiles[] = new TileMultiplayer[9];
+    private TileMultiplayer mSmallTiles[][] = new TileMultiplayer[9][9];
+    private TileMultiplayer.Owner mPlayer = TileMultiplayer.Owner.CLICKED;
+    private Set<TileMultiplayer> mAvailable = new HashSet<TileMultiplayer>();
     private int mSoundX, mSoundO, mSoundMiss, mSoundRewind;
     private SoundPool mSoundPool;
     private float mVolume = 1f;
@@ -83,6 +87,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private static ImageButton muteMusic;
     private boolean gameOver = false;
     //private StringBuilder e= new StringBuilder();
+    private DatabaseReference mRootRef;
 
 
 
@@ -106,6 +111,19 @@ public class ScroggleAssignment5Fragment extends Fragment {
         mSoundO = mSoundPool.load(getActivity(), R.raw.sergenious_moveo, 1);
         mSoundMiss = mSoundPool.load(getActivity(), R.raw.erkanozan_miss, 1);
         mSoundRewind = mSoundPool.load(getActivity(), R.raw.joanne_rewind, 1);
+
+
+        saveGameDataOnFireBase();
+    }
+
+
+    private void saveGameDataOnFireBase(){
+
+      String gameData = getState();
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+
+        mRootRef.child("GameData").child("stateString").setValue(gameData);
+
     }
 
     @Override
@@ -127,10 +145,10 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 }else{
                     muteMusic.setImageLevel(0);
                 }
-                if(ScroggleAssignment5.mMediaPlayer.isPlaying()){
-                ScroggleAssignment5.mMediaPlayer.pause();}
+                if(ScroggleMultiplayerActivity.mMediaPlayer.isPlaying()){
+                ScroggleMultiplayerActivity.mMediaPlayer.pause();}
                 else{
-                    ScroggleAssignment5.mMediaPlayer.start();}
+                    ScroggleMultiplayerActivity.mMediaPlayer.start();}
                 }
 
         });
@@ -150,15 +168,18 @@ public class ScroggleAssignment5Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 done = true;
-               donePressed();
+             //  donePressed();
             }
         });
     }
 
+
+
+
     private void noVisibility(){
         for(int i = 0;i<9;i++){
             for(int j = 0; j<9;j++){
-                TileAssignment5 tile = mSmallTiles[i][j];
+                TileMultiplayer tile = mSmallTiles[i][j];
                 View v = tile.getView();
                 v.setVisibility(View.INVISIBLE);
             }
@@ -170,7 +191,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(muteClicked){
-         ScroggleAssignment5.mMediaPlayer.pause();
+         ScroggleMultiplayerActivity.mMediaPlayer.pause();
             muteMusic.setImageLevel(0);
         }
         if(!gameOver){
@@ -188,8 +209,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
     private void pausePressed(){
 
-        if(ScroggleAssignment5.mMediaPlayer.isPlaying()) {
-            ScroggleAssignment5.mMediaPlayer.pause();
+        if(ScroggleMultiplayerActivity.mMediaPlayer.isPlaying()) {
+            ScroggleMultiplayerActivity.mMediaPlayer.pause();
         }
         noVisibility();
         mHandler.removeCallbacks(mRunnable);
@@ -203,12 +224,12 @@ public class ScroggleAssignment5Fragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(!gameOver){
                         mHandler.postDelayed(mRunnable, 1000);}
-                        if((!ScroggleAssignment5.mMediaPlayer.isPlaying())&&!muteClicked){
+                        if((!ScroggleMultiplayerActivity.mMediaPlayer.isPlaying())&&!muteClicked){
 
-                        ScroggleAssignment5.mMediaPlayer.start();}
+                        ScroggleMultiplayerActivity.mMediaPlayer.start();}
                         for (int k = 0; k < 9; k++) {
                             for (int j = 0; j < 9; j++) {
-                                TileAssignment5 tile = mSmallTiles[k][j];
+                                TileMultiplayer tile = mSmallTiles[k][j];
                                 View v = tile.getView();
                                 v.setVisibility(View.VISIBLE);
                             }
@@ -258,6 +279,10 @@ public class ScroggleAssignment5Fragment extends Fragment {
     };
 
 */
+
+
+
+
     private Runnable mRunnable = new Runnable() {
 
         @Override
@@ -285,8 +310,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
                         gameOver = true;
                         mHandler.removeCallbacks(mRunnable);
                         clearAvailable();
-                        Intent i = new Intent(getActivity(), ScroggleStatusAssignment5.class);
-                        getActivity().startActivity(i);
+                       // Intent i = new Intent(getActivity(), ScroggleStatusAssignment5.class);
+                       // getActivity().startActivity(i);
                     }
                 }else{
                     gameOver = true;
@@ -294,8 +319,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
                     //mEntireBoard.getView().setVisibility(View.INVISIBLE);
                   clearAvailable();
                     phaseTwo=false;
-                    Intent i = new Intent(getActivity(), ScroggleStatusAssignment5.class);
-                    getActivity().startActivity(i);
+                   // Intent i = new Intent(getActivity(), ScroggleStatusAssignment5.class);
+                    //getActivity().startActivity(i);
                 }
             }else {
                 mHandler.postDelayed(mRunnable, 1000);
@@ -308,7 +333,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         mAvailable.clear();
     }
 
-    private void addAvailable(TileAssignment5 tile) {
+    private void addAvailable(TileMultiplayer tile) {
 //        tile.animate();
         mAvailable.add(tile);
     }
@@ -325,18 +350,18 @@ public class ScroggleAssignment5Fragment extends Fragment {
                 for(int j = 0;j<9;j++) {
 
                     if (DoneTiles.contains(i)) {
-                        TileAssignment5 tile = mSmallTiles[i][j];
-                        tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                        TileMultiplayer tile = mSmallTiles[i][j];
+                        tile.setOwner(TileMultiplayer.Owner.NOTCLICKED);
                         addAvailable(tile);
                         tile.updateDrawableState('a', 0);
                     }else{
-                        TileAssignment5 tile = mSmallTiles[i][j];
-                        tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                        TileMultiplayer tile = mSmallTiles[i][j];
+                        tile.setOwner(TileMultiplayer.Owner.NOTCLICKED);
                         //((Button)tile.getView()).setText("");
                         tile.updateDrawableState(' ', 1);
                     }
 
-                    TileAssignment5 tile = mSmallTiles[i][j];
+                    TileMultiplayer tile = mSmallTiles[i][j];
                     if(((Button)mSmallTiles[i][j].getView()).getText().toString().charAt(0)==' '){
                        // Log.d("Yes ", "it came");
                         if(mAvailable.contains(tile)){
@@ -379,7 +404,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
     }
 
-    public boolean isAvailable(TileAssignment5 tile) {
+    public boolean isAvailable(TileMultiplayer tile) {
         return mAvailable.contains(tile);
     }
 
@@ -499,7 +524,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                         (mSmallIds[small]);
                 final int fLarge = large;
                 final int fSmall = small;
-                final TileAssignment5 smallTile = mSmallTiles[large][small];
+                final TileMultiplayer smallTile = mSmallTiles[large][small];
                 smallTile.setView(inner);
 
                // smallTile.updateDrawableState('a'); //Update here...........................................
@@ -543,11 +568,12 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
 
-    private void getButtonText(TileAssignment5 smallTile){
+    private void getButtonText(TileMultiplayer smallTile){
         Button temp = (Button) smallTile.mView;
             enteredStringSroggle += temp.getText();
     }
 
+    /*
     private void donePressed() {
 
         //specially for first large tile touchedLargeTile = 0;
@@ -737,7 +763,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                         for (int j = 0; j < 9; j++) {
                             TieAssignment5 tiles = mSmallTiles[i][j];
                             if (tiles.getOwner() == ileAssignment5.Owner.CLICKED) {
-                                tiles.setOwner(ileAssignment5.Owner.NOTCLICKED);
+          delete                tiles.setOwner(ileAssignment5.Owner.NOTCLICKED);
                             }
                             tiles.updateDrawableState('a', 0);
 
@@ -746,6 +772,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                     }
                 }
 */
+/*
 
                 DictionaryAssignment3.result.setText("");
                 enteredStringSroggle = "";
@@ -791,7 +818,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                     ileAssignment5 tile = mSmallTiles[i][dest];
                     if((tile.getOwner()== ileAssignment5.Owner.CLICKED)||(tile.getOwner()== ileAssignment5.Owner.FREEZED)){
                         tile.setOwner(ileAssignment5.Owner.NOTCLICKED);
-                        tile.updateDrawableState('a', 0);
+  delete                      tile.updateDrawableState('a', 0);
                     }
                     if(((Button)tile.getView()).getText().charAt(0)==' '){
                         mAvailable.remove(tile);
@@ -803,6 +830,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
        }*/
     // done = false;
 
+
+/*
         if (!phaseTwo) {
             if (touchedLargeTile == 0) {
                 for (int i = 0; i < 9; i++) {
@@ -824,7 +853,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         enteredStringSroggle = "";
     }
 
-
+*/
 
     private void updateScore(String x, int bonus){
 
@@ -836,7 +865,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         for(int j = 0; j<9; j++) {
 
             if (touchedSmallTiles[j]==0) {
-                TileAssignment5 demo = mSmallTiles[touchedLargeTile][j];
+                TileMultiplayer demo = mSmallTiles[touchedLargeTile][j];
 
                 mAvailable.remove(demo);
                 //demo.setOwner(T9leAssignment5.Owner.NOTCLICKED);
@@ -847,25 +876,24 @@ public class ScroggleAssignment5Fragment extends Fragment {
 /*
             Log.d(String.valueOf(touchedLargeTile), " Large tile");
         for(int x:touchedSmallTiles){
-            Log.d(String.valueOf(x), " Small Tiles");
+  delete          Log.d(String.valueOf(x), " Small Tiles");
         }
 */
 
     }
-
     private Boolean checkIfValidRandomWord(String x){
         for(int i = 0;i<nineNineLetterWords.length;i++){
             if(nineNineLetterWords[i]==x) {return false;}
         }
         return true;
     }
-
+/*
     private void think() {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (getActivity() == null) return;
-                if (mEntireBoard.getOwner() == TileAssignment5.Owner.CLICKED) {
+                if (mEntireBoard.getOwner() == TileMultiplayer.Owner.CLICKED) {
                     int move[] = new int[2];
                     pickMove(move);
                     if (move[0] != -1 && move[1] != -1) {
@@ -880,7 +908,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
             }
         }, 1000);
     }
-
+*/
+  /*
     private void pickMove(int move[]) {
         TileAssignment5.Owner opponent = mPlayer == TileAssignment5.Owner.X ? TileAssignment5.Owner.O : TileAssignment5
                 .Owner.X;
@@ -917,12 +946,12 @@ public class ScroggleAssignment5Fragment extends Fragment {
         mPlayer = mPlayer == TileAssignment5.Owner.X ? TileAssignment5.Owner.O : TileAssignment5
                 .Owner.X;
     }
-
+*/
     private void makeMove(int large, int small) {
         mLastLarge = large;
         mLastSmall = small;
-        TileAssignment5 smallTile = mSmallTiles[large][small];
-        TileAssignment5 largeTile = mLargeTiles[large];
+        TileMultiplayer smallTile = mSmallTiles[large][small];
+        TileMultiplayer largeTile = mLargeTiles[large];
         smallTile.setOwner(mPlayer);
         //setAvailableFromLastMove(small);
         if(!phaseTwo){
@@ -936,7 +965,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         if (winner != oldWinner) {
             largeTile.animate();
             largeTile.setOwner(winner);
-        }
+ delete      }
         winner = mEntireBoard.findWinner();
         mEntireBoard.setOwner(winner);
         updateAllTiles();
@@ -944,7 +973,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
             (getActivity()).reportWinner(winner);
         }
         */
-    }
+
+}
 
     public void restartGame() {
         mSoundPool.play(mSoundRewind, mVolume, mVolume, 1, 0, 1f);
@@ -970,19 +1000,19 @@ public class ScroggleAssignment5Fragment extends Fragment {
         wordsDetectedByUser.clear();
         mHandler.postDelayed(mRunnable, 1000);
 
-       // updateAllTiles();
+        // updateAllTiles();
     }
 
     public void initGame() {
       //
         //
         // phaseTwo = false;
-        mEntireBoard = new TileAssignment5(this);
+        mEntireBoard = new TileMultiplayer(this);
         // Create all the tiles
         for (int large = 0; large < 9; large++) {
-            mLargeTiles[large] = new TileAssignment5(this);
+            mLargeTiles[large] = new TileMultiplayer(this);
             for (int small = 0; small < 9; small++) {
-                mSmallTiles[large][small] = new TileAssignment5(this);
+                mSmallTiles[large][small] = new TileMultiplayer(this);
             }
             mLargeTiles[large].setSubTiles(mSmallTiles[large]);
         }
@@ -1005,8 +1035,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
                     if (!phaseTwo) {
                         if (!done) {
                             if (i == large) {
-                                TileAssignment5 tile = mSmallTiles[large][dest];
-                                if ((tile.getOwner() == TileAssignment5.Owner.NOTCLICKED))
+                                TileMultiplayer tile = mSmallTiles[large][dest];
+                                if ((tile.getOwner() == TileMultiplayer.Owner.NOTCLICKED))
                                     addAvailable(tile);
 
                                 switch (smallx) {
@@ -1014,7 +1044,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                         int a[] = adjacencyList.get(0);
 
                                         for (int x : a) {
-                                            TileAssignment5 tile1 = mSmallTiles[large][x];
+                                            TileMultiplayer tile1 = mSmallTiles[large][x];
                                             //if(mAvailable.contains(tile1)) {
                                             mAvailable.remove(tile1);
                                             //}
@@ -1024,7 +1054,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                         int a1[] = adjacencyList.get(1);
 
                                         for (int x : a1) {
-                                            TileAssignment5 tile2 = mSmallTiles[large][x];
+                                            TileMultiplayer tile2 = mSmallTiles[large][x];
                                             // if(mAvailable.contains(tile2)) {
                                             mAvailable.remove(tile2);
                                             //}
@@ -1033,7 +1063,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                     case 2:
                                         int a2[] = adjacencyList.get(2);
                                         for (int x : a2) {
-                                            TileAssignment5 tile3 = mSmallTiles[large][x];
+                                            TileMultiplayer tile3 = mSmallTiles[large][x];
                                             // if(mAvailable.contains(tile3)) {
                                             mAvailable.remove(tile3);
                                             // }
@@ -1042,7 +1072,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                     case 3:
                                         int a3[] = adjacencyList.get(3);
                                         for (int x : a3) {
-                                            TileAssignment5 tile4 = mSmallTiles[large][x];
+                                            TileMultiplayer tile4 = mSmallTiles[large][x];
                                             //if(mAvailable.contains(tile4)) {
                                             mAvailable.remove(tile4);
                                             // }
@@ -1051,7 +1081,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                     case 4:
                                         int a4[] = adjacencyList.get(4);
                                         for (int x : a4) {
-                                            TileAssignment5 tile5 = mSmallTiles[large][x];
+                                            TileMultiplayer tile5 = mSmallTiles[large][x];
                                             //if(mAvailable.contains(tile5)) {
                                             mAvailable.remove(tile5);//}
 
@@ -1060,7 +1090,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                     case 5:
                                         int a5[] = adjacencyList.get(5);
                                         for (int x : a5) {
-                                            TileAssignment5 tile6 = mSmallTiles[large][x];
+                                            TileMultiplayer tile6 = mSmallTiles[large][x];
                                             //if(mAvailable.contains(tile6)) {
                                             mAvailable.remove(tile6);//}
 
@@ -1069,7 +1099,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                     case 6:
                                         int a6[] = adjacencyList.get(6);
                                         for (int x : a6) {
-                                            TileAssignment5 tile7 = mSmallTiles[large][x];
+                                            TileMultiplayer tile7 = mSmallTiles[large][x];
                                             //if(mAvailable.contains(tile7)) {
                                             mAvailable.remove(tile7);//}
 
@@ -1078,7 +1108,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                     case 7:
                                         int a7[] = adjacencyList.get(7);
                                         for (int x : a7) {
-                                            TileAssignment5 tile8 = mSmallTiles[large][x];
+                                            TileMultiplayer tile8 = mSmallTiles[large][x];
                                             // if(mAvailable.contains(tile8)) {
                                             mAvailable.remove(tile8);//}
 
@@ -1087,7 +1117,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                     case 8:
                                         int a8[] = adjacencyList.get(8);
                                         for (int x : a8) {
-                                            TileAssignment5 tile9 = mSmallTiles[large][x];
+                                            TileMultiplayer tile9 = mSmallTiles[large][x];
                                             //if(mAvailable.contains(tile9)) {
                                             mAvailable.remove(tile9);//}
 
@@ -1099,8 +1129,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
                                 if (DoneTiles.contains(i)) {
                                     continue;
                                 }
-                                TileAssignment5 tile = mSmallTiles[i][dest];
-                                tile.setOwner(TileAssignment5.Owner.FREEZED);
+                                TileMultiplayer tile = mSmallTiles[i][dest];
+                                tile.setOwner(TileMultiplayer.Owner.FREEZED);
                                 tile.updateDrawableState('a', 0);
                             }
                         } else { //OnDOnePressed
@@ -1110,8 +1140,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
                             //  Log.d("Comes ", "Hereeee");
                             if (i != large) {//Correct answer
-                                TileAssignment5 tile = mSmallTiles[i][dest];
-                                tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                                TileMultiplayer tile = mSmallTiles[i][dest];
+                                tile.setOwner(TileMultiplayer.Owner.NOTCLICKED);
                                 addAvailable(tile);
                                 tile.updateDrawableState('a', 0);
                                 //done =false;
@@ -1123,7 +1153,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 /*
                         ileAssignment5 thistile = mSmallTiles[i][dest];
                         if(((Button)thistile.getView()).getText().charAt(0)==' '){
-                            mAvailable.remove(thistile);
+     delete                       mAvailable.remove(thistile);
                             thistile.updateDrawableState('a', 0);
                         }
 */
@@ -1131,18 +1161,18 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
                         if (i == large) {
                                 if (dest == smallx) {
-                                    TileAssignment5 tile1 = mSmallTiles[large][dest];
-                                    tile1.setOwner(TileAssignment5.Owner.CLICKED);
+                                    TileMultiplayer tile1 = mSmallTiles[large][dest];
+                                    tile1.setOwner(TileMultiplayer.Owner.CLICKED);
                                     if (mAvailable.contains(tile1)) {
                                         mAvailable.remove(tile1);
                                     }
                                     tile1.updateDrawableState('a', 0);
 
                                 } else {
-                                    TileAssignment5 tile2 = mSmallTiles[large][dest];
-                                    if (!(tile2.getOwner() == TileAssignment5.Owner.CLICKED)) {
+                                    TileMultiplayer tile2 = mSmallTiles[large][dest];
+                                    if (!(tile2.getOwner() == TileMultiplayer.Owner.CLICKED)) {
 
-                                        tile2.setOwner(TileAssignment5.Owner.FREEZED);
+                                        tile2.setOwner(TileMultiplayer.Owner.FREEZED);
                                     }
                                     if (mAvailable.contains(tile2)) {
                                         mAvailable.remove(tile2);
@@ -1154,9 +1184,9 @@ public class ScroggleAssignment5Fragment extends Fragment {
                             } else {
 
 
-                                TileAssignment5 tile3 = mSmallTiles[i][dest];
-                                if (!(tile3.getOwner() == TileAssignment5.Owner.CLICKED)) {
-                                    tile3.setOwner(TileAssignment5.Owner.NOTCLICKED);
+                                TileMultiplayer tile3 = mSmallTiles[i][dest];
+                                if (!(tile3.getOwner() == TileMultiplayer.Owner.CLICKED)) {
+                                    tile3.setOwner(TileMultiplayer.Owner.NOTCLICKED);
                                 }
                           //  if(((((Button)mSmallTiles[i][dest].getView()).getText().toString().equals(null))||((Button)mSmallTiles[i][dest].getView()).getText().toString().charAt(0)==' ')||(((Button)mSmallTiles[i][dest].getView()).getText().toString().equals(""))){
 
@@ -1169,7 +1199,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
 
-                            TileAssignment5 tile = mSmallTiles[i][dest];
+                            TileMultiplayer tile = mSmallTiles[i][dest];
                             if(((Button)mSmallTiles[i][dest].getView()).getText().toString().charAt(0)==' '){
                                 // Log.d("Yes ", "it came");
                                 if(mAvailable.contains(tile)){
@@ -1213,11 +1243,11 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
 
                             }catch ( StringIndexOutOfBoundsException e){
-
+delete
                             }
 
 */
-                            }
+                           }
 
                     }
                 }
@@ -1232,7 +1262,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private void setPhaseTwoLogic() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                TileAssignment5 tile = mSmallTiles[i][j];
+                TileMultiplayer tile = mSmallTiles[i][j];
                 if (((Button) mSmallTiles[i][j].getView()).getText().toString().charAt(0) == ' ') {
                     // Log.d("Yes ", "it came");
                     if (mAvailable.contains(tile)) {
@@ -1252,8 +1282,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
     private void setAllAvailable() {
         for (int large = 0; large < 9; large++) {
             for (int small = 0; small < 9; small++) {
-                TileAssignment5 tile = mSmallTiles[large][small];
-                if (tile.getOwner() == TileAssignment5.Owner.NOTCLICKED)
+                TileMultiplayer tile = mSmallTiles[large][small];
+                if (tile.getOwner() == TileMultiplayer.Owner.NOTCLICKED)
                     addAvailable(tile);
             }
         }
@@ -1400,8 +1430,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
             int pattern = choosePatternNumber();
 
             fixSmallBoards(randomStringsCharArray[large], pattern, large);
-             TileAssignment5 tile = mLargeTiles[large];
-            tile.setOwner(TileAssignment5.Owner.NOTCLICKED);
+             TileMultiplayer tile = mLargeTiles[large];
+            tile.setOwner(TileMultiplayer.Owner.NOTCLICKED);
             DoneTiles.clear();
 
              tile.updateDrawableState('a', 0);
@@ -1416,7 +1446,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int large, HashSet<Integer> DoneTiles){
     for(int i =0; i<9;i++){
         for(int j = 0; j<9;j++){
-            TileAssignment5 tile = mSmallTiles[i][j];
+            TileMultiplayer tile = mSmallTiles[i][j];
 
             if(phaseTwo){
 
@@ -1424,7 +1454,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                      mAvailable.remove(tile);
 
                 }
-                if(tile.getOwner()==TileAssignment5.Owner.FREEZED){
+                if(tile.getOwner()==TileMultiplayer.Owner.FREEZED){
                    mAvailable.remove(tile);
                 }
 
@@ -1433,7 +1463,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
     }
     else{
 
-        if(tile.getOwner()== TileAssignment5.Owner.FREEZED){
+        if(tile.getOwner()== TileMultiplayer.Owner.FREEZED){
             mAvailable.remove(tile);
         }
 
@@ -1443,7 +1473,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                           int a[] = adjacencyList.get(0);
 
                           for (int x : a) {
-                              TileAssignment5 tile1 = mSmallTiles[large][x];
+                              TileMultiplayer tile1 = mSmallTiles[large][x];
                               //if(mAvailable.contains(tile1)) {
                               mAvailable.remove(tile1);
                               //}
@@ -1453,7 +1483,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                           int a1[] = adjacencyList.get(1);
 
                           for (int x : a1) {
-                              TileAssignment5 tile2 = mSmallTiles[large][x];
+                              TileMultiplayer tile2 = mSmallTiles[large][x];
                               // if(mAvailable.contains(tile2)) {
                               mAvailable.remove(tile2);
                               //}
@@ -1462,7 +1492,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                       case 2:
                           int a2[] = adjacencyList.get(2);
                           for (int x : a2) {
-                              TileAssignment5 tile3 = mSmallTiles[large][x];
+                              TileMultiplayer tile3 = mSmallTiles[large][x];
                               // if(mAvailable.contains(tile3)) {
                               mAvailable.remove(tile3);
                               // }
@@ -1471,7 +1501,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                       case 3:
                           int a3[] = adjacencyList.get(3);
                           for (int x : a3) {
-                              TileAssignment5 tile4 = mSmallTiles[large][x];
+                              TileMultiplayer tile4 = mSmallTiles[large][x];
                               //if(mAvailable.contains(tile4)) {
                               mAvailable.remove(tile4);
                               // }
@@ -1480,7 +1510,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                       case 4:
                           int a4[] = adjacencyList.get(4);
                           for (int x : a4) {
-                              TileAssignment5 tile5 = mSmallTiles[large][x];
+                              TileMultiplayer tile5 = mSmallTiles[large][x];
                               //if(mAvailable.contains(tile5)) {
                               mAvailable.remove(tile5);//}
 
@@ -1489,7 +1519,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                       case 5:
                           int a5[] = adjacencyList.get(5);
                           for (int x : a5) {
-                              TileAssignment5 tile6 = mSmallTiles[large][x];
+                              TileMultiplayer tile6 = mSmallTiles[large][x];
                               //if(mAvailable.contains(tile6)) {
                               mAvailable.remove(tile6);//}
 
@@ -1498,7 +1528,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                       case 6:
                           int a6[] = adjacencyList.get(6);
                           for (int x : a6) {
-                              TileAssignment5 tile7 = mSmallTiles[large][x];
+                              TileMultiplayer tile7 = mSmallTiles[large][x];
                               //if(mAvailable.contains(tile7)) {
                               mAvailable.remove(tile7);//}
 
@@ -1507,7 +1537,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                       case 7:
                           int a7[] = adjacencyList.get(7);
                           for (int x : a7) {
-                              TileAssignment5 tile8 = mSmallTiles[large][x];
+                              TileMultiplayer tile8 = mSmallTiles[large][x];
                               // if(mAvailable.contains(tile8)) {
                               mAvailable.remove(tile8);//}
 
@@ -1516,7 +1546,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                       case 8:
                           int a8[] = adjacencyList.get(8);
                           for (int x : a8) {
-                              TileAssignment5 tile9 = mSmallTiles[large][x];
+                              TileMultiplayer tile9 = mSmallTiles[large][x];
                               //if(mAvailable.contains(tile9)) {
                               mAvailable.remove(tile9);//}
 
@@ -1537,6 +1567,9 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
 
 
     /** Create a string containing the state of the game. */
+
+
+
     public String getState() {
 
         StringBuilder builder = new StringBuilder();
@@ -1577,8 +1610,8 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
             for (int small = 0; small < 9; small++) {
                 builder.append(mSmallTiles[large][small].getOwner().name());
                 builder.append(',');
-                builder.append((((Button)mSmallTiles[large][small].getView()).getText()).toString());
-                builder.append(',');
+               // builder.append((((Button)mSmallTiles[large][small].getView()).getText()).toString());
+               // builder.append(',');
                 //Log.d(DoneTiles);
             }
         }
@@ -1586,6 +1619,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
     }
 
     /** Restore the state of the game from the given string. */
+
     public void putState(String gameData) {
         String[] fields = gameData.split(",");
         //setPhaseTwoLogic();
@@ -1637,7 +1671,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
         mLastSmall = Integer.parseInt(fields[index++]);
         for (int large = 0; large < 9; large++) {
             for (int small = 0; small < 9; small++) {
-                TileAssignment5.Owner owner = TileAssignment5.Owner.valueOf(fields[index++]);
+                TileMultiplayer.Owner owner = TileMultiplayer.Owner.valueOf(fields[index++]);
                 mSmallTiles[large][small].setOwner(owner);
                 mSmallTiles[large][small].updateDrawableState(fields[index++].charAt(0), 1);
                 //Log.d(DoneTiles.toString(), "checkkk");
