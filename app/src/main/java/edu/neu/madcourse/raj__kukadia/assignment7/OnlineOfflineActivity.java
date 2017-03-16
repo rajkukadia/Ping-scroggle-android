@@ -181,89 +181,87 @@ public class OnlineOfflineActivity extends Activity{
             }
 
 
-        LinearLayout OfflineFriendList = (LinearLayout)(findViewById(R.id.offline_friend_list));
-        OfflineFriendList.removeAllViews();
+    LinearLayout OfflineFriendList = (LinearLayout) (findViewById(R.id.offline_friend_list));
+    OfflineFriendList.removeAllViews();
 
-        Iterator s1 = MultiPlayerHomePageActivity.OfflineFriends.entrySet().iterator();
-        while(s1.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry) s1.next();
-
-
-            Button buttonOffline = new Button(this);
-            final String friendName = MultiPlayerHomePageActivity.OfflineFriends.get(pair.getKey());
-            buttonOffline.setText(friendName);
-            OfflineFriendList.addView(buttonOffline);
+    Iterator s1 = MultiPlayerHomePageActivity.OfflineFriends.entrySet().iterator();
+    while (s1.hasNext()) {
+        HashMap.Entry pair = (HashMap.Entry) s1.next();
 
 
-            buttonOffline.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("onClick, Offline", "pressed");
-            mRootRef = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference r1 = mRootRef.child("All Users");
-            r1.addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.d("Arrived.", "hereOff");
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        Log.d("Arrived.", "here2Off");
-
-                        for (DataSnapshot finalvalue : child.getChildren()) {
-                            Log.d("Arrived.", "here3oFF");
-
-                            if (finalvalue.getValue().equals(friendName)) {
-                                Log.d("Arrived.", "here4Off");
-                                Iterable<DataSnapshot> i = child.getChildren();
-
-                                Iterator values = i.iterator();
-                                while(values.hasNext()){
+        Button buttonOffline = new Button(this);
+        final String friendNameOffline = MultiPlayerHomePageActivity.OfflineFriends.get(pair.getKey());
+        if(MultiPlayerHomePageActivity.OnlineFriends.containsValue(friendNameOffline)){ continue;}
+        buttonOffline.setText(friendNameOffline);
+        OfflineFriendList.addView(buttonOffline);
 
 
-                                    DataSnapshot d = (DataSnapshot) values.next();
+        buttonOffline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("onClick, Offline", "pressed");
+                mRootRef = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference r1 = mRootRef.child("All Users");
+                r1.addValueEventListener(new ValueEventListener() {
 
-                                    if(d.getKey().equals("token")){
-                                        tokenOffline =  d.getValue().toString();
-                                        Log.d("Token req is: ", tokenOffline);
-                                        pushNotification(0, tokenOffline);
-                                        break;
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.d("Arrived.", "hereOff");
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            Log.d("Arrived.", "here2Off");
+
+                            for (DataSnapshot finalvalue : child.getChildren()) {
+                                Log.d("Arrived.", "here3oFF");
+
+                                if (finalvalue.getValue().equals(friendNameOffline)) {
+                                    Log.d("Arrived.", "here4Off");
+                                    Iterable<DataSnapshot> i = child.getChildren();
+
+                                    Iterator values = i.iterator();
+                                    while (values.hasNext()) {
+
+
+                                        DataSnapshot d = (DataSnapshot) values.next();
+
+                                        if (d.getKey().equals("token")) {
+                                            tokenOffline = d.getValue().toString();
+                                            Log.d("Token req is: ", tokenOffline);
+                                            pushNotification(0, tokenOffline);
+                                            break;
+
+                                        }
+                                        // values.remove();
 
                                     }
-                                   // values.remove();
+
 
                                 }
-
-
 
                             }
 
                         }
+                    }
+
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
                     }
-                }
+                });
+                //  gameMode = "offline";
+                //  if(gameMode.equals("online")) {
+                // pushNotification(0, tokenOnline);
+                //  startActivity(new Intent(OnlineOfflineActivity.this, WaitingForOpponentActivity.class));
+                // }else {
+                //      pushNotification(0, tokenOffline);
+                //  }
+
+            }
+        });
+        s1.remove();
 
 
-
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-                  //  gameMode = "offline";
-                  //  if(gameMode.equals("online")) {
-                       // pushNotification(0, tokenOnline);
-                      //  startActivity(new Intent(OnlineOfflineActivity.this, WaitingForOpponentActivity.class));
-                   // }else {
-                  //      pushNotification(0, tokenOffline);
-                  //  }
-
-                }
-            });
-            s1.remove();
-
-
-        }
+    }
 
 
         }

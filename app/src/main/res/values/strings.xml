@@ -165,6 +165,10 @@ both sides in the larger game.
 
 
     <string name="reply_label">Reply label</string>
+    <string name="scroggle_ack_multiplayer_label"> \n\n Firebase demo code helped in understanding the working of
+        firebase server and how to create a firebase database. \n Google sign in: https://developers.google.com/identity/sign-in/android/sign-in
+    \n </string>
+
 
 
 

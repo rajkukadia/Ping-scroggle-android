@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -114,7 +115,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
 
+public void showToast(){
+     Toast.makeText(MainActivity.this, "Connection Lost", Toast.LENGTH_LONG).show();
 
+}
 
 
     @Override
