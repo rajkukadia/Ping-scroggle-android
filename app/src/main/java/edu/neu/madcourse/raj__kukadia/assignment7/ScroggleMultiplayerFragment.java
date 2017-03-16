@@ -98,6 +98,8 @@ public class ScroggleMultiplayerFragment extends Fragment {
     private String user_one;
     private String user_two;
     private String userKey;
+    private String newGameData;
+
 
 
 
@@ -141,9 +143,13 @@ public class ScroggleMultiplayerFragment extends Fragment {
                 if(child.getKey().equals("GameData")){
                     for(DataSnapshot finalChild : child.getChildren()){
                         if(finalChild.getKey().equals("gamePlaying")){
+
+                          //  if(WaitingForOpponentActivity.finishTheGame==true){
+                            //    getActivity().finish();
+                            //}
                             if(finalChild.getValue().equals("no")){
 
-                                triggerOtherPlayer();
+                                    triggerOtherPlayer();
 
                             }
                         }
@@ -161,11 +167,12 @@ public class ScroggleMultiplayerFragment extends Fragment {
 
         });
 
+        gameStateChanger();
+
     }
 
             private void saveGameDataOnFireBase(){
 
-      final String gameData = getState();
 
 
 
@@ -173,6 +180,8 @@ public class ScroggleMultiplayerFragment extends Fragment {
        // user_two=OnlineOfflineActivity.getUserTwo();
 
 
+                final String gameData = getState();
+                newGameData = gameData;
 
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -191,9 +200,10 @@ public class ScroggleMultiplayerFragment extends Fragment {
                         if (child.getKey().equals("TwoUsers")) {
 
                             userKey = child.getValue().toString();
-                            mRootRef.child("GameData").child(userKey).setValue(gameData);
 
 
+
+                            Log.d("Game data", "save and put");
                             // values.remove();
                             }
 
@@ -218,8 +228,53 @@ public class ScroggleMultiplayerFragment extends Fragment {
         // }else {
         //     pushNotification(0, tokenOffline);
         // }
+               // mRootRef.child("GameData").child(userKey).setValue(gameData);
 
-}
+               // putState(gameData);
+
+
+            }
+
+    private void gameStateChanger(){
+
+
+
+        mRootRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Log.d("Arrived.", "hereOnline");
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.d("Arrived.", "here2On");
+
+                   if(child.getKey().equals("GameData")){
+
+                       for(DataSnapshot finalChild : child.getChildren()){
+                           if(finalChild.getKey().equals(userKey)){
+                               Log.d("putting", "state");
+                               putState(finalChild.getValue().toString());
+
+                           }
+                       }
+
+                    //   putState(child.getValue().toString());
+                   }
+
+                }
+
+            }
+
+
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
     private void triggerOtherPlayer(){
 
@@ -643,7 +698,8 @@ public class ScroggleMultiplayerFragment extends Fragment {
                     public void onClick(View view) {
                         smallTile.animate();
                         totalClicks++;
-
+                       // putState(newGameData);
+                       // saveGameDataOnFireBase();
                         // ...
 
                         if (isAvailable(smallTile)&&(!gameOver)) {
@@ -651,6 +707,13 @@ public class ScroggleMultiplayerFragment extends Fragment {
                             mSoundPool.play(mSoundX, mVolume, mVolume, 1, 0, 1f);
 
                             makeMove(fLarge, fSmall); //makes the move and sets available the corresponding tile
+
+                            Log.d(userKey, "dddddddddddddddddddddddddddddd");
+
+                           mRootRef.child("GameData").child(userKey).setValue(getState());
+
+                            Log.d(getState(), "check");
+
 
                             touchedLargeTile =fLarge;
                             touchedSmallTiles[fSmall] = fSmall+1;
@@ -1637,6 +1700,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                               //if(mAvailable.contains(tile7)) {
                               mAvailable.remove(tile7);//}
 
+
                           }
                           break;
                       case 7:
@@ -1645,6 +1709,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                               TileMultiplayer tile8 = mSmallTiles[large][x];
                               // if(mAvailable.contains(tile8)) {
                               mAvailable.remove(tile8);//}
+                             // tile8.updateDrawableState(' ', 0)
 
                           }
                           break;
@@ -1654,6 +1719,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                               TileMultiplayer tile9 = mSmallTiles[large][x];
                               //if(mAvailable.contains(tile9)) {
                               mAvailable.remove(tile9);//}
+                          //    tile9.updateDrawableState(' ', 0)
 
                           }
                           break;
@@ -1666,6 +1732,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
 
     }
 
+            ;
         }
     }
 }
@@ -1783,10 +1850,30 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
                 // mSmallTiles[large][small].updateDrawableState('a', 0);
             }
         }
-      //  setAvailableFromLastMove(mLastLarge, mLastSmall);
+       //setAvailableFromLastMove(mLastLarge, mLastSmall);
         //updateAllTiles();
        setAvailableAccordingToGamePhase(phaseTwo, mLastSmall, mLastLarge, DoneTiles);
+        updateTiles();
+
     }
+
+
+    private void updateTiles(){
+
+        for (int large = 0; large < 9; large++) {
+            for (int small = 0; small < 9; small++) {
+Log.d("Updating", "drawable state");
+                TileMultiplayer tile = mSmallTiles[large][small];
+                tile.updateDrawableState(' ', 0);
+
+
+
+
+            }
+        }
+    }
+
+
 
 }
 

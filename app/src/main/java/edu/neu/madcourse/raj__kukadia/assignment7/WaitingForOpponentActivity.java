@@ -33,11 +33,13 @@ public class WaitingForOpponentActivity extends Activity{
     private Handler mHandler = new Handler();
     private DatabaseReference mRootRef;
     private Boolean firsttime = true;
+    public static Boolean finishTheGame = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firsttime =true;
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_waiting_for_opponent);
 
@@ -79,13 +81,17 @@ public class WaitingForOpponentActivity extends Activity{
                                 if(d.getKey().equals("msgForOpponent")){
                                     if(d.getValue().equals("yes")){
                                        mHandler.removeCallbacks(mRunnable);
-                                        mRootRef.child("GameData").child("gamePlaying").setValue("yes");
+
                                         if(firsttime){
-                                        startActivity(new Intent(WaitingForOpponentActivity.this, ScroggleMultiplayerActivity.class));
+                                            mRootRef.child("GameData").child("gamePlaying").setValue("yes");
+                                            startActivity(new Intent(WaitingForOpponentActivity.this, ScroggleMultiplayerActivity.class));
                                         setMsgForOpponentNo();
-                                        firsttime = false;}
+                                            firsttime = false;
+                                        }
                                         else{
-                                            finish();
+                                            //mRootRef.child("GameData").child("gamePlaying").setValue("no");
+                                            //finishTheGame = true;
+                                           // finish();
                                         }
 
                                     }

@@ -52,6 +52,9 @@ public class ScroggleMultiplayerActivity extends Activity {
     }
 
 
+    public void restartGame() {
+        mGameFragment.restartGame();
+    }
 
     @Override
     protected void onResume() {
