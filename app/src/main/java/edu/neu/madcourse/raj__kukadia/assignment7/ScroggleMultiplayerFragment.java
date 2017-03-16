@@ -19,12 +19,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -34,6 +39,8 @@ import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleAssignment5;
 import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleStatusAssignment5;
 import edu.neu.madcourse.raj__kukadia.assignment5.TileAssignment5;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class ScroggleMultiplayerFragment extends Fragment {
@@ -88,6 +95,12 @@ public class ScroggleMultiplayerFragment extends Fragment {
     private boolean gameOver = false;
     //private StringBuilder e= new StringBuilder();
     private DatabaseReference mRootRef;
+    private String user_one;
+    private String user_two;
+    private String userKey;
+
+
+
 
 
 
@@ -114,17 +127,109 @@ public class ScroggleMultiplayerFragment extends Fragment {
 
 
         saveGameDataOnFireBase();
+
+
+
+
+
+
+        mRootRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+            for(DataSnapshot child : dataSnapshot.getChildren()){
+                if(child.getKey().equals("GameData")){
+                    for(DataSnapshot finalChild : child.getChildren()){
+                        if(finalChild.getKey().equals("gamePlaying")){
+                            if(finalChild.getValue().equals("no")){
+
+                                triggerOtherPlayer();
+
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
     }
 
+            private void saveGameDataOnFireBase(){
 
-    private void saveGameDataOnFireBase(){
+      final String gameData = getState();
 
-      String gameData = getState();
+
+
+      //  user_one = OnlineOfflineActivity.getUserOne();
+       // user_two=OnlineOfflineActivity.getUserTwo();
+
+
+
+
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
-        mRootRef.child("GameData").child("stateString").setValue(gameData);
+
+        mRootRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Log.d("Arrived.", "hereOnline");
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.d("Arrived.", "here2On");
+
+
+                        if (child.getKey().equals("TwoUsers")) {
+
+                            userKey = child.getValue().toString();
+                            mRootRef.child("GameData").child(userKey).setValue(gameData);
+
+
+                            // values.remove();
+                            }
+
+
+                        }
+
+                    }
+
+
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        // gameMode = "online";
+        // r1.child("yell");
+        //  if(gameMode.equals("online")) {
+        //  pushNotification(0, tokenOnline);
+        //  startActivity(new Intent(OnlineOfflineActivity.this, WaitingForOpponentActivity.class));
+        // }else {
+        //     pushNotification(0, tokenOffline);
+        // }
+
+}
+
+    private void triggerOtherPlayer(){
+
+
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        mRootRef.child("GameData").child("msgForOpponent").setValue("yes");
 
     }
+
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -1673,7 +1778,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
             for (int small = 0; small < 9; small++) {
                 TileMultiplayer.Owner owner = TileMultiplayer.Owner.valueOf(fields[index++]);
                 mSmallTiles[large][small].setOwner(owner);
-                mSmallTiles[large][small].updateDrawableState(fields[index++].charAt(0), 1);
+               // mSmallTiles[large][small].updateDrawableState(fields[index++].charAt(0), 1);
                 //Log.d(DoneTiles.toString(), "checkkk");
                 // mSmallTiles[large][small].updateDrawableState('a', 0);
             }

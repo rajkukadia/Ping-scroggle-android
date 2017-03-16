@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleAssignment5Fragment;
 import edu.neu.madcourse.raj__kukadia.assignment5.TileAssignment5;
@@ -43,6 +45,7 @@ public class ScroggleMultiplayerActivity extends Activity {
         else{
             ScroggleAssignment5Fragment.currentScore=0;
         }
+
 
 
         Log.d("UT3", "restore = " + restore);
