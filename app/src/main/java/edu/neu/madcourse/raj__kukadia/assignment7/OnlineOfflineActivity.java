@@ -114,7 +114,7 @@ public class OnlineOfflineActivity extends Activity{
 
 
                                             String user = friendName;
-
+                                            passUserNameToFireBaseAndGenerateRandomNumber(user);
                                             mAuth = FirebaseAuth.getInstance();
                                             String user1= mAuth.getCurrentUser().getDisplayName();
                                             mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -141,7 +141,7 @@ public class OnlineOfflineActivity extends Activity{
                                                     tokenOnline =  d.getValue().toString();
                                                     Log.d("Token req is: ", tokenOnline);
                                                     pushNotification(0, tokenOnline);
-                                                    startActivity(new Intent(OnlineOfflineActivity.this, WaitingForOpponentActivity.class));
+                                                   // startActivity(new Intent(OnlineOfflineActivity.this, WaitingForOpponentActivity.class));
                                                     break;
                                                 }
                                                 // values.remove();
@@ -265,6 +265,14 @@ public class OnlineOfflineActivity extends Activity{
 
 
         }
+
+
+    private void passUserNameToFireBaseAndGenerateRandomNumber(String user){
+        Intent intent = new Intent(OnlineOfflineActivity.this, WaitingForOpponentActivity.class);
+        intent.putExtra("UserName", user);
+        startActivity(intent);
+    }
+
 
     private void  thisIsUserTwo(String user, String user1){
         user_two = user;

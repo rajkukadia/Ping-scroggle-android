@@ -97,7 +97,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
 
     private void sendNotificationSynchrnous(String messageBody){
 
-        Intent intent = new Intent(this, ScroggleMultiplayerActivity.class);
+        Intent intent = new Intent(this, PreInitializingGameActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

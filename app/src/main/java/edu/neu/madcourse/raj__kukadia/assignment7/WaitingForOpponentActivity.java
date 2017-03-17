@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.Iterator;
+import java.util.Random;
 
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleStatusAssignment5;
@@ -34,6 +35,9 @@ public class WaitingForOpponentActivity extends Activity{
     private DatabaseReference mRootRef;
     private Boolean firsttime = true;
     public static Boolean finishTheGame = false;
+    private final int MAX_LENGTH = 20;
+    private String gameID;
+    private String user;
 
 
     @Override
@@ -51,11 +55,92 @@ public class WaitingForOpponentActivity extends Activity{
 
         titleName.setTextSize(20);
 
+        Bundle b = getIntent().getExtras();
+        String user = b.getString("UserName");
+
+        gameID = generateRandomNumber();
+
+        writeGameIDToFireBase(gameID, user);
+
         mHandler.postDelayed(mRunnable, 1000);
 
 
     }
 
+
+    private void writeGameIDToFireBase(final String gameID, final String user){
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+
+        GameInfo gi = new GameInfo(null, "no", null);
+       // mRootRef.child("SynchronousGames").child("GameIDs").removeValue();
+        mRootRef.child("SynchronousGames").child(gameID).setValue(gi);
+
+        mRootRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+Log.d("gameID2", gameID);
+
+
+                for(DataSnapshot d : dataSnapshot.getChildren()){
+                    Log.d("gameID3", gameID);
+
+                    if(d.getKey().equals("active users")){
+                        for(DataSnapshot child : d.getChildren()){
+                            Log.d("gameID4", gameID);
+
+                            for(DataSnapshot finalchild : child.getChildren()){
+                                Log.d("gameID5", gameID);
+
+                                if(finalchild.getKey().equals("username")){
+                                    Log.d("gameID6", gameID);
+
+
+                                    if(finalchild.getValue().equals(user)){
+                                        Log.d("gameID7", gameID);
+                                        Log.d("username", user);
+
+                                         mRootRef.child("active users").child(child.getKey()).child("opponent").setValue(gameID);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
+
+
+
+
+    private String generateRandomNumber(){
+        Random generator = new Random();
+        StringBuilder randomStringBuilder = new StringBuilder();
+        int randomLength = generator.nextInt(MAX_LENGTH);
+        char tempChar1;
+        char tempChar2;
+        char tempChar3;
+        for (int i = 0; i < randomLength; i++){
+            tempChar1 = (char) (generator.nextInt(57-48+1) + 48);
+            tempChar2= (char) (generator.nextInt(90-65+1) + 65);
+            tempChar3 = (char) (generator.nextInt(122-97+1) + 97);
+            randomStringBuilder.append((tempChar1+tempChar2+tempChar3));
+        }
+        Log.d("gameID1", randomStringBuilder.toString());
+        return randomStringBuilder.toString();
+    }
 
 
     private Runnable mRunnable = new Runnable() {
@@ -76,16 +161,16 @@ public class WaitingForOpponentActivity extends Activity{
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         Log.d("Arrived.", "here2On");
 
-                        if(child.getKey().equals("GameData")){
+                        if(child.getKey().equals("SynchronousGames")){
                             for(DataSnapshot d : child.getChildren()){
-                                if(d.getKey().equals("msgForOpponent")){
+                                if(d.getKey().equals("aggreed")){
                                     if(d.getValue().equals("yes")){
                                        mHandler.removeCallbacks(mRunnable);
 
                                         if(firsttime){
-                                            mRootRef.child("GameData").child("gamePlaying").setValue("yes");
+                                            setGamePlayingYes();
                                             startActivity(new Intent(WaitingForOpponentActivity.this, ScroggleMultiplayerActivity.class));
-                                        setMsgForOpponentNo();
+                                            setAggreedNo();
                                             firsttime = false;
                                         }
                                         else{
@@ -98,14 +183,6 @@ public class WaitingForOpponentActivity extends Activity{
                                 }
                             }
                         }
-
-
-
-
-
-
-
-
                     }
                 }
 
@@ -130,11 +207,31 @@ public class WaitingForOpponentActivity extends Activity{
 };
 
 
-    private void setMsgForOpponentNo(){
+    private void setGamePlayingYes(){
 
-        mRootRef = FirebaseDatabase.getInstance().getReference();
-        mRootRef.child("GameData")
-                .child("msgForOpponent")
+mRootRef.child("SynchronousGames")
+        .child(gameID)
+        .child("gamePlaying")
+        .runTransaction(new Transaction.Handler(){
+
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                mutableData.setValue("yes");
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+            }
+        });
+    }
+
+    private void setAggreedNo(){
+
+        mRootRef.child("SynchronousGames")
+                .child(gameID)
+                .child("aggreed")
                 .runTransaction(new Transaction.Handler(){
 
                     @Override
@@ -149,9 +246,5 @@ public class WaitingForOpponentActivity extends Activity{
 
                     }
                 });
-
     }
-
-
-
 }
