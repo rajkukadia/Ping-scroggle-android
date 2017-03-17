@@ -7,10 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleAssignment5;
 
 public class ControlFragmentMultiplayer extends Fragment {
+    private DatabaseReference mRootRef;
+    private FirebaseAuth mAuth;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -19,10 +26,16 @@ public class ControlFragmentMultiplayer extends Fragment {
                 inflater.inflate(R.layout.fragment_control_scroggle, container, false);
         View main = rootView.findViewById(R.id.button_main);
         View restart = rootView.findViewById(R.id.button_restart);
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+
+        mAuth = FirebaseAuth.getInstance();
+
 
         main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+mRootRef.child("SynchronousGames").child(ScroggleMultiplayerFragment.gameID).removeValue();
                 getActivity().finish();
             }
         });

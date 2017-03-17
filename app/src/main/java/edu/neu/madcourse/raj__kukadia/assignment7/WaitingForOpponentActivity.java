@@ -34,6 +34,8 @@ public class WaitingForOpponentActivity extends Activity{
     private Handler mHandler = new Handler();
     private DatabaseReference mRootRef;
     private Boolean firsttime = true;
+    private Boolean Once = true;
+
     public static Boolean finishTheGame = false;
     private final int MAX_LENGTH = 20;
     private String gameID;
@@ -44,6 +46,7 @@ public class WaitingForOpponentActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firsttime =true;
+        Once = true;
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_waiting_for_opponent);
 
@@ -99,8 +102,10 @@ Log.d("gameID2", gameID);
                                     if(finalchild.getValue().equals(user)){
                                         Log.d("gameID7", gameID);
                                         Log.d("username", user);
-
-                                         mRootRef.child("active users").child(child.getKey()).child("opponent").setValue(gameID);
+if(Once) {
+    mRootRef.child("active users").child(child.getKey()).child("opponent").setValue(gameID);
+Once = false;
+}
                                     }
                                 }
                             }
@@ -163,22 +168,31 @@ Log.d("gameID2", gameID);
 
                         if(child.getKey().equals("SynchronousGames")){
                             for(DataSnapshot d : child.getChildren()){
-                                if(d.getKey().equals("aggreed")){
-                                    if(d.getValue().equals("yes")){
-                                       mHandler.removeCallbacks(mRunnable);
+                                if(d.getKey().equals(gameID)) {
+                                    for(DataSnapshot data : d.getChildren()) {
+                                        if (data.getKey().equals("aggreed")) {
+                                            if (data.getValue().equals("yes")) {
+                                                mHandler.removeCallbacks(mRunnable);
 
-                                        if(firsttime){
-                                            setGamePlayingYes();
-                                            startActivity(new Intent(WaitingForOpponentActivity.this, ScroggleMultiplayerActivity.class));
-                                            setAggreedNo();
-                                            firsttime = false;
-                                        }
-                                        else{
-                                            //mRootRef.child("GameData").child("gamePlaying").setValue("no");
-                                            //finishTheGame = true;
-                                           // finish();
-                                        }
+                                                if (firsttime) {
+                                                    //setGamePlayingYes();
+                                                    Intent intent = new Intent(WaitingForOpponentActivity.this, ScroggleMultiplayerActivity.class);
+                                                    intent.putExtra("CallingActivity", WaitingForOpponentActivity.class.toString());
+                                                    Log.d("gameID at OnOF", gameID);
 
+                                                    intent.putExtra("GameKey", gameID);
+                                                    startActivity(intent);
+                                                    setAggreedNo();
+                                                    firsttime = false;
+                                                    finish();
+                                                } else {
+                                                    //mRootRef.child("GameData").child("gamePlaying").setValue("no");
+                                                    //finishTheGame = true;
+                                                    // finish();
+                                                }
+
+                                            }
+                                        }
                                     }
                                 }
                             }

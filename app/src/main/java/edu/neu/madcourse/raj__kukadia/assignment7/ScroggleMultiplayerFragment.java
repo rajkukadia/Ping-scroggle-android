@@ -20,10 +20,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -97,8 +100,11 @@ public class ScroggleMultiplayerFragment extends Fragment {
     private DatabaseReference mRootRef;
     private String user_one;
     private String user_two;
-    private String userKey;
+    public static String gameID;
     private String newGameData;
+    private GameInfo gi;
+    private FirebaseAuth mAuth;
+
 
 
 
@@ -117,7 +123,13 @@ public class ScroggleMultiplayerFragment extends Fragment {
         setRetainInstance(true);
         initGame();
         setAdjacencyList();
+        Bundle b = getActivity().getIntent().getExtras();
+        gameID = b.getString("GameKey");
+        Log.d("gameID at frag", gameID);
 
+
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
 
 
 
@@ -130,115 +142,85 @@ public class ScroggleMultiplayerFragment extends Fragment {
 
         saveGameDataOnFireBase();
 
-
-
-
-
-
-        mRootRef.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-            for(DataSnapshot child : dataSnapshot.getChildren()){
-                if(child.getKey().equals("GameData")){
-                    for(DataSnapshot finalChild : child.getChildren()){
-                        if(finalChild.getKey().equals("gamePlaying")){
-
-                          //  if(WaitingForOpponentActivity.finishTheGame==true){
-                            //    getActivity().finish();
-                            //}
-                            if(finalChild.getValue().equals("no")){
-
-                                    triggerOtherPlayer();
-
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
-
-        gameStateChanger();
+        putGameState();
 
     }
 
             private void saveGameDataOnFireBase(){
+                gi = new GameInfo(getState(), "yes", "yes");
 
+                mRootRef.child("SynchronousGames").child(gameID).setValue(gi);
 
+            }
 
+            private void putGameState(){
+                mRootRef.child("SynchronousGames").addChildEventListener(
+                        new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                gi = dataSnapshot.getValue(GameInfo.class);
 
-      //  user_one = OnlineOfflineActivity.getUserOne();
-       // user_two=OnlineOfflineActivity.getUserTwo();
+                                putState(gi.gameState);
 
-
-                final String gameData = getState();
-                newGameData = gameData;
-
-
-        mRootRef = FirebaseDatabase.getInstance().getReference();
-
-
-        mRootRef.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Log.d("Arrived.", "hereOnline");
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Log.d("Arrived.", "here2On");
-
-
-                        if (child.getKey().equals("TwoUsers")) {
-
-                            userKey = child.getValue().toString();
-
-
-
-                            Log.d("Game data", "save and put");
-                            // values.remove();
                             }
 
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                gi = dataSnapshot.getValue(GameInfo.class);
+                                putState(gi.gameState);
+                            }
 
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                          //      mRootRef.child("active users").child(mAuth.getCurrentUser().getUid().toString()).child("opponent").removeValue();
+if(getActivity()!=null) {
+    getActivity().finish();
+}
+
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
                         }
-
-                    }
-
-
-
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        // gameMode = "online";
-        // r1.child("yell");
-        //  if(gameMode.equals("online")) {
-        //  pushNotification(0, tokenOnline);
-        //  startActivity(new Intent(OnlineOfflineActivity.this, WaitingForOpponentActivity.class));
-        // }else {
-        //     pushNotification(0, tokenOffline);
-        // }
-               // mRootRef.child("GameData").child(userKey).setValue(gameData);
-
-               // putState(gameData);
-
-
+                );
             }
 
+
+            private void doTransaction(){
+                mRootRef
+                        .child("SynchronousGames")
+                        .child(gameID)
+                        .child("gameState")
+                        .runTransaction(new Transaction.Handler() {
+                            @Override
+                            public Transaction.Result doTransaction(MutableData mutableData) {
+
+                            gi.gameState = getState();
+                                mutableData.setValue(getState());
+                                return Transaction.success(mutableData);
+                            }
+
+                            @Override
+                            public void onComplete(DatabaseError databaseError, boolean b,
+                                                   DataSnapshot dataSnapshot) {
+
+                            }
+                        });
+            }
+
+
+
+
+/*
     private void gameStateChanger(){
-
-
-
         mRootRef.addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -248,7 +230,7 @@ public class ScroggleMultiplayerFragment extends Fragment {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.d("Arrived.", "here2On");
 
-                   if(child.getKey().equals("GameData")){
+                   if(child.getKey().equals("SynchronousGames")){
 
                        for(DataSnapshot finalChild : child.getChildren()){
                            if(finalChild.getKey().equals(userKey)){
@@ -284,7 +266,7 @@ public class ScroggleMultiplayerFragment extends Fragment {
 
     }
 
-
+*/
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -708,17 +690,11 @@ public class ScroggleMultiplayerFragment extends Fragment {
 
                             makeMove(fLarge, fSmall); //makes the move and sets available the corresponding tile
 
-                            Log.d(userKey, "dddddddddddddddddddddddddddddd");
-
-                           mRootRef.child("GameData").child(userKey).setValue(getState());
-
-                            Log.d(getState(), "check");
-
+                            doTransaction();
 
                             touchedLargeTile =fLarge;
                             touchedSmallTiles[fSmall] = fSmall+1;
                             getButtonText(smallTile);
-
 
                             //think();
                         } else {
@@ -1793,68 +1769,71 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
     /** Restore the state of the game from the given string. */
 
     public void putState(String gameData) {
-        String[] fields = gameData.split(",");
-        //setPhaseTwoLogic();
-        int index = 0;
-       // Object n = (Object)fields[index++];
-        //e=(TextView)n;
+        try {
+            String[] fields = gameData.split(",");
+            //setPhaseTwoLogic();
+            int index = 0;
+            // Object n = (Object)fields[index++];
+            //e=(TextView)n;
 
-        //int availabletilessize = Integer.parseInt((fields[index++]));
-        //for(int i =0;i<availabletilessize;i++){
-          //  mAvailable.add(fields[index++]);
-        //}
-      //   muteMusic = (Button)getActivity().findViewById((R.id.mute));
-       // int level = Integer.parseInt(fields[index++]);
-        //muteMusic.getBackground().setLevel(level);
-        muteClicked = Boolean.parseBoolean(fields[index++]);
-      //  if(muteClicked){
+            //int availabletilessize = Integer.parseInt((fields[index++]));
+            //for(int i =0;i<availabletilessize;i++){
+            //  mAvailable.add(fields[index++]);
+            //}
+            //   muteMusic = (Button)getActivity().findViewById((R.id.mute));
+            // int level = Integer.parseInt(fields[index++]);
+            //muteMusic.getBackground().setLevel(level);
+            muteClicked = Boolean.parseBoolean(fields[index++]);
+            //  if(muteClicked){
 
-           // .mMediaPlayer.pause();
-     //   }
-        gameOver = Boolean.parseBoolean(fields[index++]);
-
-
-        int size = Integer.parseInt(fields[index++]);
-        e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
-
-        e.setText("");
-
-        for(int i = 0; i<size; i++){
-
-            wordsDetectedByUser.put(i, fields[index++]);
-
-            e.append(wordsDetectedByUser.get(i)+" ");
-
-        }
-        notValidWord =Boolean.parseBoolean(fields[index++]);
-        phaseTwo =Boolean.parseBoolean(fields[index++]);
+            // .mMediaPlayer.pause();
+            //   }
+            gameOver = Boolean.parseBoolean(fields[index++]);
 
 
-        currentScore = Integer.parseInt(fields[index++]);
-       t = Integer.parseInt(fields[index++]);
-        int length = Integer.parseInt((fields[index++]));
-        int a[ ]= new int[length];
-        for(int i=0;i<length;i++){
-          a[i]=Integer.parseInt(fields[index++]);
-          DoneTiles.add(a[i]);
-        }
+            int size = Integer.parseInt(fields[index++]);
+            e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
 
-        mLastLarge = Integer.parseInt(fields[index++]);
-        mLastSmall = Integer.parseInt(fields[index++]);
-        for (int large = 0; large < 9; large++) {
-            for (int small = 0; small < 9; small++) {
-                TileMultiplayer.Owner owner = TileMultiplayer.Owner.valueOf(fields[index++]);
-                mSmallTiles[large][small].setOwner(owner);
-               // mSmallTiles[large][small].updateDrawableState(fields[index++].charAt(0), 1);
-                //Log.d(DoneTiles.toString(), "checkkk");
-                // mSmallTiles[large][small].updateDrawableState('a', 0);
+            e.setText("");
+
+            for (int i = 0; i < size; i++) {
+
+                wordsDetectedByUser.put(i, fields[index++]);
+
+                e.append(wordsDetectedByUser.get(i) + " ");
+
             }
-        }
-       //setAvailableFromLastMove(mLastLarge, mLastSmall);
-        //updateAllTiles();
-       setAvailableAccordingToGamePhase(phaseTwo, mLastSmall, mLastLarge, DoneTiles);
-        updateTiles();
+            notValidWord = Boolean.parseBoolean(fields[index++]);
+            phaseTwo = Boolean.parseBoolean(fields[index++]);
 
+
+            currentScore = Integer.parseInt(fields[index++]);
+            t = Integer.parseInt(fields[index++]);
+            int length = Integer.parseInt((fields[index++]));
+            int a[] = new int[length];
+            for (int i = 0; i < length; i++) {
+                a[i] = Integer.parseInt(fields[index++]);
+                DoneTiles.add(a[i]);
+            }
+
+            mLastLarge = Integer.parseInt(fields[index++]);
+            mLastSmall = Integer.parseInt(fields[index++]);
+            for (int large = 0; large < 9; large++) {
+                for (int small = 0; small < 9; small++) {
+                    TileMultiplayer.Owner owner = TileMultiplayer.Owner.valueOf(fields[index++]);
+                    mSmallTiles[large][small].setOwner(owner);
+                    // mSmallTiles[large][small].updateDrawableState(fields[index++].charAt(0), 1);
+                    //Log.d(DoneTiles.toString(), "checkkk");
+                    // mSmallTiles[large][small].updateDrawableState('a', 0);
+                }
+            }
+            //setAvailableFromLastMove(mLastLarge, mLastSmall);
+            //updateAllTiles();
+            setAvailableAccordingToGamePhase(phaseTwo, mLastSmall, mLastLarge, DoneTiles);
+            updateTiles();
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
 

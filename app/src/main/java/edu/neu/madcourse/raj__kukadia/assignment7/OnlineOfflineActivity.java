@@ -69,8 +69,9 @@ public class OnlineOfflineActivity extends Activity{
         titleName.setText("Play with ?");
         titleName.setTextSize(20);
 
+        mAuth = FirebaseAuth.getInstance();
         mRootRef = FirebaseDatabase.getInstance().getReference();
-        mRootRef.child("GameData").child("gamePlaying").setValue("no");
+        //mRootRef.child("GameData").child("gamePlaying").setValue("no");
 
 
         final LinearLayout OnlineFriendList = (LinearLayout)(findViewById(R.id.online_friend_list));
@@ -85,6 +86,7 @@ public class OnlineOfflineActivity extends Activity{
                 Button buttonOnline = new Button(this);
                 final String friendName = MultiPlayerHomePageActivity.OnlineFriends.get(pair.getKey());
                 buttonOnline.setText(friendName);
+                if(friendName.equals(mAuth.getCurrentUser().getDisplayName().toString())){continue;}
                 OnlineFriendList.addView(buttonOnline);
 
                 buttonOnline.setOnClickListener(new View.OnClickListener() {
@@ -115,10 +117,10 @@ public class OnlineOfflineActivity extends Activity{
 
                                             String user = friendName;
                                             passUserNameToFireBaseAndGenerateRandomNumber(user);
-                                            mAuth = FirebaseAuth.getInstance();
-                                            String user1= mAuth.getCurrentUser().getDisplayName();
-                                            mRootRef = FirebaseDatabase.getInstance().getReference();
-                                            mRootRef.child("TwoUsers").setValue(user+"_"+user1);
+                                            //mAuth = FirebaseAuth.getInstance();
+                                            //String user1= mAuth.getCurrentUser().getDisplayName();
+                                            //mRootRef = FirebaseDatabase.getInstance().getReference();
+                                            //mRootRef.child("TwoUsers").setValue(user+"_"+user1);
 
                                              //   setData(user, user1);
 
@@ -192,6 +194,7 @@ public class OnlineOfflineActivity extends Activity{
         Button buttonOffline = new Button(this);
         final String friendNameOffline = MultiPlayerHomePageActivity.OfflineFriends.get(pair.getKey());
         if(MultiPlayerHomePageActivity.OnlineFriends.containsValue(friendNameOffline)){ continue;}
+        if(friendNameOffline.equals(mAuth.getCurrentUser().getDisplayName().toString())){continue;}
         buttonOffline.setText(friendNameOffline);
         OfflineFriendList.addView(buttonOffline);
 
@@ -349,6 +352,13 @@ public class OnlineOfflineActivity extends Activity{
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRootRef.child("active users").child(mAuth.getCurrentUser().getUid().toString()).child("opponent").removeValue();
+
     }
 
     private String convertStreamToString(InputStream is) {
