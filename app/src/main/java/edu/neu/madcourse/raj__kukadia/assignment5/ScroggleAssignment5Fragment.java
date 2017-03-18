@@ -391,7 +391,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
         initViews(rootView);
         loadScores();
-        //updateAllTiles();
+        updateAllTiles();
 
 
 
@@ -428,7 +428,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         score.put("Y", 4);
         score.put("Z", 10);
     }
-/*
+
     private String chooseRandomWord(){
         char stringInMaking[] = new char[9];
         Random randomGenerator = new Random();
@@ -486,7 +486,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         while (i<9);
         return nineNineLetterWords;
     }
-*/
+
     private void initViews(View rootView) {
 
         mEntireBoard.setView(rootView);
@@ -970,7 +970,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         wordsDetectedByUser.clear();
         mHandler.postDelayed(mRunnable, 1000);
 
-       // updateAllTiles();
+        updateAllTiles();
     }
 
     public void initGame() {
@@ -1391,7 +1391,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
         }
     }
 
-    /*
+
     private void updateAllTiles() {
         String[] randomStrings = generateRandomWords();
         char[][] randomStringsCharArray = generateCharArrays(randomStrings);
@@ -1412,7 +1412,7 @@ public class ScroggleAssignment5Fragment extends Fragment {
 
         }
     }
-*/
+
 private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int large, HashSet<Integer> DoneTiles){
     for(int i =0; i<9;i++){
         for(int j = 0; j<9;j++){
@@ -1645,7 +1645,7 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
             }
         }
       //  setAvailableFromLastMove(mLastLarge, mLastSmall);
-        //updateAllTiles();
+      //  updateAllTiles();
        setAvailableAccordingToGamePhase(phaseTwo, mLastSmall, mLastLarge, DoneTiles);
     }
 

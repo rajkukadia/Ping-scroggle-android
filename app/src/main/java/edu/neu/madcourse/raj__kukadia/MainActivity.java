@@ -318,24 +318,24 @@ public void showToast(){
           //  handleLoadingDictionary;
 
 
-/*
+
             setninefile();
-            setthreewordfile();
+           setthreewordfile();
             setfourwordfile();
             setfivewordfile();
             setsixwordfile();
             setsevenfile();
             seteightfile();
             settenfile();
-            setelevenfile();
-            settwelvefile();
-            setthirteenfile();
-            setfourteenfile();
-            setfifteenfile();
-            setsixteentotwentyfile();
-            settwentyonetotwentyfivefile();
-            set25abovewordfile();
-            */
+            //setelevenfile();
+            //settwelvefile();
+            //setthirteenfile();
+            //setfourteenfile();
+            //setfifteenfile();
+            //setsixteentotwentyfile();
+            //settwentyonetotwentyfivefile();
+            //set25abovewordfile();
+
         }
 
 
@@ -615,12 +615,12 @@ public void showToast(){
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //try {
+                try {
 
-                  //  MainActivity.thirteenWords.put(d, d);
-                //}catch(OutOfMemoryError e){
-
-                //}
+                   MainActivity.thirteenWords.put(d, d);
+                }catch(OutOfMemoryError e){
+e.printStackTrace();
+                }
                 }
 
             try {
@@ -660,7 +660,7 @@ public void showToast(){
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-//                MainActivity.fifteenWords.put(d, d);
+                MainActivity.fifteenWords.put(d, d);
 
             }
 
@@ -685,7 +685,7 @@ public void showToast(){
                     e.printStackTrace();
                 }
 
-//                MainActivity.sixteentotwentyWords.put(d, d);
+               MainActivity.sixteentotwentyWords.put(d, d);
 
 
             }
@@ -709,7 +709,7 @@ public void showToast(){
                     e.printStackTrace();
                 }
 
-           //     MainActivity.twentyonetotwentyfiveWords.put(d, d);
+                MainActivity.twentyonetotwentyfiveWords.put(d, d);
 
 
             }

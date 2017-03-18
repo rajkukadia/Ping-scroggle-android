@@ -9,6 +9,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,11 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -104,6 +110,7 @@ public class ScroggleMultiplayerFragment extends Fragment {
     private String newGameData;
     private GameInfo gi;
     private FirebaseAuth mAuth;
+    private Thread loadTheRemainingDictionary;
 
 
 
@@ -139,6 +146,9 @@ public class ScroggleMultiplayerFragment extends Fragment {
         mSoundMiss = mSoundPool.load(getActivity(), R.raw.erkanozan_miss, 1);
         mSoundRewind = mSoundPool.load(getActivity(), R.raw.joanne_rewind, 1);
 
+
+        loadTheRemainingDictionary = new Thread(new RemainingDictionary());
+        loadTheRemainingDictionary.start();
 
         saveGameDataOnFireBase();
 
@@ -1853,6 +1863,133 @@ Log.d("Updating", "drawable state");
     }
 
 
+    class RemainingDictionary implements Runnable {
+
+
+        InputStream is6;
+        InputStream is7;
+        InputStream is8;
+        InputStream is17;
+
+        DataInputStream din6;
+        DataInputStream din7;
+        DataInputStream din17;
+
+        BufferedReader br;
+        InputStreamReader inReader;
+
+        @Override
+        public void run() {
+            createStreams();
+
+            setfifteenfile();
+            setsixteentotwentyfile();
+            settwentyonetotwentyfivefile();
+            set25abovewordfile();
+        }
+
+        private void setfifteenfile(){
+            for (int data = 0; data <11256; data++) {
+                Long d = null;
+                try {
+                    d = din17.readLong();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                MainActivity.fifteenWords.put(d, d);
+
+            }
+
+            try {
+                din17.close();
+                is17.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+        private void setsixteentotwentyfile() {
+
+            for (int data = 1; data <= 14447; data++) {
+                Long d = null;
+                try {
+                    d = din6.readLong();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                MainActivity.sixteentotwentyWords.put(d, d);
+
+
+            }
+
+            try {
+                din6.close();
+                is6.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        private void settwentyonetotwentyfivefile() {
+
+            for (int data = 1; data <= 416; data++) {
+                Long d = null;
+                try {
+                    d = din7.readLong();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                MainActivity.twentyonetotwentyfiveWords.put(d, d);
+
+
+            }
+
+            try {
+                din7.close();
+                is7.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        private void set25abovewordfile() {
+            String line;
+            for (int data = 1; data <= 23; data++) {
+                try {
+                    if ((line = br.readLine()) != null) {
+                        MainActivity.stringWords.put(line, line);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        private void createStreams() {
+            is6 = getResources().openRawResource(R.raw.sixteentotwentywords);
+            is7 = getResources().openRawResource(R.raw.twentyonetotwentyfivewords);
+            is8 = getResources().openRawResource(R.raw.twentyfiveabovewords);
+            is17 = getResources().openRawResource(R.raw.fifteenwords);
+
+
+            inReader = new InputStreamReader(is8);
+            br = new BufferedReader(inReader);
+
+            din6 = new DataInputStream(is6);
+            din7 = new DataInputStream(is7);
+            din17 = new DataInputStream(is17);
+
+        }
+
+    }
 
 }
 
