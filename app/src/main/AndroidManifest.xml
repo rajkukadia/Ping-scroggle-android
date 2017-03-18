@@ -74,27 +74,29 @@
 
         <activity android:name=".assignment7.FCMActivity"
             android:theme="@style/NoTitle"/>
+
         <activity android:name=".assignment7.GoogleSignInActivity"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat"/>
-        <activity android:name=".assignment7.MultiPlayerHomePageActivity"
 
+        <activity android:name=".assignment7.MultiPlayerHomePageActivity"
             android:theme="@style/MainActivityTheme"/>
 
         <activity android:name=".assignment7.MyFriendsActivity"
-
         android:theme="@style/MainActivityTheme"/>
-        <activity android:name=".assignment7.OnlineOfflineActivity"
 
+        <activity android:name=".assignment7.OnlineOfflineActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MainActivityTheme"/>
 
         <activity android:name=".assignment7.ScroggleMultiplayerActivity"
-
+            android:screenOrientation="portrait"
             android:theme="@style/NoTitle"/>
 
 
         <activity android:name=".assignment7.WaitingForOpponentActivity"
-
+            android:screenOrientation="portrait"
             android:theme="@style/MainActivityTheme"/>
 
         <activity android:name=".assignment7.MultiplayerAcknowledgementActivity"
@@ -113,6 +115,7 @@
 
 
         <activity android:name=".assignment7.PreInitializingGameActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoTitle" />
 
 

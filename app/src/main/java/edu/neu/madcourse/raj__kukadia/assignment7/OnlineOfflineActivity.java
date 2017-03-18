@@ -52,6 +52,7 @@ public class OnlineOfflineActivity extends Activity{
     private static int counter = 0;
     private static HashMap<Integer, String> userOneTwo = new HashMap<Integer, String>();
     private Boolean broke = false;
+    private HashMap<String, String> OnlineFriendsCopy = new HashMap<String, String>();
 
 
 
@@ -87,6 +88,7 @@ public class OnlineOfflineActivity extends Activity{
                 final String friendName = MultiPlayerHomePageActivity.OnlineFriends.get(pair.getKey());
                 buttonOnline.setText(friendName);
                 if(friendName.equals(mAuth.getCurrentUser().getDisplayName().toString())){continue;}
+                OnlineFriendsCopy.put(friendName, friendName);
                 OnlineFriendList.addView(buttonOnline);
 
                 buttonOnline.setOnClickListener(new View.OnClickListener() {
@@ -193,6 +195,10 @@ public class OnlineOfflineActivity extends Activity{
 
         Button buttonOffline = new Button(this);
         final String friendNameOffline = MultiPlayerHomePageActivity.OfflineFriends.get(pair.getKey());
+
+        if (OnlineFriendsCopy.containsValue(friendNameOffline)) {
+            continue;
+        }
         if(MultiPlayerHomePageActivity.OnlineFriends.containsValue(friendNameOffline)){ continue;}
         if(friendNameOffline.equals(mAuth.getCurrentUser().getDisplayName().toString())){continue;}
         buttonOffline.setText(friendNameOffline);
