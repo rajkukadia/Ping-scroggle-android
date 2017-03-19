@@ -1538,11 +1538,9 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
 
     /** Create a string containing the state of the game. */
     public String getState() {
-
         StringBuilder builder = new StringBuilder();
-
-     //   builder.append(muteMusic.getBackground().getLevel());
-      //  builder.append(',');
+        //builder.append(muteMusic.getBackground().getLevel());
+        //builder.append(',');
         builder.append(muteClicked);
         builder.append(',');
         builder.append(gameOver);
@@ -1560,8 +1558,8 @@ private void setAvailableAccordingToGamePhase(boolean phaseTwo, int smallx, int 
         builder.append(',');
         builder.append(currentScore); //storing current score
         builder.append(',');
-       builder.append(t); //storing timer state
-     builder.append(',');
+        builder.append(t); //storing timer state
+        builder.append(',');
         Object a[] = DoneTiles.toArray();
         builder.append(a.length);
         builder.append(',');
