@@ -74,7 +74,7 @@ public class WaitingForOpponentActivity extends Activity{
     private void writeGameIDToFireBase(final String gameID, final String user){
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
-        GameInfo gi = new GameInfo(null, "no", null);
+        GameInfo gi = new GameInfo(null, "no", null, null);
        // mRootRef.child("SynchronousGames").child("GameIDs").removeValue();
         mRootRef.child("SynchronousGames").child(gameID).setValue(gi);
 

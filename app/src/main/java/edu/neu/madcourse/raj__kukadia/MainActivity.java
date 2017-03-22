@@ -28,6 +28,7 @@ import java.util.HashMap;
 import edu.neu.madcourse.raj__kukadia.assignment7.FCMActivity;
 import edu.neu.madcourse.raj__kukadia.assignment5.UT3MainActivityScroggleAssignment5;
 import edu.neu.madcourse.raj__kukadia.assignment7.GoogleSignInActivity;
+import edu.neu.madcourse.raj__kukadia.assignment7.SignInActivity;
 
 import java.util.logging.LogRecord;
 

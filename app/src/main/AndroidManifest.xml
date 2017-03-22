@@ -79,6 +79,11 @@
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat"/>
+        <activity android:name=".assignment7.SignInActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat"/>
+
 
         <activity android:name=".assignment7.MultiPlayerHomePageActivity"
             android:theme="@style/MainActivityTheme"/>
