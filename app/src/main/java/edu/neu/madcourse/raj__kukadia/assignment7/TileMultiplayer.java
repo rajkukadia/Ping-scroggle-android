@@ -19,8 +19,8 @@ public class TileMultiplayer {
    }
 
    // These levels are defined in the drawable definitions
-   private static final int LEVEL_X = 0;
-   private static final int LEVEL_O = 1; // letter O
+   private static final int LEVEL_X = 3;
+   private static final int LEVEL_O = 4; // letter O
    private static final int LEVEL_BLANK = 2;
    private static final int LEVEL_CLICKED = 1;
    private static final int LEVEL_NOTCLICKED = 0;
@@ -137,6 +137,13 @@ public class TileMultiplayer {
          case FREEZED:
             level = LEVEL_FREEZED;
             break;
+         case X:
+            level = LEVEL_X;
+            break;
+         case O:
+            level = LEVEL_O;
+            break;
+
 
 
          /*

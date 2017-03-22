@@ -28,6 +28,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import edu.neu.madcourse.raj__kukadia.assignment7.ScroggleMultiplayerActivity;
+
 public class DictionaryAssignment3 extends Activity {
 
     private static int x = 0;
@@ -63,10 +65,15 @@ public class DictionaryAssignment3 extends Activity {
 
         try {
             Bundle b = getIntent().getExtras();
+            if(b.getString("NewCallingActivity").equals(ScroggleMultiplayerActivity.class.toString())) {
+
+                finish();
+            }
+
             if (b.getString("CallingActivity").equals(MainActivity.class.toString())) {
                 finish();
             }
-        }
+                   }
         catch(Exception e){
 
         }

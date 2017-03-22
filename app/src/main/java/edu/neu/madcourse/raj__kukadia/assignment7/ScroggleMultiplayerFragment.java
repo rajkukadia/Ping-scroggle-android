@@ -116,6 +116,9 @@ public class ScroggleMultiplayerFragment extends Fragment {
     private Set<TileMultiplayer> mAvailableForLargeTile= new HashSet<TileMultiplayer>();
     private boolean entryCheck;
     private boolean firstClick = true;
+    private boolean secondClick = true;
+    private Thread openDict ;
+    private boolean repeatClick = false;
 
 
 
@@ -131,10 +134,14 @@ public class ScroggleMultiplayerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        openDict = new Thread(new myThread());
+        openDict.start();
+
 
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
 firstClick = true;
+        repeatClick = false;
 
         initGame();
         setAdjacencyList();
@@ -181,12 +188,15 @@ firstClick = true;
 
                                 putState(gi.gameState);
 
+
                             }
 
                             @Override
                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                                 gi = dataSnapshot.getValue(GameInfo.class);
                                 putState(gi.gameState);
+
+
                             }
 
                             @Override
@@ -610,7 +620,7 @@ mAvailableForLargeTile.add(tile);
 
         initViews(rootView);
         loadScores();
-        updateAllTiles();
+       updateAllTiles();
         saveGameDataOnFireBase();
         putGameState();
 
@@ -711,7 +721,9 @@ mAvailableForLargeTile.add(tile);
     private void setLargeTileOwner(int largeTile){
 
         if(!LargeTileOwner.containsKey(largeTile)){
-        LargeTileOwner.put(largeTile, mAuth.getCurrentUser().getDisplayName().toString());}
+        LargeTileOwner.put(largeTile, mAuth.getCurrentUser().getDisplayName().toString());}else{
+            repeatClick = true;
+        }
 
     }
 
@@ -754,15 +766,19 @@ mAvailableForLargeTile.add(tile);
                         if (entryCheck) {
                            //(getActivity()).startThinking();
                             mSoundPool.play(mSoundX, mVolume, mVolume, 1, 0, 1f);
+                            setLargeTileOwner(fLarge);
 
                             makeMove(fLarge, fSmall); //makes the move and sets available the corresponding tile
 
 
-                            setLargeTileOwner(fLarge);
+
 
                             doTransactionForGameState();   //does getstate putstate
-                           doTransactionForLargeTileOwner();
+                            if(!repeatClick){
+                           doTransactionForLargeTileOwner();}
+                            repeatClick = false;
                            // makeMove(fLarge, fSmall); //makes the move and sets available the corresponding tile
+
 
 
 
@@ -771,6 +787,8 @@ mAvailableForLargeTile.add(tile);
                             getButtonText(smallTile);
 
                             //think();
+                                    setCorrectStates(fLarge);
+
                         } else {
                             mSoundPool.play(mSoundMiss, mVolume, mVolume, 1, 0, 1f);
                         }
@@ -811,7 +829,12 @@ if(LargeTileOwner.containsKey(i)) {
                     public Transaction.Result doTransaction(MutableData mutableData) {
 
                         gi.largeTileOwnerList = getLargeTileOwnerString();
-                        mutableData.setValue(getLargeTileOwnerString());
+                        String currentData ="";
+                        if(mutableData.getValue()!=null){
+                         currentData  = mutableData.getValue().toString();}
+
+                        mutableData.setValue(currentData+getLargeTileOwnerString());
+
                         return Transaction.success(mutableData);
                     }
 
@@ -823,17 +846,23 @@ if(LargeTileOwner.containsKey(i)) {
                 });
     }
 
-    private void setCorrectStates(){
-        for(int large = 0; large<9 ;large++){
+    private void setCorrectStates(int large){
+        for(int l = 0; l<9 ;l++){
             for(int small =0;small<9;small++){
+
+                if(l!=large){
+
+                   TileMultiplayer tile = mSmallTiles[l][small];
+                    if(tile.getOwner().equals(TileMultiplayer.Owner.NOTCLICKED)){
+                       // tile.setOwner(TileMultiplayer.Owner.FREEZED);
+
+                     }
+
+                }
                 TileMultiplayer tile = mSmallTiles[large][small];
                 if(LargeTileOwner.containsKey(large)){
-
-                }else{
-                    tile.setOwner(TileMultiplayer.Owner.FREEZED);
-                    if(mAvailable.contains(tile)){
-                    mAvailable.remove(tile);}
                     tile.updateDrawableState('a', 0);
+
                 }
 
             }
@@ -860,45 +889,41 @@ if(LargeTileOwner.containsKey(i)) {
     if(d.getKey().equals("largeTileOwnerList")){
        final String list = d.getValue().toString();
 
-Log.d("check available values" ,list );
         String[] fields = list.split(",");
         //int index = 0;
         for(int index = 0; index<fields.length;index++){
-            Log.d("hola", "1");
+
             int tileNumber = Integer.parseInt(fields[index++]);
-            String userName = fields[index++];
+            String userName = fields[index];
             for(int largetiles = 0; largetiles<9;largetiles++) {
                 for (int smaltiles = 0; smaltiles < 9; smaltiles++) {
-                    Log.d("hola", "2");
+
                     TileMultiplayer tile = mSmallTiles[largetiles][smaltiles];
                     if (largetiles == tileNumber) {
                         if (userName.equals(mAuth.getCurrentUser().getDisplayName().toString())) {
                             //  tile1.setOwner(TileMultiplayer.Owner.CLICKED);
-                            Log.d("hola", "3");
                             if (!mAvailableForLargeTile.contains(tile)) {
-                                Log.d("hola", "4");
                                 mAvailableForLargeTile.add(tile);
                             }
                             // tile1.updateDrawableState('a', 0);
                         } else {
-                            Log.d("hola", "5");
 
                             if (mAvailableForLargeTile.contains(tile)) {
                                 mAvailableForLargeTile.remove(tile);
                             }
                         }
-                        Log.d("hola", "6");
 
                         tile.updateDrawableState('a', 0);
 
                     }
                     else{
 
-                        tile.setOwner(TileMultiplayer.Owner.NOTCLICKED);
+                       // tile.setOwner(TileMultiplayer.Owner.NOTCLICKED);
                         if (!mAvailableForLargeTile.contains(tile)) {
-                            Log.d("hola", "4");
                             mAvailableForLargeTile.add(tile);
+
                         }
+                      //  mAvailable.add(tile);
 
                         tile.updateDrawableState('a', 0);
 
@@ -963,7 +988,7 @@ Log.d("check available values" ,list );
             //mHandler.removeCallbacks(mRunnable);
             // m1Handler.postDelayed(m1Runnable, 300);
             //  }
-            if (!phaseTwo) {
+
                 //Clearing off redundant buttons
                 for (int i = 0; i < 9; i++) {
                     TileMultiplayer tile = mSmallTiles[touchedLargeTile][i];
@@ -995,6 +1020,24 @@ Log.d("check available values" ,list );
                     }
 
                 }
+/*
+            for(int large = 0; large<9;large++) {
+                for (int small = 0; small < 9; small++) {
+                    if (large != touchedLargeTile) {
+                        TileMultiplayer tile = mSmallTiles[large][small];
+                        if (tile.getOwner() == TileMultiplayer.Owner.CLICKED) {
+                            for(int m = 0; m<9;m++) {
+                                //  if (!phaseTwo) {
+                               TileMultiplayer mtile = mSmallTiles[large][m];
+                                if(mtile.getOwner()!= TileMultiplayer.Owner.CLICKED){
+                                mtile.updateDrawableState(' ', 1);}
+                            }
+                            // }
+
+                        }
+                    }
+                }
+            }*/
                 setAvailableFromLastMove(touchedLargeTile, 0);
 
 
@@ -1003,40 +1046,7 @@ Log.d("check available values" ,list );
                 DictionaryAssignment3.result.setText("");
 
 
-            } else {
-
-                for (int i = 0; i < 9; i++) {
-                    for (int j = 0; j < 9; j++) {
-                        TileMultiplayer tile = mSmallTiles[i][j];
-                        if (tile.getOwner() == TileMultiplayer.Owner.CLICKED) {
-
-                            switch (enteredStringSroggle.length()) {
-                                case 9:
-                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 50);
-                                    break;
-                                case 5:
-                                case 6:
-                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 5);
-                                    break;
-                                case 7:
-                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 20);
-                                    break;
-                                case 8:
-                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 30);
-                                    break;
-
-                                default:
-                                    updateScore(((Button) mSmallTiles[i][j].getView()).getText().toString(), 1);
-
-                            }
-                            DictionaryAssignment3.result.setText("");
-
-                        }
-                    }
-                }
-
-            }
-        } else {
+            }  else {
             // canShowDialogBox= true;
             //    if (!notValidWord ) {
             //  canShowDialogBox =false;
@@ -1053,7 +1063,6 @@ Log.d("check available values" ,list );
             }
             if (atLeastOneClicked) {
                 atLeastOneClicked = false;
-                if(!phaseTwo){
                 if(popup) {
                     popup = false;
                     e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
@@ -1079,37 +1088,6 @@ Log.d("check available values" ,list );
                         tiles.setOwner(TileMultiplayer.Owner.NOTCLICKED);
                         tiles.updateDrawableState('a', 0);
                         addAvailable(tiles);}
-                }}
-                else{
-                    e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
-                    // e.a ppend(" ");
-                    TileMultiplayer tile = mLargeTiles[touchedLargeTile];
-                    builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Not a Valid Word !");
-                    builder.setCancelable(false);
-                    builder.setPositiveButton(R.string.ok_label,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                }
-                            });
-                    mDialog = builder.show();
-
-                    // for(int i =0;i<3;i++){
-                   // tile.animate();
-                    for (int i = 0; i < 9; i++) {
-                        for (int j = 0; j < 9; j++) {
-                            TileMultiplayer tiles = mSmallTiles[i][j];
-                            if (tiles.getOwner() == TileMultiplayer.Owner.CLICKED) {
-                                tiles.setOwner(TileMultiplayer.Owner.NOTCLICKED);
-                            }
-                            tiles.updateDrawableState('a', 0);
-
-
-                        }
-                    }
-
                 }
 
                     //try {
@@ -1147,50 +1125,6 @@ Log.d("check available values" ,list );
             }
 
         }
-        if(phaseTwo){
-
-            for(int i = 0; i<9 ; i++) {
-                for (int dest = 0; dest < 9; dest++) {
-                    TileMultiplayer tile = mSmallTiles[i][dest];
-                    if (tile.getOwner() == TileMultiplayer.Owner.CLICKED) {
-                        tile.setOwner(TileMultiplayer.Owner.NOTCLICKED);
-                        if (mAvailable.contains(tile)) {
-                            mAvailable.remove(tile);
-                        }
-                        tile.updateDrawableState(' ', 1);
-                    } else {
-                        if(((Button)mSmallTiles[i][dest].getView()).getText().charAt(0)==' '){
-                            mAvailable.remove(tile);
-                        }else{
-                        addAvailable(tile);}
-                        tile.setOwner(TileMultiplayer.Owner.NOTCLICKED);
-                        tile.updateDrawableState('a', 0);
-                    }
-                }
-            }
-
-        }
-
-        //if same word is entered again
-   /*     if(notValidWord){
-            notValidWord = false;
-            for(int i = 0; i<9 ; i++) {
-                for (int dest = 0; dest < 9; dest++) {
-                    ileAssignment5 tile = mSmallTiles[i][dest];
-                    if((tile.getOwner()== ileAssignment5.Owner.CLICKED)||(tile.getOwner()== ileAssignment5.Owner.FREEZED)){
-                        tile.setOwner(ileAssignment5.Owner.NOTCLICKED);
-  delete                      tile.updateDrawableState('a', 0);
-                    }
-                    if(((Button)tile.getView()).getText().charAt(0)==' '){
-                        mAvailable.remove(tile);
-                    }else {
-                        addAvailable(tile);
-                    }
-                }
-            }
-       }*/
-    // done = false;
-
 
 
         if (!phaseTwo) {
@@ -1212,6 +1146,8 @@ Log.d("check available values" ,list );
         DictionaryAssignment3.result.setText("");
 
         enteredStringSroggle = "";
+
+doTransactionForGameState();
     }
 
 
@@ -1334,6 +1270,7 @@ Log.d("check available values" ,list );
             (getActivity()).reportWinner(winner);
         }
         */
+
 
 }
 
@@ -1490,8 +1427,17 @@ Log.d("check available values" ,list );
                                 if (DoneTiles.contains(i)) {
                                     continue;
                                 }
-                                TileMultiplayer tile = mSmallTiles[i][dest];
-                                tile.setOwner(TileMultiplayer.Owner.FREEZED);
+
+
+                                        TileMultiplayer tile = mSmallTiles[i][dest];
+                                       // if(tile.getOwner().equals(TileMultiplayer.Owner.NOTCLICKED)){
+                                        //     tile.setOwner(TileMultiplayer.Owner.FREEZED);
+
+                                       // }
+
+                               // TileMultiplayer tile = mSmallTiles[i][dest];
+                               // tile.setOwner(TileMultiplayer.Owner.FREEZED);
+                             //  mAvailable.add(tile);
                                 tile.updateDrawableState('a', 0);
                             }
                         } else { //OnDOnePressed
@@ -1502,10 +1448,16 @@ Log.d("check available values" ,list );
                             //  Log.d("Comes ", "Hereeee");
                             if (i != large) {//Correct answer
                                 TileMultiplayer tile = mSmallTiles[i][dest];
-                                tile.setOwner(TileMultiplayer.Owner.NOTCLICKED);
-                                addAvailable(tile);
-                                tile.updateDrawableState('a', 0);
-                                //done =false;
+
+                                if(tile.getOwner()== TileMultiplayer.Owner.CLICKED){
+                                    continue;
+                                }else {
+
+                                    tile.setOwner(TileMultiplayer.Owner.NOTCLICKED);
+                                    addAvailable(tile);
+                                    tile.updateDrawableState('a', 0);
+                                    //done =false;
+                                }
                             }
                         }
 
@@ -1851,43 +1803,13 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
         builder.append(',');
         for (int large = 0; large < 9; large++) {
             for (int small = 0; small < 9; small++) {
-
+                builder.append(mSmallTiles[large][small].getOwner().name());
+                builder.append(',');
                 builder.append((((Button)mSmallTiles[large][small].getView()).getText()).toString());
                 builder.append(',');
                 //Log.d(DoneTiles);
             }
         }
-
-        int c=0;
-
-        for (int large = 0; large < 9; large++) {
-            for (int small = 0; small < 9; small++) {
-                if(mSmallTiles[large][small].getOwner().name()== TileAssignment5.Owner.CLICKED.toString()) {
-
-                c++;
-                }
-
-                }
-        }
-
-        builder.append(c);
-        builder.append(',');
-
-        for (int large = 0; large < 9; large++) {
-            for (int small = 0; small < 9; small++) {
-                if (mSmallTiles[large][small].getOwner().name() == TileAssignment5.Owner.CLICKED.toString()) {
-                    builder.append(large);
-                    builder.append(',');
-                    builder.append(small);
-                    builder.append(',');
-                    builder.append(mSmallTiles[large][small].getOwner().name());
-                    builder.append(',');
-                }
-            }
-        }
-
-
-Log.d(builder.toString(), "chek ful");
                 return builder.toString();
     }
 
@@ -1952,23 +1874,14 @@ Log.d(builder.toString(), "chek ful");
             mLastSmall = Integer.parseInt(fields[index++]);
             for (int large = 0; large < 9; large++) {
                 for (int small = 0; small < 9; small++) {
-                     mSmallTiles[large][small].updateDrawableState(fields[index++].charAt(0), 1);
+                    TileMultiplayer.Owner owner = TileMultiplayer.Owner.valueOf(fields[index++]);
+                    mSmallTiles[large][small].setOwner(owner);
+                    mSmallTiles[large][small].updateDrawableState(fields[index++].charAt(0), 1);
                     //Log.d(DoneTiles.toString(), "checkkk");
                     // mSmallTiles[large][small].updateDrawableState('a', 0);
                 }
             }
-            //setAvailableFromLastMove(mLastLarge, mLastSmall);
-            //updateAllTiles();
 
-            int c = Integer.parseInt(fields[index++]);
-
-while(c!=0){
-    int large = Integer.parseInt(fields[index++]);
-    int small = Integer.parseInt(fields[index++]);
-                    TileMultiplayer.Owner owner = TileMultiplayer.Owner.valueOf(fields[index++]);
-                    mSmallTiles[large][small].setOwner(owner);
-c--;
-                }
 
             setAvailableAccordingToGamePhase(mLastSmall, mLastLarge, DoneTiles);
            // updateTiles();
@@ -2121,6 +2034,20 @@ Log.d("Updating", "drawable state");
         }
 
     }
+
+    class myThread implements Runnable{
+
+
+        @Override
+        public void run() {
+            Intent intent1 = new Intent(getActivity(), DictionaryAssignment3.class);
+            intent1.putExtra("NewCallingActivity", ScroggleMultiplayerActivity.class.toString());
+            startActivity(intent1);
+        }
+    }
+
+
+
 
 }
 
