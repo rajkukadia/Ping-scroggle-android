@@ -174,7 +174,8 @@ public class ScroggleAssignment5Fragment extends Fragment {
             muteMusic.setImageLevel(0);
         }
         if(!gameOver){
-        getCounter();}
+       getCounter();
+            }
     }
 
     private void RunAnimation(TextView v)

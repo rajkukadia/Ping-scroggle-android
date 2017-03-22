@@ -1,7 +1,9 @@
 
 package edu.neu.madcourse.raj__kukadia.assignment7;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,9 +36,8 @@ public class ControlFragmentMultiplayer extends Fragment {
         main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+confirm();
 
-mRootRef.child("SynchronousGames").child(ScroggleMultiplayerFragment.gameID).removeValue();
-                getActivity().finish();
             }
         });
         restart.setOnClickListener(new View.OnClickListener() {
@@ -47,5 +48,29 @@ mRootRef.child("SynchronousGames").child(ScroggleMultiplayerFragment.gameID).rem
         });
         return rootView;
     }
+
+    private void confirm(){
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        mRootRef.child("SynchronousGames").child(ScroggleMultiplayerFragment.gameID).removeValue();
+                        getActivity().finish();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+    }
+
 
 }

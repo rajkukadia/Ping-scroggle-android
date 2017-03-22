@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +41,8 @@ public class WaitingForOpponentActivity extends Activity{
     private final int MAX_LENGTH = 20;
     private String gameID;
     private String user;
+    private FirebaseAuth mAuth;
+
 
 
     @Override
@@ -64,6 +67,11 @@ public class WaitingForOpponentActivity extends Activity{
         gameID = generateRandomNumber();
 
         writeGameIDToFireBase(gameID, user);
+        mAuth = FirebaseAuth.getInstance();
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+
+      //  mRootRef.child("SynchronousGames").child(gameID).child("userA").setValue(mAuth.getCurrentUser().getDisplayName().toString());
+
 
         mHandler.postDelayed(mRunnable, 1000);
 
@@ -74,7 +82,7 @@ public class WaitingForOpponentActivity extends Activity{
     private void writeGameIDToFireBase(final String gameID, final String user){
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
-        GameInfo gi = new GameInfo(null, "no", null, null);
+        GameInfo gi = new GameInfo(null, "no", null, null, null, null);
        // mRootRef.child("SynchronousGames").child("GameIDs").removeValue();
         mRootRef.child("SynchronousGames").child(gameID).setValue(gi);
 
@@ -178,6 +186,7 @@ Once = false;
                                                     //setGamePlayingYes();
                                                     Intent intent = new Intent(WaitingForOpponentActivity.this, ScroggleMultiplayerActivity.class);
                                                     intent.putExtra("CallingActivity", WaitingForOpponentActivity.class.toString());
+                                                    intent.putExtra("username", mAuth.getCurrentUser().getDisplayName().toString());
                                                     Log.d("gameID at OnOF", gameID);
 
                                                     intent.putExtra("GameKey", gameID);

@@ -23,7 +23,8 @@ public class ControlFragmentAssignment5 extends Fragment {
       main.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View view) {
-            getActivity().finish();
+            confirm();
+            //getActivity().finish();
          }
       });
       restart.setOnClickListener(new View.OnClickListener() {
@@ -33,6 +34,10 @@ public class ControlFragmentAssignment5 extends Fragment {
          }
       });
       return rootView;
+   }
+
+   private void confirm(){
+
    }
 
 }
