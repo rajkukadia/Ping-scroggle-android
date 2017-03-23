@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +35,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
 
     private DatabaseReference mRootRef;
     private HashMap<Integer, String> gameMode = new HashMap<Integer, String>();
-
+    private FirebaseAuth mAuth;
 
     private static final String TAG = WordGameMessagingService.class.getSimpleName();
 
@@ -59,21 +60,29 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
+        String gameID="";
+        String userOne="";
+        String userTwo="";
+        String notifier="";
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             Map jData = remoteMessage.getData();
-            String gameID = jData.get("GameKey").toString();
-            String userOne = jData.get("usserOne").toString();
-            String userTwo = jData.get("userTwo").toString();
-            sendNotificationAsyncGamePlay(gameID, userOne, userTwo);
+           gameID = jData.get("GameKey").toString();
+             userOne = jData.get("userOne").toString();
+             userTwo = jData.get("userTwo").toString();
+            notifier = jData.get("notifier").toString();
         }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            final String gameKey = gameID;
+            final String userA = userOne;
+            final String userB = userTwo;
+            final String mNotifier = notifier;
             mRootRef = FirebaseDatabase.getInstance().getReference();
 
 
@@ -89,8 +98,11 @@ public class WordGameMessagingService extends FirebaseMessagingService {
                            gameMode.put(1,child.getValue().toString());
 
                             if(gameMode.get(1).equals("offline")){
-                                sendNotificationAsyncGameStart(remoteMessage.getNotification().getBody());
-
+                                if(remoteMessage.getData().size()>0){
+                                    sendNotificationAsyncGamePlay(gameKey, userA, userB, mNotifier);
+                                }else {
+                                    sendNotificationAsyncGameStart(remoteMessage.getNotification().getBody());
+                                }
                             }
                             if(gameMode.get(1).equals("online")){
                                 sendNotificationSynchrnous(remoteMessage.getNotification().getBody());
@@ -132,7 +144,8 @@ public class WordGameMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendNotificationAsyncGameStart(String messageBody) {
-        Intent intent = new Intent(this, GoogleSignInActivity.class);
+
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -154,16 +167,30 @@ public class WordGameMessagingService extends FirebaseMessagingService {
     }
 
 
-    private void sendNotificationAsyncGamePlay(String gameID,String userOne, String userTwo) {
+    private void sendNotificationAsyncGamePlay(String gameID,String userOne, String userTwo, String notifier) {
 
-        Intent intent = new Intent(this, ScroggleMultiplayerAsyncActivity.class);
-        intent.putExtra("GameKey", gameID);
-        intent.putExtra("userOne", userOne);
-        intent.putExtra("userTwo", userTwo);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+        mAuth = FirebaseAuth.getInstance();
+        PendingIntent pendingIntent;
 
+        if(mAuth.getCurrentUser()!=null) {
+            Intent intent = new Intent(this, ScroggleMultiplayerAsyncActivity.class);
+            intent.putExtra("GameKey", gameID);
+            intent.putExtra("userOne", userOne);
+            intent.putExtra("userTwo", userTwo);
+            intent.putExtra("notifier", notifier);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+        }else{
+            Intent intent = new Intent(this, GoogleSignInActivity.class);
+            intent.putExtra("GameKey", gameID);
+            intent.putExtra("userOne", userOne);
+            intent.putExtra("userTwo", userTwo);
+            intent.putExtra("notifier", notifier);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+        }
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)

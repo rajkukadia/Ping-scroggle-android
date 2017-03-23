@@ -1463,7 +1463,15 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
     for(int i =0; i<9;i++){
         for(int j = 0; j<9;j++){
             TileMultiplayer tile = mSmallTiles[i][j];
+            if((tile.getOwner()== TileMultiplayer.Owner.X)||(tile.getOwner()== TileMultiplayer.Owner.O)){
+                if(!DoneTiles.contains(i)){
+                    mAvailable.add(tile);}else
+                {
+                    mAvailable.remove(tile);
 
+                }
+                //  mAvailable.remove(tile);
+            }
 
 
               if(i==large) {
@@ -1566,15 +1574,7 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
 
 
 
-            if((tile.getOwner()== TileMultiplayer.Owner.X)||(tile.getOwner()== TileMultiplayer.Owner.O)){
-                if(!DoneTiles.contains(i)){
-                mAvailable.add(tile);}else
-                {
-                    mAvailable.remove(tile);
 
-            }
-                //  mAvailable.remove(tile);
-            }
         }
     }
 }
