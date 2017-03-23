@@ -11,15 +11,26 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.HashMap;
+import java.util.Iterator;
+
+import edu.neu.madcourse.raj__kukadia.MainActivity;
 import edu.neu.madcourse.raj__kukadia.R;
 
 public class WordGameMessagingService extends FirebaseMessagingService {
 
     private static final String KEY_TEXT_REPLY = "key_text_reply";
 
+    private DatabaseReference mRootRef;
+    private HashMap<Integer, String> gameMode = new HashMap<Integer, String>();
 
 
     private static final String TAG = WordGameMessagingService.class.getSimpleName();
@@ -31,7 +42,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
      */
     // [START receive_message]
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(final RemoteMessage remoteMessage) {
         // [START_EXCLUDE]
         // There are two types of messages data messages and notification messages. Data messages are handled
         // here in onMessageReceived whether the app is in the foreground or background. Data messages are the type
@@ -45,6 +56,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
+        mRootRef = FirebaseDatabase.getInstance().getReference();
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
@@ -54,10 +66,49 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            if(OnlineOfflineActivity.gameMode.equals("offline")){
-            sendNotification(remoteMessage.getNotification().getBody());}
-            else{
-            sendNotificationSynchrnous(remoteMessage.getNotification().getBody());}
+            mRootRef = FirebaseDatabase.getInstance().getReference();
+
+
+            mRootRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                        if(child.getKey().equals("gameMode")){
+                           gameMode.put(1,child.getValue().toString());
+
+                            if(gameMode.get(1).equals("offline")){
+                                sendNotification(remoteMessage.getNotification().getBody());
+
+                            }
+                            if(gameMode.get(1).equals("online")){
+                                sendNotificationSynchrnous(remoteMessage.getNotification().getBody());
+
+                            }
+
+                        }
+
+                                }
+
+
+
+
+                        }
+
+
+
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+
         }
 
 
@@ -81,7 +132,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
               //  .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Want to play?")
+                .setContentTitle("Scroggle")
                 .setContentText(messageBody)
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setAutoCancel(true)

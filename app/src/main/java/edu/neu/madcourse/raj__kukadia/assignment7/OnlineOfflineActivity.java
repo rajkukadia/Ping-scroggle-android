@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Scanner;
 
 import edu.neu.madcourse.raj__kukadia.R;
@@ -53,7 +55,7 @@ public class OnlineOfflineActivity extends Activity{
     private static HashMap<Integer, String> userOneTwo = new HashMap<Integer, String>();
     private Boolean broke = false;
     private HashMap<String, String> OnlineFriendsCopy = new HashMap<String, String>();
-
+    private boolean Once = true;
 
 
 
@@ -70,6 +72,7 @@ public class OnlineOfflineActivity extends Activity{
         titleName.setText("Play with ?");
         titleName.setTextSize(20);
 
+        Once = true;
         mAuth = FirebaseAuth.getInstance();
         mRootRef = FirebaseDatabase.getInstance().getReference();
         //mRootRef.child("GameData").child("gamePlaying").setValue("no");
@@ -224,27 +227,34 @@ public class OnlineOfflineActivity extends Activity{
 
                                 if (finalvalue.getValue().equals(friendNameOffline)) {
                                     Log.d("Arrived.", "here4Off");
-                                    Iterable<DataSnapshot> i = child.getChildren();
 
-                                    Iterator values = i.iterator();
-                                    while (values.hasNext()) {
+                                    if (Once) {
+                                        passUserNameToFireBaseAndGenerateRandomNumberForAsync(friendNameOffline);
+
+                                        Iterable<DataSnapshot> i = child.getChildren();
+
+                                        Iterator values = i.iterator();
+                                        while (values.hasNext()) {
 
 
-                                        DataSnapshot d = (DataSnapshot) values.next();
+                                            DataSnapshot d = (DataSnapshot) values.next();
 
-                                        if (d.getKey().equals("token")) {
-                                            tokenOffline = d.getValue().toString();
-                                            Log.d("Token req is: ", tokenOffline);
-                                            pushNotification(0, tokenOffline);
-                                            break;
+                                            if (d.getKey().equals("token")) {
+                                                tokenOffline = d.getValue().toString();
+                                                Log.d("Token req is: ", tokenOffline);
+                                                pushNotificationAsync(0, tokenOffline);
+                                                break;
+
+                                            }
+
+
+                                            // values.remove();
 
                                         }
-                                        // values.remove();
-
+                                        Once = false;
+                                    }
                                     }
 
-
-                                }
 
                             }
 
@@ -276,7 +286,27 @@ public class OnlineOfflineActivity extends Activity{
         }
 
 
+    private void passUserNameToFireBaseAndGenerateRandomNumberForAsync(String user){
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+mRootRef.child("gameMode").setValue("offline");
+
+
+        Intent intent = new Intent(OnlineOfflineActivity.this, AsyncStartActivity.class);
+        intent.putExtra("UserName", user);
+        startActivity(intent);
+
+
+    }
+
+
+
+
+
+
     private void passUserNameToFireBaseAndGenerateRandomNumber(String user){
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        mRootRef.child("gameMode").setValue("online");
+
         Intent intent = new Intent(OnlineOfflineActivity.this, WaitingForOpponentActivity.class);
         intent.putExtra("UserName", user);
         startActivity(intent);
@@ -291,6 +321,15 @@ public class OnlineOfflineActivity extends Activity{
 
     }
 
+    private void pushNotificationAsync(int i, String token){
+        final String final_token = token;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                pushNotificationAsync(final_token);
+            }
+        }).start();
+    }
 
     private void pushNotification(int i, String token) {
         final String final_token = token;
@@ -300,6 +339,65 @@ public class OnlineOfflineActivity extends Activity{
                 pushNotification(final_token);
             }
         }).start();
+    }
+
+
+    private void pushNotificationAsync(String token){
+        //     Log.d(user_one,"User One");
+        //    Log.d(user_two, "User Two");
+        JSONObject jPayload = new JSONObject();
+        JSONObject jNotification = new JSONObject();
+        try {
+            jNotification.put("title", "Scroggle");
+            jNotification.put("body", mAuth.getCurrentUser().getDisplayName().toString()+" has initiated a game with you");
+            jNotification.put("sound", "default");
+            jNotification.put("badge", "1");
+            jNotification.put("click_action", "OPEN_ACTIVITY_1");
+
+            // If sending to a single client
+            // if(token!=null){
+            //Log.d("finalllllll tokeennnn", token);}
+            jPayload.put("to", token);
+
+            /*
+            // If sending to multiple clients (must be more than 1 and less than 1000)
+            JSONArray ja = new JSONArray();
+            ja.put(CLIENT_REGISTRATION_TOKEN);
+            // Add Other client tokens
+            ja.put(FirebaseInstanceId.getInstance().getToken());
+            jPayload.put("registration_ids", ja);
+            */
+
+            jPayload.put("priority", "high");
+            jPayload.put("notification", jNotification);
+
+            URL url = new URL("https://fcm.googleapis.com/fcm/send");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", SERVER_KEY);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            // Send FCM message content.
+            OutputStream outputStream = conn.getOutputStream();
+            outputStream.write(jPayload.toString().getBytes());
+            outputStream.close();
+
+            // Read FCM response.
+            InputStream inputStream = conn.getInputStream();
+            final String resp = convertStreamToString(inputStream);
+
+            Handler h = new Handler(Looper.getMainLooper());
+            h.post(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e(TAG, "run: " + resp);
+                    Toast.makeText(OnlineOfflineActivity.this,resp,Toast.LENGTH_LONG);
+                }
+            });
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void pushNotification(String token) {
@@ -363,6 +461,9 @@ public class OnlineOfflineActivity extends Activity{
     @Override
     protected void onResume() {
         super.onResume();
+        Once = true;
+        mRootRef.child("All Users").child(mAuth.getCurrentUser().getUid().toString()).child("opponent").removeValue();
+
         mRootRef.child("active users").child(mAuth.getCurrentUser().getUid().toString()).child("opponent").removeValue();
 
     }

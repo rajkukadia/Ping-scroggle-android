@@ -43,7 +43,7 @@ public class ScroggleMultiplayerActivity extends Activity {
             }
         }
         else{
-            ScroggleAssignment5Fragment.currentScore=0;
+            ScroggleMultiplayerFragment.currentScore=0;
         }
 
 
@@ -53,7 +53,7 @@ public class ScroggleMultiplayerActivity extends Activity {
 
 
     public void restartGame() {
-        mGameFragment.restartGame();
+      //  mGameFragment.restartGame();
     }
 
     @Override

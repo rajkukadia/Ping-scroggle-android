@@ -25,9 +25,9 @@ public class ControlFragmentMultiplayer extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView =
-                inflater.inflate(R.layout.fragment_control_scroggle, container, false);
-        View main = rootView.findViewById(R.id.button_main);
-        View restart = rootView.findViewById(R.id.button_restart);
+                inflater.inflate(R.layout.fragment_control_scroggle_multiplayer, container, false);
+        View main = rootView.findViewById(R.id.button_main_multiplayer);
+    //    View restart = rootView.findViewById(R.id.button_restart);
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
         mAuth = FirebaseAuth.getInstance();
@@ -40,12 +40,12 @@ confirm();
 
             }
         });
-        restart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((ScroggleMultiplayerActivity) getActivity()).restartGame();
-            }
-        });
+      //  restart.setOnClickListener(new View.OnClickListener() {
+         ///   @Override
+           // public void onClick(View view) {
+       //         ((ScroggleMultiplayerActivity) getActivity()).restartGame();
+      //      }
+     //   });
         return rootView;
     }
 

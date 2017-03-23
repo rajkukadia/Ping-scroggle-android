@@ -44,6 +44,7 @@ public class TileMultiplayer {
    private InstructionsActivityAssignment5 iGame;
 
    private ScroggleMultiplayerFragment mGame;
+   private ScroggleMultiplayerAsyncFragment aGame;
    private Owner mOwner = Owner.NOTCLICKED;
    public View mView;
    private TileMultiplayer mSubTiles[];
@@ -51,6 +52,10 @@ public class TileMultiplayer {
 
    public TileMultiplayer(InstructionsActivityAssignment5 game) {
       this.iGame = game;
+   }
+
+   public TileMultiplayer(ScroggleMultiplayerAsyncFragment game) {
+      this.aGame = game;
    }
 
 

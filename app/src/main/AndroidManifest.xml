@@ -99,6 +99,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitle"/>
 
+        <activity android:name=".assignment7.ScroggleMultiplayerAsyncActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitle"/>
+
+
+        <activity android:name=".assignment7.AsyncStartActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitle"/>
+
+
 
         <activity android:name=".assignment7.WaitingForOpponentActivity"
             android:screenOrientation="portrait"
