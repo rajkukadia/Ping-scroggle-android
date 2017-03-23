@@ -19,8 +19,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import edu.neu.madcourse.raj__kukadia.MainActivity;
 import edu.neu.madcourse.raj__kukadia.R;
@@ -61,6 +64,11 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            Map jData = remoteMessage.getData();
+            String gameID = jData.get("GameKey").toString();
+            String userOne = jData.get("usserOne").toString();
+            String userTwo = jData.get("userTwo").toString();
+            sendNotificationAsyncGamePlay(gameID, userOne, userTwo);
         }
 
         // Check if message contains a notification payload.
@@ -69,7 +77,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             mRootRef = FirebaseDatabase.getInstance().getReference();
 
 
-            mRootRef.addValueEventListener(new ValueEventListener() {
+            mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -81,7 +89,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
                            gameMode.put(1,child.getValue().toString());
 
                             if(gameMode.get(1).equals("offline")){
-                                sendNotification(remoteMessage.getNotification().getBody());
+                                sendNotificationAsyncGameStart(remoteMessage.getNotification().getBody());
 
                             }
                             if(gameMode.get(1).equals("online")){
@@ -123,7 +131,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
+    private void sendNotificationAsyncGameStart(String messageBody) {
         Intent intent = new Intent(this, GoogleSignInActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -143,6 +151,36 @@ public class WordGameMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+
+    private void sendNotificationAsyncGamePlay(String gameID,String userOne, String userTwo) {
+
+        Intent intent = new Intent(this, ScroggleMultiplayerAsyncActivity.class);
+        intent.putExtra("GameKey", gameID);
+        intent.putExtra("userOne", userOne);
+        intent.putExtra("userTwo", userTwo);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                //  .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Scroggle")
+                .setContentText("Your turn")
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+
     }
 
 

@@ -4,18 +4,15 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,12 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import edu.neu.madcourse.raj__kukadia.assignment7.FCMActivity;
+
 import edu.neu.madcourse.raj__kukadia.assignment5.UT3MainActivityScroggleAssignment5;
 import edu.neu.madcourse.raj__kukadia.assignment7.GoogleSignInActivity;
-import edu.neu.madcourse.raj__kukadia.assignment7.SignInActivity;
-
-import java.util.logging.LogRecord;
 
 
 public class MainActivity extends Activity implements View.OnClickListener {

@@ -289,6 +289,17 @@ public class TileMultiplayer {
       return 0;
    }
 
+
+   public void animateAsync(){
+      Animator anim = AnimatorInflater.loadAnimator(aGame.getActivity(),
+              R.animator.tictactoe);
+      if (getView() != null) {
+         anim.setTarget(getView());
+         anim.start();
+      }
+   }
+
+
    public void animate() {
       Animator anim = AnimatorInflater.loadAnimator(mGame.getActivity(),
               R.animator.tictactoe);
