@@ -64,6 +64,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         String userOne="";
         String userTwo="";
         String notifier="";
+        String gameState="";
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
         // Check if message contains a data payload.
@@ -74,6 +75,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
              userOne = jData.get("userOne").toString();
              userTwo = jData.get("userTwo").toString();
             notifier = jData.get("notifier").toString();
+            gameState = jData.get("gameState").toString();
         }
 
         // Check if message contains a notification payload.
@@ -83,6 +85,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             final String userA = userOne;
             final String userB = userTwo;
             final String mNotifier = notifier;
+            final String mGameState = gameState;
             mRootRef = FirebaseDatabase.getInstance().getReference();
 
 
@@ -99,7 +102,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
 
                             if(gameMode.get(1).equals("offline")){
                                 if(remoteMessage.getData().size()>0){
-                                    sendNotificationAsyncGamePlay(gameKey, userA, userB, mNotifier);
+                                    sendNotificationAsyncGamePlay(gameKey, userA, userB, mNotifier, mGameState);
                                 }else {
                                     sendNotificationAsyncGameStart(remoteMessage.getNotification().getBody());
                                 }
@@ -167,7 +170,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
     }
 
 
-    private void sendNotificationAsyncGamePlay(String gameID,String userOne, String userTwo, String notifier) {
+    private void sendNotificationAsyncGamePlay(String gameID,String userOne, String userTwo, String notifier, String gameState) {
 
         mAuth = FirebaseAuth.getInstance();
         PendingIntent pendingIntent;
@@ -178,6 +181,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             intent.putExtra("userOne", userOne);
             intent.putExtra("userTwo", userTwo);
             intent.putExtra("notifier", notifier);
+            intent.putExtra("gameState", gameState);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                     PendingIntent.FLAG_ONE_SHOT);
@@ -187,6 +191,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             intent.putExtra("userOne", userOne);
             intent.putExtra("userTwo", userTwo);
             intent.putExtra("notifier", notifier);
+            intent.putExtra("gameState", gameState);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                     PendingIntent.FLAG_ONE_SHOT);
