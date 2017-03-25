@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import edu.neu.madcourse.raj__kukadia.R;
@@ -23,6 +24,8 @@ public class ScroggleMultiplayerActivity extends Activity {
     public static MediaPlayer mMediaPlayer;
     private Handler mHandler = new Handler();
     private ScroggleMultiplayerFragment mGameFragment;
+    private DatabaseReference mRootRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,8 @@ public class ScroggleMultiplayerActivity extends Activity {
 
         //getActionBar().setTitle("Ultimate Tic Tac Toe");
         setContentView(R.layout.activity_scroggle_multiplayer);
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+
         mGameFragment = (ScroggleMultiplayerFragment) getFragmentManager()
                 .findFragmentById(R.id.fragment_multiplayer_scroggle);
 
@@ -75,10 +80,15 @@ public class ScroggleMultiplayerActivity extends Activity {
         getPreferences(MODE_PRIVATE).edit()
                 .putString(PREF_RESTORE, gameData)
                 .commit();
+
         Log.d("UT3", "state = " + gameData);
      //   System.exit(0);
     }
 
-
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mRootRef.child("SynchronousGames").child(ScroggleMultiplayerFragment.gameID).removeValue();
+        finish();
+    }
 }

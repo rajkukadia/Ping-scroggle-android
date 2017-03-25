@@ -86,7 +86,7 @@ public class WaitingForOpponentActivity extends Activity{
        // mRootRef.child("SynchronousGames").child("GameIDs").removeValue();
         mRootRef.child("SynchronousGames").child(gameID).setValue(gi);
 
-        mRootRef.addValueEventListener(new ValueEventListener() {
+        mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -166,7 +166,7 @@ Once = false;
 
             mRootRef = FirebaseDatabase.getInstance().getReference();
 
-            mRootRef.addValueEventListener(new ValueEventListener() {
+            mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

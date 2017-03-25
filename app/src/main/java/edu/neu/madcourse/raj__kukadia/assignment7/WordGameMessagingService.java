@@ -64,7 +64,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         String userOne="";
         String userTwo="";
         String notifier="";
-        String gameState="";
+        String turns="";
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
         // Check if message contains a data payload.
@@ -75,7 +75,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
              userOne = jData.get("userOne").toString();
              userTwo = jData.get("userTwo").toString();
             notifier = jData.get("notifier").toString();
-            gameState = jData.get("gameState").toString();
+            turns = jData.get("turns").toString();
         }
 
         // Check if message contains a notification payload.
@@ -85,7 +85,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             final String userA = userOne;
             final String userB = userTwo;
             final String mNotifier = notifier;
-            final String mGameState = gameState;
+            final String mTurns = turns;
             mRootRef = FirebaseDatabase.getInstance().getReference();
 
 
@@ -102,7 +102,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
 
                             if(gameMode.get(1).equals("offline")){
                                 if(remoteMessage.getData().size()>0){
-                                    sendNotificationAsyncGamePlay(gameKey, userA, userB, mNotifier, mGameState);
+                                    sendNotificationAsyncGamePlay(gameKey, userA, userB, mNotifier, mTurns);
                                 }else {
                                     sendNotificationAsyncGameStart(remoteMessage.getNotification().getBody());
                                 }
@@ -170,7 +170,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
     }
 
 
-    private void sendNotificationAsyncGamePlay(String gameID,String userOne, String userTwo, String notifier, String gameState) {
+    private void sendNotificationAsyncGamePlay(String gameID,String userOne, String userTwo, String notifier, String mTurns) {
 
         mAuth = FirebaseAuth.getInstance();
         PendingIntent pendingIntent;
@@ -181,7 +181,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             intent.putExtra("userOne", userOne);
             intent.putExtra("userTwo", userTwo);
             intent.putExtra("notifier", notifier);
-            intent.putExtra("gameState", gameState);
+            intent.putExtra("turns", mTurns);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                     PendingIntent.FLAG_ONE_SHOT);
@@ -191,7 +191,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             intent.putExtra("userOne", userOne);
             intent.putExtra("userTwo", userTwo);
             intent.putExtra("notifier", notifier);
-            intent.putExtra("gameState", gameState);
+            intent.putExtra("turns", mTurns);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                     PendingIntent.FLAG_ONE_SHOT);
@@ -227,7 +227,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 //  .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Want to play?")
+                .setContentTitle("Tap to play?")
                 .setContentText(messageBody)
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setAutoCancel(true)

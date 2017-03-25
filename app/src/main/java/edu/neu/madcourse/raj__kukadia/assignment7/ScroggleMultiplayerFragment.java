@@ -81,7 +81,7 @@ public class ScroggleMultiplayerFragment extends Fragment {
     public static int touchedLargeTile =0;
     private boolean atLeastOneClicked = false;
     public static int [] touchedSmallTiles=new int[9];
-    public static TextView e;
+    public TextView e;
     private TextView v1;
     private boolean popup = false;
     private AlertDialog.Builder builder;
@@ -142,11 +142,13 @@ public class ScroggleMultiplayerFragment extends Fragment {
         openDict = new Thread(new myThread());
         openDict.start();
 
+        e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
 
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
 firstClick = true;
         repeatClick = false;
+
 
         initGame();
         setAdjacencyList();
@@ -385,6 +387,7 @@ if(getActivity()!=null) {
         v = (TextView) getActivity().findViewById(R.id.counter_view);
         v1 = (TextView) getActivity().findViewById(R.id.score_view);
         e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
+        e.setText(" ");
         muteMusic = (ImageButton) getActivity().findViewById((R.id.mute));
         muteMusic.setImageLevel(1);
         muteMusic.setOnClickListener(new View.OnClickListener(){
@@ -1022,7 +1025,7 @@ if(LargeTileOwner.containsKey(i)) {
                 atLeastOneClicked = false;
                 if(popup) {
                     popup = false;
-                    e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
+                 //   e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
                     // e.a ppend(" ");
                     TileMultiplayer tile = mLargeTiles[touchedLargeTile];
                     builder = new AlertDialog.Builder(getActivity());
@@ -1468,6 +1471,10 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
                     mAvailable.add(tile);}else
                 {
                     mAvailable.remove(tile);
+                    LargeTileOwner.remove(tile);
+                    if(getLargeTileOwnerString()!=""){
+                //    doTransactionForLargeTileOwner();
+                        }
 
                 }
                 //  mAvailable.remove(tile);
@@ -1588,6 +1595,17 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
 
         StringBuilder builder = new StringBuilder();
 
+       // if(e!=null) {
+
+
+   // if (e.getText() != null) {
+        //builder.append(e.getText());
+       // builder.append(',');
+
+//    }
+
+
+        //}
         builder.append(muteClicked);
         builder.append(',');
         builder.append(gameOver);

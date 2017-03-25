@@ -64,7 +64,7 @@
 
 
         <ImageButton
-            android:id="@+id/mute"
+            android:id="@+id/mute_async"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_gravity="center"
@@ -86,11 +86,11 @@
     </LinearLayout>
 
            <fragment
-              android:id="@+id/fragment_controls_scroggle_multiplayer"
-              class="edu.neu.madcourse.raj__kukadia.assignment7.ControlFragmentMultiplayer"
+              android:id="@+id/fragment_controls_scroggle_multiplayer_async"
+              class="edu.neu.madcourse.raj__kukadia.assignment7.ControlFragmentMultiplayerAsync"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              tools:layout="@layout/fragment_control_scroggle_multiplayer"/>
+              tools:layout="@layout/fragment_control_scroggle_multiplayer_async"/>
 
            <TextView
                android:id="@+id/scroggle_text_view"

@@ -104,7 +104,7 @@ public class OnlineOfflineActivity extends Activity{
                         mRootRef = FirebaseDatabase.getInstance().getReference();
                         DatabaseReference r1 = mRootRef.child("All Users");
 
-                        r1.addValueEventListener(new ValueEventListener() {
+                        r1.addListenerForSingleValueEvent(new ValueEventListener() {
 
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -407,7 +407,7 @@ mRootRef.child("gameMode").setValue("offline");
         JSONObject jNotification = new JSONObject();
         try {
             jNotification.put("title", "Google I/O 2016");
-            jNotification.put("body", "Firebase Cloud Messaging (App)");
+            jNotification.put("body", mAuth.getCurrentUser().getDisplayName().toString()+" wants to play with you...");
             jNotification.put("sound", "default");
             jNotification.put("badge", "1");
             jNotification.put("click_action", "OPEN_ACTIVITY_1");
