@@ -58,6 +58,7 @@ confirm();
                         //Yes button clicked
                         mRootRef.child("SynchronousGames").child(ScroggleMultiplayerFragment.gameID).removeValue();
                         getActivity().finish();
+
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:

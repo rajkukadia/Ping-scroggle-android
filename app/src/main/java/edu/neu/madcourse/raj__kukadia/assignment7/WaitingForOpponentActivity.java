@@ -75,6 +75,7 @@ public class WaitingForOpponentActivity extends Activity{
 
         mHandler.postDelayed(mRunnable, 1000);
 
+        mRootRef.child("SynchronousGames").child(gameID).child("timeup").setValue("no");
 
     }
 
@@ -141,7 +142,7 @@ Once = false;
     private String generateRandomNumber(){
         Random generator = new Random();
         StringBuilder randomStringBuilder = new StringBuilder();
-        int randomLength = generator.nextInt(MAX_LENGTH);
+        int randomLength = generator.nextInt(MAX_LENGTH)+1;
         char tempChar1;
         char tempChar2;
         char tempChar3;
@@ -217,6 +218,8 @@ Once = false;
 
 
             if(t==0){
+                mRootRef.child("SynchronousGames").child(gameID).child("timeup").setValue("yes");
+
                 waiting_for_opponent_timer.setText("Time up");
                 mHandler.removeCallbacks(mRunnable);
             }

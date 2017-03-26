@@ -99,6 +99,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitle"/>
 
+        <activity android:name=".assignment7.ScoreBoardActivity"
+            android:theme="@style/MainActivityTheme"/>
 
         <activity android:name=".assignment7.AsyncStartActivity"
             android:screenOrientation="portrait"

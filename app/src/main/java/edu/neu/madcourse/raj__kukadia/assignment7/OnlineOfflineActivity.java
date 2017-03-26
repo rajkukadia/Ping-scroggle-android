@@ -465,6 +465,10 @@ mRootRef.child("gameMode").setValue("offline");
         mRootRef.child("All Users").child(mAuth.getCurrentUser().getUid().toString()).child("opponent").removeValue();
 
         mRootRef.child("active users").child(mAuth.getCurrentUser().getUid().toString()).child("opponent").removeValue();
+      if(ScroggleMultiplayerFragment.gameID!=null){
+       mRootRef.child("SynchronousGames").child(ScroggleMultiplayerFragment.gameID).removeValue();}
+        if(ScroggleMultiplayerAsyncFragment.gameID!=null){
+        mRootRef.child("AsynchronousGames").child(ScroggleMultiplayerAsyncFragment.gameID).removeValue();}
 
     }
 

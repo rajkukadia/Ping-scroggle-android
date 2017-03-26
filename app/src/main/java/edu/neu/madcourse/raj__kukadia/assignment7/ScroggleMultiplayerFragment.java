@@ -2,9 +2,12 @@
 package edu.neu.madcourse.raj__kukadia.assignment7;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -123,6 +127,8 @@ public class ScroggleMultiplayerFragment extends Fragment {
     private String userOne;
     private String userTwo;
     private Tile.Owner user;
+    private String scores;
+
 
 
 
@@ -161,17 +167,12 @@ firstClick = true;
             userOne = b.getString("username");
             mRootRef.child("SynchronousGames").child(gameID).child("userA").setValue(userOne);
             user = Tile.Owner.X;
-         //   gi.userA =userOne;
-
         }
         else
         if(b.getString("CallingActivity").equals(PreInitializingGameActivity.class.toString())){
             userTwo = b.getString("username");
             mRootRef.child("SynchronousGames").child(gameID).child("userB").setValue(userTwo);
             user = Tile.Owner.O;
-         //   gi.userB = userTwo;
-
-
         }
 
 
@@ -490,7 +491,7 @@ if(getActivity()!=null) {
 
 
 
-    private Runnable mRunnable = new Runnable() {
+    public Runnable mRunnable = new Runnable() {
 
         @Override
         public void run() {
@@ -513,13 +514,12 @@ if(getActivity()!=null) {
             if(t==0){
 
 
-                    v.setText("");
+                putScoreOnFireBase();
+               // putFinalScoreOnFireBase();
+                putScoreOnScoreBoard();
+                getScoresFromFireBase();
 
-                        gameOver = true;
-                        mHandler.removeCallbacks(mRunnable);
-                        clearAvailable();
-                       // Intent i = new Intent(getActivity(), ScroggleStatusAssignment5.class);
-                       // getActivity().startActivity(i);
+
 
 
             }else {
@@ -529,6 +529,108 @@ if(getActivity()!=null) {
 
 
     };
+
+
+    private void putFinalScoreOnFireBase(){
+
+
+    }
+
+    private void getScoresFromFireBase(){
+
+        DatabaseReference r = mRootRef.child("SynchronousGames").child(gameID);
+        r.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String otherUser="";
+
+                if(userOne!=null) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        if (d.getKey().equals("scoreA")) {
+                            scores = userOne + ": " + d.getValue().toString() + "\n";
+                        }
+
+                    }
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        if (d.getKey().equals("userB")) {
+                            otherUser = d.getValue().toString();
+                        }
+
+
+                    }
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        if (d.getKey().equals("scoreB")) {
+                            scores += otherUser + ": " + d.getValue().toString() + "\n";
+                        }
+                        if(getActivity()!=null){
+                        showScores(scores);}
+
+                    }
+
+                }
+                else
+
+                if(userTwo!=null){
+
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        if (d.getKey().equals("scoreB")) {
+                            scores = userTwo + ": " + d.getValue().toString() + "\n";
+                        }
+
+                    }
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        if (d.getKey().equals("userA")) {
+                            otherUser = d.getValue().toString();
+                        }
+
+
+                    }
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        if (d.getKey().equals("scoreA")) {
+                            scores += otherUser + ": " + d.getValue().toString() + "\n";
+                        }
+                        if(getActivity()!=null){
+                        showScores(scores);}
+
+                    }
+
+
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showScores(String scores){
+
+        final Dialog alertDialog = new Dialog(getActivity());
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alertDialog.setContentView(R.layout.scores_async);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        TextView e = (TextView) alertDialog.findViewById(R.id.scoreAB);
+        e.append(String.valueOf(scores));
+
+        Button  coolOk = (Button)alertDialog.findViewById(R.id.OK_async);
+        coolOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.cancel();
+                getActivity().finish();
+            }
+        });
+        alertDialog.show();
+
+    }
 
     private void clearAvailableForLargeTile(){
         mAvailableForLargeTile.clear();
@@ -1008,6 +1110,9 @@ if(LargeTileOwner.containsKey(i)) {
 
                 DictionaryAssignment3.result.setText("");
 
+            putScoreOnFireBase();
+            //putScoreOnScoreBoard();
+
 
             }  else {
 
@@ -1081,7 +1186,40 @@ if(LargeTileOwner.containsKey(i)) {
 doTransactionForGameState();
     }
 
+    private void putScoreOnScoreBoard(){
+        mRootRef
+                .child("scoreBoard")
+                .runTransaction(new Transaction.Handler() {
+                    @Override
+                    public Transaction.Result doTransaction(MutableData mutableData) {
 
+                        for(MutableData d : mutableData.getChildren()){
+                            if (d.getKey().equals(mAuth.getCurrentUser().getDisplayName().toString())) {
+
+                                d.setValue(Integer.parseInt(d.getValue().toString())+(currentScore));
+                            }
+                        }
+                        return Transaction.success(mutableData);
+                    }
+
+                    @Override
+                    public void onComplete(DatabaseError databaseError, boolean b,
+                                           DataSnapshot dataSnapshot) {
+
+                    }
+                });
+    }
+
+
+    private void putScoreOnFireBase(){
+        if(user == Tile.Owner.X) {
+            mRootRef.child("SynchronousGames").child(gameID).child("scoreA").setValue(currentScore);
+        }
+
+        if(user == Tile.Owner.O){
+            mRootRef.child("SynchronousGames").child(gameID).child("scoreB").setValue(currentScore);
+        }
+    }
 
     private void updateScore(String x, int bonus){
 

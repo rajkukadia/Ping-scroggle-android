@@ -1,0 +1,35 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/menu_button_margin"
+    tools:context=".assignment7.PreInitializingGameActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/about_margin_space"
+        android:layout_marginRight="@dimen/about_margin_space"
+        android:layout_marginTop="@dimen/about_margin_space"
+        android:textColor="@android:color/white"
+        android:text="Sorry Time up !"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="25sp"/>
+
+    <Button
+        android:id="@+id/OK_timeup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/instruction_button_style"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="OK"
+        />
+
+
+</LinearLayout>

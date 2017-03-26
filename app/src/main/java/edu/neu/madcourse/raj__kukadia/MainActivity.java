@@ -80,12 +80,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         TextView titleName = (TextView)findViewById(R.id.title_name);
         titleName.setText("Raj Kukadia");
-        //titleName.setAllCaps(true);
-        //titleName.setTextAppearance(0);
         titleName.setTextSize(20);
         setHashMap();
         setMap();
         setListner(viewMap);
+
         loadTheDictionary = new Thread(new Dictionary());
         loadTheDictionary.start();
 
@@ -184,6 +183,8 @@ public void showToast(){
         viewMap.put(6, v);
         v= findViewById(R.id.communication_button);
         viewMap.put(7, v);
+        v=findViewById(R.id.two_player_game_button);
+        viewMap.put(8,v);
 
     }
 
@@ -249,6 +250,14 @@ public void showToast(){
                     startActivity(new Intent(MainActivity.this, GoogleSignInActivity.class));
             }
         }));
+        v=(View) view.get(8);
+        v.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, GoogleSignInActivity.class));
+            }
+        });
     }
 
     @Override

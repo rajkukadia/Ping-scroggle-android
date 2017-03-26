@@ -164,6 +164,7 @@ both sides in the larger game.
     <string name="myfriends_label">My friends</string>
     <string name="start_multiplayer_label">Start Mutiplayer Game</string>
     <string name="signingoogle_label">Sign in with Google</string>
+    <string name="two_player_game_label">Two Player Game</string>
 
 
     <string name="reply_label">Reply label</string>
