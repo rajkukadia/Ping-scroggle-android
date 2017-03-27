@@ -96,7 +96,7 @@ public class ScroggleMultiplayerFragment extends Fragment{
     private TextView v1;
     private boolean popup = false;
     private AlertDialog.Builder builder;
-    private AlertDialog mDialog;
+    public AlertDialog mDialog;
     private HashSet<Integer> DoneTiles = new HashSet<Integer>();
     private ArrayList<int[]> adjacencyList = new ArrayList<int[]>();
     private static Boolean comingFirstTime = true;
@@ -135,6 +135,7 @@ public class ScroggleMultiplayerFragment extends Fragment{
     private String userTwo;
     private Tile.Owner user;
     private String scores;
+    private boolean wrongWord;
 
 
 
@@ -160,6 +161,7 @@ public class ScroggleMultiplayerFragment extends Fragment{
         setRetainInstance(true);
 firstClick = true;
         repeatClick = false;
+        wrongWord = false;
 
 
         initGame();
@@ -856,7 +858,7 @@ mAvailableForLargeTile.add(tile);
                            //(getActivity()).startThinking();
                             mSoundPool.play(mSoundX, mVolume, mVolume, 1, 0, 1f);
                             setLargeTileOwner(fLarge);
-
+wrongWord = false;
                             for(int i = 0;i<9;i++){
                                 TileMultiplayer tile = mSmallTiles[fLarge][i];
                                 if(user== Tile.Owner.X) {
@@ -1023,10 +1025,10 @@ for(int large =0; large< 9 ;large++){
                     else{
 
                        // tile.setOwner(TileMultiplayer.Owner.NOTCLICKED);
-                        if (!mAvailableForLargeTile.contains(tile)) {
-                            mAvailableForLargeTile.add(tile);
+                     //   if (!mAvailableForLargeTile.contains(tile)) {
+                       //     mAvailableForLargeTile.add(tile);
 
-                        }
+                        //}
                       //  mAvailable.add(tile);
 
                         tile.updateDrawableState('a', 0);
@@ -1126,7 +1128,7 @@ for(int large =0; large< 9 ;large++){
 
             putScoreOnFireBase();
             //putScoreOnScoreBoard();
-
+            wrongWord = false;
 
             }  else {
 
@@ -1174,7 +1176,9 @@ for(int large =0; large< 9 ;large++){
                 enteredStringSroggle = "";
 
             }
-
+            setLargeTileOwner(touchedLargeTile);
+        //    doTransactionForLargeTileOwner();
+            wrongWord = true;
         }
 
 
@@ -1200,6 +1204,13 @@ for(int large =0; large< 9 ;large++){
 doTransactionForGameState();
     }
 
+
+
+
+    public void onPasue(){
+        super.onPause();
+        mDialog.dismiss();
+    }
     private void putScoreOnScoreBoard(){
         mRootRef
                 .child("scoreBoard")
@@ -1616,114 +1627,116 @@ doTransactionForGameState();
 
 private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Integer> DoneTiles){
     for(int i =0; i<9;i++){
-        for(int j = 0; j<9;j++){
+        for(int j = 0; j<9;j++) {
             TileMultiplayer tile = mSmallTiles[i][j];
-            if((tile.getOwner()== TileMultiplayer.Owner.X)||(tile.getOwner()== TileMultiplayer.Owner.O)){
-                if(!DoneTiles.contains(i)){
-                    mAvailable.add(tile);}else
-                {
+            if ((tile.getOwner() == TileMultiplayer.Owner.X) || (tile.getOwner() == TileMultiplayer.Owner.O)) {
+                if (!DoneTiles.contains(i)) {
+                    mAvailable.add(tile);
+                } else {
                     mAvailable.remove(tile);
                     LargeTileOwner.remove(tile);
-                    if(getLargeTileOwnerString()!=""){
-                //    doTransactionForLargeTileOwner();
-                        }
+                    if (getLargeTileOwnerString() != "") {
+                        //    doTransactionForLargeTileOwner();
+                    }
 
                 }
                 //  mAvailable.remove(tile);
             }
 
+            if (!wrongWord){
+                if (i == large) {
+                    switch (smallx) {
+                        case 0:
+                            int a[] = adjacencyList.get(0);
 
-              if(i==large) {
-                  switch (smallx) {
-                      case 0:
-                          int a[] = adjacencyList.get(0);
+                            for (int x : a) {
+                                TileMultiplayer tile1 = mSmallTiles[large][x];
+                                //if(mAvailable.contains(tile1)) {
+                                mAvailable.remove(tile1);
+                                //}
+                            }
+                            break;
+                        case 1:
+                            int a1[] = adjacencyList.get(1);
 
-                          for (int x : a) {
-                              TileMultiplayer tile1 = mSmallTiles[large][x];
-                              //if(mAvailable.contains(tile1)) {
-                              mAvailable.remove(tile1);
-                              //}
-                          }
-                          break;
-                      case 1:
-                          int a1[] = adjacencyList.get(1);
+                            for (int x : a1) {
+                                TileMultiplayer tile2 = mSmallTiles[large][x];
+                                // if(mAvailable.contains(tile2)) {
+                                mAvailable.remove(tile2);
+                                //}
+                            }
+                            break;
+                        case 2:
+                            int a2[] = adjacencyList.get(2);
+                            for (int x : a2) {
+                                TileMultiplayer tile3 = mSmallTiles[large][x];
+                                // if(mAvailable.contains(tile3)) {
+                                mAvailable.remove(tile3);
+                                // }
+                            }
+                            break;
+                        case 3:
+                            int a3[] = adjacencyList.get(3);
+                            for (int x : a3) {
+                                TileMultiplayer tile4 = mSmallTiles[large][x];
+                                //if(mAvailable.contains(tile4)) {
+                                mAvailable.remove(tile4);
+                                // }
+                            }
+                            break;
+                        case 4:
+                            int a4[] = adjacencyList.get(4);
+                            for (int x : a4) {
+                                TileMultiplayer tile5 = mSmallTiles[large][x];
+                                //if(mAvailable.contains(tile5)) {
+                                mAvailable.remove(tile5);//}
 
-                          for (int x : a1) {
-                              TileMultiplayer tile2 = mSmallTiles[large][x];
-                              // if(mAvailable.contains(tile2)) {
-                              mAvailable.remove(tile2);
-                              //}
-                          }
-                          break;
-                      case 2:
-                          int a2[] = adjacencyList.get(2);
-                          for (int x : a2) {
-                              TileMultiplayer tile3 = mSmallTiles[large][x];
-                              // if(mAvailable.contains(tile3)) {
-                              mAvailable.remove(tile3);
-                              // }
-                          }
-                          break;
-                      case 3:
-                          int a3[] = adjacencyList.get(3);
-                          for (int x : a3) {
-                              TileMultiplayer tile4 = mSmallTiles[large][x];
-                              //if(mAvailable.contains(tile4)) {
-                              mAvailable.remove(tile4);
-                              // }
-                          }
-                          break;
-                      case 4:
-                          int a4[] = adjacencyList.get(4);
-                          for (int x : a4) {
-                              TileMultiplayer tile5 = mSmallTiles[large][x];
-                              //if(mAvailable.contains(tile5)) {
-                              mAvailable.remove(tile5);//}
+                            }
+                            break;
+                        case 5:
+                            int a5[] = adjacencyList.get(5);
+                            for (int x : a5) {
+                                TileMultiplayer tile6 = mSmallTiles[large][x];
+                                //if(mAvailable.contains(tile6)) {
+                                mAvailable.remove(tile6);//}
 
-                          }
-                          break;
-                      case 5:
-                          int a5[] = adjacencyList.get(5);
-                          for (int x : a5) {
-                              TileMultiplayer tile6 = mSmallTiles[large][x];
-                              //if(mAvailable.contains(tile6)) {
-                              mAvailable.remove(tile6);//}
-
-                          }
-                          break;
-                      case 6:
-                          int a6[] = adjacencyList.get(6);
-                          for (int x : a6) {
-                              TileMultiplayer tile7 = mSmallTiles[large][x];
-                              //if(mAvailable.contains(tile7)) {
-                              mAvailable.remove(tile7);//}
+                            }
+                            break;
+                        case 6:
+                            int a6[] = adjacencyList.get(6);
+                            for (int x : a6) {
+                                TileMultiplayer tile7 = mSmallTiles[large][x];
+                                //if(mAvailable.contains(tile7)) {
+                                mAvailable.remove(tile7);//}
 
 
-                          }
-                          break;
-                      case 7:
-                          int a7[] = adjacencyList.get(7);
-                          for (int x : a7) {
-                              TileMultiplayer tile8 = mSmallTiles[large][x];
-                              // if(mAvailable.contains(tile8)) {
-                              mAvailable.remove(tile8);//}
-                             // tile8.updateDrawableState(' ', 0)
+                            }
+                            break;
+                        case 7:
+                            int a7[] = adjacencyList.get(7);
+                            for (int x : a7) {
+                                TileMultiplayer tile8 = mSmallTiles[large][x];
+                                // if(mAvailable.contains(tile8)) {
+                                mAvailable.remove(tile8);//}
+                                // tile8.updateDrawableState(' ', 0)
 
-                          }
-                          break;
-                      case 8:
-                          int a8[] = adjacencyList.get(8);
-                          for (int x : a8) {
-                              TileMultiplayer tile9 = mSmallTiles[large][x];
-                              //if(mAvailable.contains(tile9)) {
-                              mAvailable.remove(tile9);//}
-                          //    tile9.updateDrawableState(' ', 0)
+                            }
+                            break;
+                        case 8:
+                            int a8[] = adjacencyList.get(8);
+                            for (int x : a8) {
+                                TileMultiplayer tile9 = mSmallTiles[large][x];
+                                //if(mAvailable.contains(tile9)) {
+                                mAvailable.remove(tile9);//}
+                                //    tile9.updateDrawableState(' ', 0)
 
-                          }
-                          break;
-                  }
+                            }
+                            break;
+                    }
 
-              }
+                }
+                wrongWord = false;
+        }
                 if(DoneTiles.size()==9){
                     mAvailable.clear();
                 }
@@ -1759,6 +1772,10 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
 
         //}
      //   builder.append(muteClicked);
+       // builder.append(',');
+
+
+     //   builder.append(wrongWord);
        // builder.append(',');
         builder.append(gameOver);
         builder.append(',');
@@ -1803,6 +1820,7 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
 
          //   muteClicked = Boolean.parseBoolean(fields[index++]);
 
+        //    wrongWord = Boolean.parseBoolean(fields[index++]);
             gameOver = Boolean.parseBoolean(fields[index++]);
 
 

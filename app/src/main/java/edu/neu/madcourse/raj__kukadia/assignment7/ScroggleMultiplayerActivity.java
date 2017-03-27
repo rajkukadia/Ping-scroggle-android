@@ -56,22 +56,22 @@ public class ScroggleMultiplayerActivity extends Activity implements SensorListe
                 SensorManager.SENSOR_DELAY_GAME);
         mAuth = FirebaseAuth.getInstance();
 
-        lastUpdate =System.currentTimeMillis()-200;
-        boolean restore = getIntent().getBooleanExtra(KEY_RESTORE, false);
-        if (restore) {
-            String gameData = getPreferences(MODE_PRIVATE)
-                    .getString(PREF_RESTORE, null);
-            if (gameData != null) {
-                mGameFragment.putState(gameData);
-            }
-        }
-        else{
-            ScroggleMultiplayerFragment.currentScore=0;
-        }
+       // lastUpdate =System.currentTimeMillis()-200;
+      //  boolean restore = getIntent().getBooleanExtra(KEY_RESTORE, false);
+        //if (restore) {
+          //  String gameData = getPreferences(MODE_PRIVATE)
+            //        .getString(PREF_RESTORE, null);
+            //if (gameData != null) {
+              //  mGameFragment.putState(gameData);
+            //}
+        //}
+        //else{
+          //  ScroggleMultiplayerFragment.currentScore=0;
+        //}
 
 
 
-        Log.d("UT3", "restore = " + restore);
+     //   Log.d("UT3", "restore = " + restore);
     }
 
 
@@ -94,12 +94,12 @@ public class ScroggleMultiplayerActivity extends Activity implements SensorListe
         mMediaPlayer.stop();
         mMediaPlayer.reset();
         mMediaPlayer.release();
-        String gameData = mGameFragment.getState();
-        getPreferences(MODE_PRIVATE).edit()
-                .putString(PREF_RESTORE, gameData)
-                .commit();
+        //String gameData = mGameFragment.getState();
+      //  getPreferences(MODE_PRIVATE).edit()
+        //        .putString(PREF_RESTORE, gameData)
+          //      .commit();
 
-        Log.d("UT3", "state = " + gameData);
+      //  Log.d("UT3", "state = " + gameData);
      //   System.exit(0);
     }
 
