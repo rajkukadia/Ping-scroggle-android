@@ -8,6 +8,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -55,10 +60,12 @@ import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleAssignment5;
 import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleStatusAssignment5;
 import edu.neu.madcourse.raj__kukadia.assignment5.TileAssignment5;
 
+import static android.R.attr.x;
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.SENSOR_SERVICE;
 
 
-public class ScroggleMultiplayerFragment extends Fragment {
+public class ScroggleMultiplayerFragment extends Fragment{
     static private int mLargeIds[] = {R.id.largescroggle1, R.id.largescroggle2, R.id.largescroggle3,
             R.id.largescroggle4, R.id.largescroggle5, R.id.largescroggle6, R.id.largescroggle7, R.id.largescroggle8,
             R.id.largescroggle9,};
@@ -128,7 +135,6 @@ public class ScroggleMultiplayerFragment extends Fragment {
     private String userTwo;
     private Tile.Owner user;
     private String scores;
-
 
 
 
@@ -934,6 +940,14 @@ if(LargeTileOwner.containsKey(i)) {
 
                     }
                 });
+    }
+
+    public void flipTiles(int x){
+for(int large =0; large< 9 ;large++){
+    for(int small = 0; small<9 ;small++){
+        mSmallTiles[large][small].updateFlipState(x);
+    }
+}
     }
 
     private void setCorrectStates(int large){
@@ -1744,15 +1758,15 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
 
 
         //}
-        builder.append(muteClicked);
-        builder.append(',');
+     //   builder.append(muteClicked);
+       // builder.append(',');
         builder.append(gameOver);
         builder.append(',');
-        builder.append(wordsDetectedByUser.size());
-        builder.append(',');
-        for(int i =0;i<wordsDetectedByUser.size();i++)
-        { builder.append(wordsDetectedByUser.get(i));
-        builder.append(',');}
+       // builder.append(wordsDetectedByUser.size());
+       // builder.append(',');
+        //for(int i =0;i<wordsDetectedByUser.size();i++)
+        //{ builder.append(wordsDetectedByUser.get(i));
+        //builder.append(',');}
         builder.append(notValidWord);
         builder.append(',');
 
@@ -1787,23 +1801,23 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
 
             int index = 0;
 
-            muteClicked = Boolean.parseBoolean(fields[index++]);
+         //   muteClicked = Boolean.parseBoolean(fields[index++]);
 
             gameOver = Boolean.parseBoolean(fields[index++]);
 
 
-            int size = Integer.parseInt(fields[index++]);
-            e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
+           // int size = Integer.parseInt(fields[index++]);
+           // e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
 
-            e.setText("");
+           // e.setText("");
 
-            for (int i = 0; i < size; i++) {
+            //for (int i = 0; i < size; i++) {
 
-                wordsDetectedByUser.put(i, fields[index++]);
+              //  wordsDetectedByUser.put(i, fields[index++]);
 
-                e.append(wordsDetectedByUser.get(i) + " ");
+         //       e.append(wordsDetectedByUser.get(i) + " ");
 
-            }
+           //x }
             notValidWord = Boolean.parseBoolean(fields[index++]);
 
 
@@ -1848,6 +1862,8 @@ Log.d("Updating", "drawable state");
             }
         }
     }
+
+
 
 
     class RemainingDictionary implements Runnable {

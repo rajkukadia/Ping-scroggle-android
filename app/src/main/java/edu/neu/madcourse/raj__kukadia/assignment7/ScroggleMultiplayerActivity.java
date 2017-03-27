@@ -1,23 +1,26 @@
 package edu.neu.madcourse.raj__kukadia.assignment7;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
+
+import android.hardware.Sensor;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
+import android.widget.Toast;
 
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import edu.neu.madcourse.raj__kukadia.R;
-import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleAssignment5Fragment;
-import edu.neu.madcourse.raj__kukadia.assignment5.TileAssignment5;
 
-public class ScroggleMultiplayerActivity extends Activity {
+
+public class ScroggleMultiplayerActivity extends Activity implements SensorListener {
 
     public static final String KEY_RESTORE = "key_restore";
     public static final String PREF_RESTORE = "pref_restore";
@@ -25,6 +28,15 @@ public class ScroggleMultiplayerActivity extends Activity {
     private Handler mHandler = new Handler();
     private ScroggleMultiplayerFragment mGameFragment;
     private DatabaseReference mRootRef;
+    private SensorManager sensorMgr;
+    private long lastUpdate;
+    private static final int SHAKE_THRESHOLD = 800;
+    private float x, y,z =0;
+    private float last_x, last_y,last_z = 0;
+    private FirebaseAuth mAuth;
+
+
+
 
 
     @Override
@@ -38,7 +50,13 @@ public class ScroggleMultiplayerActivity extends Activity {
 
         mGameFragment = (ScroggleMultiplayerFragment) getFragmentManager()
                 .findFragmentById(R.id.fragment_multiplayer_scroggle);
+        sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensorMgr.registerListener(ScroggleMultiplayerActivity.this,
+                SensorManager.SENSOR_ACCELEROMETER,
+                SensorManager.SENSOR_DELAY_GAME);
+        mAuth = FirebaseAuth.getInstance();
 
+        lastUpdate =System.currentTimeMillis()-200;
         boolean restore = getIntent().getBooleanExtra(KEY_RESTORE, false);
         if (restore) {
             String gameData = getPreferences(MODE_PRIVATE)
@@ -90,5 +108,46 @@ public class ScroggleMultiplayerActivity extends Activity {
         super.onStop();
         mRootRef.child("SynchronousGames").child(ScroggleMultiplayerFragment.gameID).removeValue();
         finish();
+    }
+
+
+    @Override
+    public void onSensorChanged(int sensor, float[] values) {
+        if (sensor == SensorManager.SENSOR_ACCELEROMETER) {
+
+                x = values[SensorManager.DATA_X];
+                y = values[SensorManager.DATA_Y];
+                z = values[SensorManager.DATA_Z];
+
+                if(y>4) {
+                    mGameFragment.flipTiles(180);
+                }
+            else
+                    if(x<-4){
+                        mGameFragment.flipTiles(90);
+            }
+            else
+                        if(y<-4){
+                            mGameFragment.flipTiles(0);
+                        }
+            else
+                        { mGameFragment.flipTiles(270);
+
+                        }
+
+
+
+
+
+            //System.out.println(mAuth.getCurrentUser().getDisplayName().toString()+" x: "+ x +"\ty: "+y);
+//            Log.d(("X_Value"), String.valueOf(x));
+//            Log.d(("Y_Value"), String.valueOf(y));
+//            Log.d(("Z_Value"),String.valueOf(z));
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(int sensor, int accuracy) {
+
     }
 }

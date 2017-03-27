@@ -127,6 +127,12 @@ public class TileMultiplayer {
       }
    }
 
+   public void updateFlipState(int x){
+      if(mView!=null){
+         mView.setRotation(x);
+      }
+   }
+
    private int getLevel() {
       int level = LEVEL_BLANK;
 
