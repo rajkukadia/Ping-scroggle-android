@@ -76,12 +76,14 @@ public class OnlineOfflineActivity extends Activity{
         mAuth = FirebaseAuth.getInstance();
         mRootRef = FirebaseDatabase.getInstance().getReference();
         //mRootRef.child("GameData").child("gamePlaying").setValue("no");
-
+        if(ScroggleMultiplayerAsyncFragment.gameID!=null){
+            mRootRef.child("AsynchronousGames").child(ScroggleMultiplayerAsyncFragment.gameID).removeValue();
+        }
 
         final LinearLayout OnlineFriendList = (LinearLayout)(findViewById(R.id.online_friend_list));
         OnlineFriendList.removeAllViews();
 
-        int size = MultiPlayerHomePageActivity.OnlineFriends.size();
+
             Iterator s = MultiPlayerHomePageActivity.OnlineFriends.entrySet().iterator();
             while(s.hasNext()) {
                 HashMap.Entry pair = (HashMap.Entry) s.next();
@@ -190,6 +192,16 @@ public class OnlineOfflineActivity extends Activity{
 
     LinearLayout OfflineFriendList = (LinearLayout) (findViewById(R.id.offline_friend_list));
     OfflineFriendList.removeAllViews();
+
+
+        int size = MultiPlayerHomePageActivity.OfflineFriends.size();
+
+        if(size==0){
+            TextView t = new TextView(this);
+            t.setText("Loading..Please go back and come again!");
+
+            OfflineFriendList.addView(t);
+        }
 
     Iterator s1 = MultiPlayerHomePageActivity.OfflineFriends.entrySet().iterator();
     while (s1.hasNext()) {
@@ -467,8 +479,9 @@ mRootRef.child("gameMode").setValue("offline");
         mRootRef.child("active users").child(mAuth.getCurrentUser().getUid().toString()).child("opponent").removeValue();
       if(ScroggleMultiplayerFragment.gameID!=null){
        mRootRef.child("SynchronousGames").child(ScroggleMultiplayerFragment.gameID).removeValue();}
-        if(ScroggleMultiplayerAsyncFragment.gameID!=null){
-        mRootRef.child("AsynchronousGames").child(ScroggleMultiplayerAsyncFragment.gameID).removeValue();}
+       // if(ScroggleMultiplayerAsyncFragment.gameID!=null){
+        //mRootRef.child("AsynchronousGames").child(ScroggleMultiplayerAsyncFragment.gameID).removeValue();
+        //}
 
     }
 

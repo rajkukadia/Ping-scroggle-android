@@ -9,8 +9,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
+import edu.neu.madcourse.raj__kukadia.MainActivity;
+import edu.neu.madcourse.raj__kukadia.MyBounceInterpolator;
 import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.assignment7.GoogleSignInActivity;
 
 public class UT3MainFragmentScroggleAssignment5 extends Fragment {
 
@@ -23,7 +28,7 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
                 inflater.inflate(R.layout.fragment_main_scroggle_assignment5, container, false);
         // Handle buttons here...
         View newButton = rootView.findViewById(R.id.new_button);
-        View continueButton = rootView.findViewById(R.id.continue_button);
+        final View continueButton = rootView.findViewById(R.id.continue_button);
         View aboutButton = rootView.findViewById(R.id.about_button);
         View quitButton = rootView.findViewById(R.id.scroggle_quit_button);
         View ackButton = rootView.findViewById(R.id.scroggle_ack_button);
@@ -40,13 +45,17 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
             }
         });
         continueButton.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(getActivity(), ScroggleAssignment5.class);
                 intent.putExtra(ScroggleAssignment5.KEY_RESTORE, true);
                 getActivity().startActivity(intent);
+
             }
+
+
         });
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +71,7 @@ public class UT3MainFragmentScroggleAssignment5 extends Fragment {
                             }
                         });
                 mDialog = builder.show();
+
             }
         });
 

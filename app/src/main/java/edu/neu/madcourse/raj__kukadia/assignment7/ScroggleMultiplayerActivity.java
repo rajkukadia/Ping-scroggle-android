@@ -35,10 +35,6 @@ public class ScroggleMultiplayerActivity extends Activity implements SensorListe
     private float last_x, last_y,last_z = 0;
     private FirebaseAuth mAuth;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,22 +52,6 @@ public class ScroggleMultiplayerActivity extends Activity implements SensorListe
                 SensorManager.SENSOR_DELAY_GAME);
         mAuth = FirebaseAuth.getInstance();
 
-       // lastUpdate =System.currentTimeMillis()-200;
-      //  boolean restore = getIntent().getBooleanExtra(KEY_RESTORE, false);
-        //if (restore) {
-          //  String gameData = getPreferences(MODE_PRIVATE)
-            //        .getString(PREF_RESTORE, null);
-            //if (gameData != null) {
-              //  mGameFragment.putState(gameData);
-            //}
-        //}
-        //else{
-          //  ScroggleMultiplayerFragment.currentScore=0;
-        //}
-
-
-
-     //   Log.d("UT3", "restore = " + restore);
     }
 
 

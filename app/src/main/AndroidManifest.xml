@@ -78,7 +78,14 @@
         <activity android:name=".assignment7.GoogleSignInActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat"/>
+            android:theme="@style/Theme.AppCompat">
+        <intent-filter>
+            <action android:name="openIt"></action>
+            <category android:name="android.intent.category.ALTERNATIVE"></category>
+        </intent-filter>>
+
+        </activity>
+
 
 
         <activity android:name=".assignment7.MultiPlayerHomePageActivity"
@@ -97,7 +104,13 @@
 
         <activity android:name=".assignment7.ScroggleMultiplayerAsyncActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitle"/>
+            android:theme="@style/NoTitle">
+            <intent-filter>
+                <action android:name="openIt"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+                </intent-filter>
+        </activity>
+
 
         <activity android:name=".assignment7.ScoreBoardActivity"
             android:theme="@style/MainActivityTheme"/>

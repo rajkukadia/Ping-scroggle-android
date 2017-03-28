@@ -96,7 +96,8 @@
                 android:padding="@dimen/menu_button_padding"
                 android:text="@string/generate_error_label"
                 android:background="@drawable/button_style"
-                />
+                    />
+
 
             <Button
                 android:id="@+id/quit_button"

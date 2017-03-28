@@ -65,17 +65,21 @@ public class DictionaryAssignment3 extends Activity {
 
         try {
             Bundle b = getIntent().getExtras();
-            if(b.getString("NewCallingActivity").equals(ScroggleMultiplayerActivity.class.toString())) {
+            if(b!=null) {
+                if(b.getString("NewCallingActivity")!=null){
+                if (b.getString("NewCallingActivity").equals(ScroggleMultiplayerActivity.class.toString())) {
 
-                finish();
-            }
+                    finish();
+                }}else
+                if(b.getString("CallingActivity")!=null) {
 
-            if (b.getString("CallingActivity").equals(MainActivity.class.toString())) {
-                finish();
-            }
-                   }
+                    if (b.getString("CallingActivity").equals(MainActivity.class.toString())) {
+                        finish();
+                    }
+                }
+            }}
         catch(Exception e){
-
+e.printStackTrace();
         }
         setButtonListeners();
         setDictListener();

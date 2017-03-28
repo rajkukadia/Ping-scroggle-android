@@ -146,6 +146,7 @@ public class ScroggleMultiplayerFragment extends Fragment{
 
 
 
+
     private String[] nineNineLetterWords = new String[9];
 
     @Override
@@ -1165,6 +1166,7 @@ for(int large =0; large< 9 ;large++){
 
                     for (int i = 0; i < 9; i++) {
                         TileMultiplayer tiles = mSmallTiles[touchedLargeTile][i];
+
                         tiles.setOwner(TileMultiplayer.Owner.NOTCLICKED);
                         tiles.updateDrawableState('a', 0);
                         addAvailable(tiles);}
@@ -1185,6 +1187,7 @@ for(int large =0; large< 9 ;large++){
             if (touchedLargeTile == 0) {
                 for (int i = 0; i < 9; i++) {
                     TileMultiplayer tiles = mSmallTiles[touchedLargeTile][i];
+
                     if ((tiles.getOwner() == TileMultiplayer.Owner.NOTCLICKED)&&(((Button)tiles.getView()).getText().charAt(0)!=' ')) {
 
                         addAvailable(tiles);
@@ -1436,7 +1439,7 @@ doTransactionForGameState();
                             if (i != large) {//Correct answer
                                 TileMultiplayer tile = mSmallTiles[i][dest];
 
-                                if(tile.getOwner()== TileMultiplayer.Owner.CLICKED){
+                                if(tile.getOwner()== TileMultiplayer.Owner.CLICKED||tile.getOwner()== TileMultiplayer.Owner.O||tile.getOwner()== TileMultiplayer.Owner.X){
                                     continue;
                                 }else {
 

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -13,8 +14,16 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -29,11 +38,11 @@ import edu.neu.madcourse.raj__kukadia.assignment7.GoogleSignInActivity;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-   public static final HashMap<String, String> stringWords = new HashMap<String, String>();
-    public static  final HashMap<Short, Short> threeWords = new HashMap<Short, Short>();
+    public static final HashMap<String, String> stringWords = new HashMap<String, String>();
+    public static final HashMap<Short, Short> threeWords = new HashMap<Short, Short>();
     public static final HashMap<Integer, Integer> fourWords = new HashMap<Integer, Integer>();
     public static final HashMap<Integer, Integer> fiveWords = new HashMap<Integer, Integer>();
-    public static  final HashMap<Integer, Integer> sixWords = new HashMap<Integer, Integer>();
+    public static final HashMap<Integer, Integer> sixWords = new HashMap<Integer, Integer>();
     // public static HashMap<Long, Long> seventotenWords = new HashMap<Long, Long>();
     public static final HashMap<Long, Long> sevenWords = new HashMap<Long, Long>();
     public static final HashMap<Long, Long> eightWords = new HashMap<Long, Long>();
@@ -48,7 +57,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public static final HashMap<Long, Long> fifteenWords = new HashMap<Long, Long>();
 
 
-
     public static final HashMap<Long, Long> eleventofifteenWords = new HashMap<Long, Long>();
     public static final HashMap<Long, Long> sixteentotwentyWords = new HashMap<Long, Long>();
     public static final HashMap<Long, Long> twentyonetotwentyfiveWords = new HashMap<Long, Long>();
@@ -56,12 +64,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private int i = 1;
     public static boolean permission = true;
     long b = 0b00000;
-    private static HashMap<Integer, View> viewMap = new HashMap<Integer, View>();
+    private static HashMap<Integer, Button> viewMap = new HashMap<Integer, Button>();
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
-    public static HashMap <Character, Long> letterMap = new HashMap <Character, Long>();
-    public static HashMap <Long, Character> reverseletterMap = new HashMap<Long, Character>();
+    public static HashMap<Character, Long> letterMap = new HashMap<Character, Long>();
+    public static HashMap<Long, Character> reverseletterMap = new HashMap<Long, Character>();
     Thread loadTheDictionary;
     Handler handleLoadingDictionary;
+    Thread runAnimation;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     public MainActivity() {
 
@@ -78,7 +92,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.mytitlebar);
 
-        TextView titleName = (TextView)findViewById(R.id.title_name);
+        TextView titleName = (TextView) findViewById(R.id.title_name);
         titleName.setText("Raj Kukadia");
         titleName.setTextSize(20);
         setHashMap();
@@ -88,7 +102,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         loadTheDictionary = new Thread(new Dictionary());
         loadTheDictionary.start();
 
-        handleLoadingDictionary = new Handler(Looper.getMainLooper()){
+        handleLoadingDictionary = new Handler(Looper.getMainLooper()) {
 
             @Override
             public void handleMessage(Message msg) {
@@ -101,18 +115,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             }
         };
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
+    public void showToast() {
+        Toast.makeText(MainActivity.this, "Connection Lost", Toast.LENGTH_LONG).show();
 
-
-
-
-
-public void showToast(){
-     Toast.makeText(MainActivity.this, "Connection Lost", Toast.LENGTH_LONG).show();
-
-}
+    }
 
 
     @Override
@@ -121,18 +133,18 @@ public void showToast(){
 
     }
 
-    private void setMap(){
-            for(char x= 'a';x<='z';x++){
-                long binaryValue = getBinaryValue();
-                letterMap.put(x,  binaryValue);
-               reverseletterMap.put(binaryValue, x);
-                }
+    private void setMap() {
+        for (char x = 'a'; x <= 'z'; x++) {
+            long binaryValue = getBinaryValue();
+            letterMap.put(x, binaryValue);
+            reverseletterMap.put(binaryValue, x);
         }
+    }
 
 
-    private long getBinaryValue(){
+    private long getBinaryValue() {
 
-            return ++b;
+        return ++b;
 
     }
 
@@ -169,59 +181,63 @@ public void showToast(){
 
 
     protected void setHashMap() {
-        View v = findViewById(R.id.about_mainactivity_button);
+        Button v = (Button) findViewById(R.id.about_mainactivity_button);
         viewMap.put(1, v);
-        v = findViewById(R.id.game_enter_button);
+        v = (Button) findViewById(R.id.game_enter_button);
         viewMap.put(2, v);
-        v = findViewById(R.id.generate_error_button);
+        v = (Button) findViewById(R.id.generate_error_button);
         viewMap.put(3, v);
-        v = findViewById(R.id.quit_button);
+        v = (Button) findViewById(R.id.quit_button);
         viewMap.put(4, v);
-        v = findViewById(R.id.dict_button);
+        v = (Button) findViewById(R.id.dict_button);
         viewMap.put(5, v);
-        v=findViewById(R.id.scroggle_button);
+        v = (Button) findViewById(R.id.scroggle_button);
         viewMap.put(6, v);
-        v= findViewById(R.id.communication_button);
+        v = (Button) findViewById(R.id.communication_button);
         viewMap.put(7, v);
-        v=findViewById(R.id.two_player_game_button);
-        viewMap.put(8,v);
+        v = (Button) findViewById(R.id.two_player_game_button);
+        viewMap.put(8, v);
 
     }
 
-    protected void setListner(HashMap view) {
-        View v = (View) view.get(1);
+    protected void setListner(HashMap button) {
+        Button v = (Button) button.get(1);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(intent);
+
             }
         });
 
-        v = (View) view.get(2);
+        v = (Button) button.get(2);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, UT3MainActivity.class);
-             startActivity(intent);
+                startActivity(intent);
+
+
             }
         });
-        v = (View) view.get(3);
+        v = (Button) button.get(3);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int x = 1 / 0;
             }
         });
-        v = (View) view.get(4);
+        v = (Button) button.get(4);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onDestroy();
                 System.exit(0);
-            }
+
+                           }
         });
-        v = (View) view.get(5);
+        v = (Button) button.get(5);
         v.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -229,9 +245,10 @@ public void showToast(){
                 Intent intent = new Intent(MainActivity.this, DictionaryAssignment3.class);
 
                 startActivity(intent);
-            }
+
+                           }
         });
-        v = (View) view.get(6);
+        v = (Button) button.get(6);
         v.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -240,22 +257,26 @@ public void showToast(){
                 t.start();
                 Intent intent = new Intent(MainActivity.this, UT3MainActivityScroggleAssignment5.class);
                 startActivity(intent);
+
+
             }
         });
 
-        v=(View) view.get(7);
-        v.setOnClickListener((new View.OnClickListener(){
+        v = (Button) button.get(7);
+        v.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    startActivity(new Intent(MainActivity.this, GoogleSignInActivity.class));
+                startActivity(new Intent(MainActivity.this, GoogleSignInActivity.class));
+
             }
         }));
-        v=(View) view.get(8);
-        v.setOnClickListener(new View.OnClickListener(){
+        v = (Button) button.get(8);
+        v.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, GoogleSignInActivity.class));
+
             }
         });
     }
@@ -264,9 +285,57 @@ public void showToast(){
     public void onClick(View v) {
 
     }
+/*
+    public void didTapButton(View view) {
+        Button button = (Button) findViewById(R.id.button);
+        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+        myAnim.setInterpolator(interpolator);
+
+        button.startAnimation(myAnim);
+    }
+*/
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
 
 
-    class Dictionary implements Runnable{
+
+
+
+    class Dictionary implements Runnable {
         InputStream is;
         InputStream is1;
         InputStream is2;
@@ -319,12 +388,11 @@ public void showToast(){
             mg.arg1 = 0;
 
             // handleLoadingDictionary.sendMessage(mg);
-          //  handleLoadingDictionary;
-
+            //  handleLoadingDictionary;
 
 
             setninefile();
-           setthreewordfile();
+            setthreewordfile();
             setfourwordfile();
             setfivewordfile();
             setsixwordfile();
@@ -341,7 +409,6 @@ public void showToast(){
             //set25abovewordfile();
 
         }
-
 
 
         private void setthreewordfile() {
@@ -367,11 +434,11 @@ public void showToast(){
                 MainActivity.threeWords.put(fourth, fourth);
 
             }
-            try{
+            try {
                 din.close();
                 is.close();
 
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -481,8 +548,8 @@ public void showToast(){
     }
 */
 
-        private void setsevenfile(){
-            for (int data = 0; data <47523; data++) {
+        private void setsevenfile() {
+            for (int data = 0; data < 47523; data++) {
                 Long d = null;
                 try {
                     d = din9.readLong();
@@ -502,7 +569,7 @@ public void showToast(){
             }
         }
 
-        private void seteightfile(){
+        private void seteightfile() {
             for (int data = 0; data < 58447; data++) {
                 Long d = null;
                 try {
@@ -524,28 +591,29 @@ public void showToast(){
         }
 
 
-            private void setninefile() {
-                for (int data = 0; data < 60121; data++) {
-                    Long d = null;
-                    try {
-                        d = din11.readLong();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    MainActivity.nineWords.put(d, d);
-                    MainActivity.nineWordsCopy.put(data, d);
-
-                }
-
+        private void setninefile() {
+            for (int data = 0; data < 60121; data++) {
+                Long d = null;
                 try {
-                    din11.close();
-                    is11.close();
+                    d = din11.readLong();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                MainActivity.nineWords.put(d, d);
+                MainActivity.nineWordsCopy.put(data, d);
+
             }
-        private void settenfile(){
+
+            try {
+                din11.close();
+                is11.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void settenfile() {
             for (int data = 0; data < 55061; data++) {
                 Long d = null;
                 try {
@@ -568,7 +636,7 @@ public void showToast(){
         }
 
 
-        private void setelevenfile(){
+        private void setelevenfile() {
             for (int data = 0; data < 45675; data++) {
                 Long d = null;
                 try {
@@ -589,7 +657,7 @@ public void showToast(){
             }
         }
 
-        private void settwelvefile(){
+        private void settwelvefile() {
             for (int data = 0; data < 35470; data++) {
                 Long d = null;
                 try {
@@ -611,7 +679,7 @@ public void showToast(){
         }
 
 
-        private void setthirteenfile(){
+        private void setthirteenfile() {
             for (int data = 0; data < 25593; data++) {
                 Long d = null;
                 try {
@@ -621,11 +689,11 @@ public void showToast(){
                 }
                 try {
 
-                   MainActivity.thirteenWords.put(d, d);
-                }catch(OutOfMemoryError e){
-e.printStackTrace();
+                    MainActivity.thirteenWords.put(d, d);
+                } catch (OutOfMemoryError e) {
+                    e.printStackTrace();
                 }
-                }
+            }
 
             try {
                 din15.close();
@@ -635,7 +703,7 @@ e.printStackTrace();
             }
         }
 
-        private void setfourteenfile(){
+        private void setfourteenfile() {
             for (int data = 0; data < 17591; data++) {
                 Long d = null;
                 try {
@@ -656,8 +724,8 @@ e.printStackTrace();
             }
         }
 
-        private void setfifteenfile(){
-            for (int data = 0; data <11256; data++) {
+        private void setfifteenfile() {
+            for (int data = 0; data < 11256; data++) {
                 Long d = null;
                 try {
                     d = din17.readLong();
@@ -677,8 +745,6 @@ e.printStackTrace();
         }
 
 
-
-
         private void setsixteentotwentyfile() {
 
             for (int data = 1; data <= 14447; data++) {
@@ -689,7 +755,7 @@ e.printStackTrace();
                     e.printStackTrace();
                 }
 
-               MainActivity.sixteentotwentyWords.put(d, d);
+                MainActivity.sixteentotwentyWords.put(d, d);
 
 
             }
@@ -746,8 +812,8 @@ e.printStackTrace();
             is1 = getResources().openRawResource(R.raw.fourwords);
             is2 = getResources().openRawResource(R.raw.fivewords);
             is3 = getResources().openRawResource(R.raw.sixwords);
-         //   is4 = getResources().openRawResource(R.raw.seventotenwords);
-          //  is5 = getResources().openRawResource(R.raw.eleventofifteenwords);
+            //   is4 = getResources().openRawResource(R.raw.seventotenwords);
+            //  is5 = getResources().openRawResource(R.raw.eleventofifteenwords);
             is6 = getResources().openRawResource(R.raw.sixteentotwentywords);
             is7 = getResources().openRawResource(R.raw.twentyonetotwentyfivewords);
             is8 = getResources().openRawResource(R.raw.twentyfiveabovewords);
@@ -776,7 +842,7 @@ e.printStackTrace();
             //din8 is not used
             din9 = new DataInputStream(is9);
             din10 = new DataInputStream(is10);
-             din11 = new DataInputStream(is11);
+            din11 = new DataInputStream(is11);
             din12 = new DataInputStream(is12);
             din13 = new DataInputStream(is13);
             din14 = new DataInputStream(is14);
@@ -787,13 +853,10 @@ e.printStackTrace();
         }
 
 
-
-
-
     }
 
 
-    class myThread implements Runnable{
+    class myThread implements Runnable {
 
 
         @Override
