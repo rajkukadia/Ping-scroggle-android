@@ -166,7 +166,7 @@ both sides in the larger game.
     <string name="signingoogle_label">Sign in with Google</string>
     <string name="two_player_game_label">Two Player Game</string>
 
-
+<string name="default_web_id">139899715041-g3dfdk58afhjvsioqs27v04cjneu6jq8.apps.googleusercontent.com</string>
     <string name="reply_label">Reply label</string>
     <string name="scroggle_ack_multiplayer_label"> \n\n Firebase demo code helped in understanding the working of
         firebase server and how to create a firebase database. \n Google sign in: https://developers.google.com/identity/sign-in/android/sign-in
