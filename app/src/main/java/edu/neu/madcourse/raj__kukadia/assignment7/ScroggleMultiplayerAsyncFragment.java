@@ -8,17 +8,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorListener;
-import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.IntegerRes;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +21,10 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -40,40 +36,44 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 
 import edu.neu.madcourse.raj__kukadia.DictionaryAssignment3;
 import edu.neu.madcourse.raj__kukadia.MainActivity;
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.Tile;
-import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleAssignment5;
-import edu.neu.madcourse.raj__kukadia.assignment5.ScroggleStatusAssignment5;
-import edu.neu.madcourse.raj__kukadia.assignment5.TileAssignment5;
 
-import static android.R.attr.x;
 import static android.content.Context.MODE_PRIVATE;
-import static android.content.Context.SENSOR_SERVICE;
+import static edu.neu.madcourse.raj__kukadia.assignment7.ScroggleMultiplayerActivity.PREF_RESTORE;
 
 
-public class ScroggleMultiplayerFragment extends Fragment{
+public class ScroggleMultiplayerAsyncFragment extends Fragment {
     static private int mLargeIds[] = {R.id.largescroggle1, R.id.largescroggle2, R.id.largescroggle3,
             R.id.largescroggle4, R.id.largescroggle5, R.id.largescroggle6, R.id.largescroggle7, R.id.largescroggle8,
             R.id.largescroggle9,};
     static private int mSmallIds[] = {R.id.smallscroggle1, R.id.smallscroggle2, R.id.smallscroggle3,
             R.id.smallscroggle4, R.id.smallscroggle5, R.id.smallscroggle6, R.id.smallscroggle7, R.id.smallscroggle8,
             R.id.smallscroggle9,};
-    private Handler mHandler = new Handler();
+    public static Handler mHandler = new Handler();
     private Handler m1Handler = new Handler();
+    private static final String SERVER_KEY = "key=AAAAIJKsPeE:APA91bHkUeOjkpMKSV9gmCv1kzJEadSJGPjaKSA5xjI-R2waz2RJRv1zqcHz-t4I9XSrB5HaCLNLQSW0TTvXkhkVHTDn0FFCOZop-2lP9cTWG1acrTYGxg9WuJjFygeQaLo7URrr9sQo";
 
     private TileMultiplayer mEntireBoard = new TileMultiplayer(this);
     private TileMultiplayer mLargeTiles[] = new TileMultiplayer[9];
@@ -92,18 +92,18 @@ public class ScroggleMultiplayerFragment extends Fragment{
     public static int touchedLargeTile =0;
     private boolean atLeastOneClicked = false;
     public static int [] touchedSmallTiles=new int[9];
-    public TextView e;
+    public static TextView e;
     private TextView v1;
     private boolean popup = false;
-    private AlertDialog.Builder builder;
+    public AlertDialog.Builder builder;
     public AlertDialog mDialog;
     private HashSet<Integer> DoneTiles = new HashSet<Integer>();
     private ArrayList<int[]> adjacencyList = new ArrayList<int[]>();
     private static Boolean comingFirstTime = true;
-    int t = 90;
+    int t = 25;
     private TextView v;
     private HashMap<String, Integer> score = new HashMap<String, Integer>();
-    public static int currentScore = 0;
+    public static  int currentScore;
     private static boolean phaseTwo = false;
     public static int totalClicks = 0;
     private ImageButton pause;
@@ -124,7 +124,6 @@ public class ScroggleMultiplayerFragment extends Fragment{
     private GameInfo gi;
     private FirebaseAuth mAuth;
     private Thread loadTheRemainingDictionary;
-    private HashMap<Integer, String> LargeTileOwner = new HashMap<Integer, String>();
     private Set<TileMultiplayer> mAvailableForLargeTile= new HashSet<TileMultiplayer>();
     private boolean entryCheck;
     private boolean firstClick = true;
@@ -134,8 +133,18 @@ public class ScroggleMultiplayerFragment extends Fragment{
     private String userOne;
     private String userTwo;
     private Tile.Owner user;
+    private String opponentAsync;
+    private String notify;
+    private String token;
+    private static final String TAG = OnlineOfflineActivity.class.getSimpleName();
+    private String gameState;
+    private Bundle b;
+    private int turns=0;
     private String scores;
-    private boolean wrongWord;
+    public static boolean quitState = false;
+    private String mGameOver;
+    private Boolean wrongWord;
+    public static final String RESTORE_DATA = "restore_data";
 
 
 
@@ -151,120 +160,122 @@ public class ScroggleMultiplayerFragment extends Fragment{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+            super.onCreate(savedInstanceState);
 
-        openDict = new Thread(new myThread());
-        openDict.start();
-
-        e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
-
-        // Retain this fragment across configuration changes.
-        setRetainInstance(true);
-firstClick = true;
-        repeatClick = false;
-        wrongWord = false;
-
-
-        initGame();
-        setAdjacencyList();
-        mRootRef = FirebaseDatabase.getInstance().getReference();
-
-        Bundle b = getActivity().getIntent().getExtras();
-        gameID = b.getString("GameKey");
-
-        if(b.getString("CallingActivity").equals(WaitingForOpponentActivity.class.toString())){
-            userOne = b.getString("username");
-            mRootRef.child("SynchronousGames").child(gameID).child("userA").setValue(userOne);
-            user = Tile.Owner.X;
-        }
-        else
-        if(b.getString("CallingActivity").equals(PreInitializingGameActivity.class.toString())){
-            userTwo = b.getString("username");
-            mRootRef.child("SynchronousGames").child(gameID).child("userB").setValue(userTwo);
-            user = Tile.Owner.O;
-        }
-
-
-        Log.d("gameID at frag", gameID);
-
-        addAllTilesForLargeTiles();
-
+            openDict = new Thread(new myThread());
+            openDict.start();
         mAuth = FirebaseAuth.getInstance();
 
+                if(mAuth.getCurrentUser()==null){
+                    if(getActivity().getIntent()!=null) {
+                        Bundle b = new Bundle();
+                        b = getActivity().getIntent().getExtras();
+                        if (b != null) {
+                            Intent intent = new Intent(getActivity(), GoogleSignInActivity.class);
+                            intent.putExtra("GameKey", b.getString("GameKey"));
+                            intent.putExtra("userOne", b.getString("userOne"));
+                            intent.putExtra("userTwo", b.getString("userTwo"));
+                            intent.putExtra("notifier", b.getString("notifier"));
+                            intent.putExtra("turns", b.getString("turns"));
+                            intent.putExtra("gameOver", b.getString("gameOver"));
+                            startActivity(intent);
+                            getActivity().finish();
+                        }
+                    }
+
+                }
+            // Retain this fragment across configuration changes.
+            setRetainInstance(true);
+    firstClick = true;
+            repeatClick = false;
+            wrongWord = false;
+
+            initGame();
+            setAdjacencyList();
+            mRootRef = FirebaseDatabase.getInstance().getReference();
+    mGameOver = "no";
+            b = getActivity().getIntent().getExtras();
+            if(b!=null) {
+                if (b.getString("GameKey") != null) {
+                    gameID = b.getString("GameKey");
+                }
+
+                if (b.getString("opponent") != null) {
+                    opponentAsync = b.getString("opponent");
+                    userTwo = opponentAsync;
+                    mRootRef.child("AsynchronousGames").child(gameID).child("userB").setValue(userTwo);
+                }
 
 
-        mSoundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
-        mSoundX = mSoundPool.load(getActivity(), R.raw.sergenious_movex, 1);
-        mSoundO = mSoundPool.load(getActivity(), R.raw.sergenious_moveo, 1);
-        mSoundMiss = mSoundPool.load(getActivity(), R.raw.erkanozan_miss, 1);
-        mSoundRewind = mSoundPool.load(getActivity(), R.raw.joanne_rewind, 1);
+                if (b.getString("CallingActivity") != null) {
+                    if (b.getString("CallingActivity").equals(AsyncStartActivity.class.toString())) {
+                        userOne = b.getString("username");
+                        mRootRef.child("AsynchronousGames").child(gameID).child("userA").setValue(userOne);
+                        user = Tile.Owner.X;
+                    }
+                }
+                if (b.getString("userOne") != null) {
+                    userOne = b.getString("userOne");
+                }
+                if (b.getString("userTwo") != null) {
+                    userTwo = b.getString("userTwo");
+                }
+
+                if (b.getString("notifier") != null) {
+                    if (b.getString("notifier").equals(userOne)) {
+                        user = Tile.Owner.O;
+                    }
+                    if (b.getString("notifier").equals(userTwo)) {
+                        user = Tile.Owner.X;
+                    }
+                }
+
+                if(b.getString("turns")!=null){
+                    turns = Integer.parseInt(b.getString("turns"));
+                }
+
+                if(b.getString("gameOver")!=null){
+                    mGameOver = b.getString("gameOver");
+                }
+
+            }
+
+            Log.d("gameID at frag", gameID);
 
 
-        loadTheRemainingDictionary = new Thread(new RemainingDictionary());
-        loadTheRemainingDictionary.start();
 
-//restartGame();
+
+
+
+            mSoundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
+            mSoundX = mSoundPool.load(getActivity(), R.raw.sergenious_movex, 1);
+            mSoundO = mSoundPool.load(getActivity(), R.raw.sergenious_moveo, 1);
+            mSoundMiss = mSoundPool.load(getActivity(), R.raw.erkanozan_miss, 1);
+            mSoundRewind = mSoundPool.load(getActivity(), R.raw.joanne_rewind, 1);
+
+
+            loadTheRemainingDictionary = new Thread(new RemainingDictionary());
+            loadTheRemainingDictionary.start();
+
+    //restartGame();
 
     }
 
 
 
+
             private void saveGameDataOnFireBase(){
-/*
-               mRootRef.child("SynchronousGames").child(gameID).addChildEventListener(new ChildEventListener() {
-                   @Override
-                   public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                       for(DataSnapshot d : dataSnapshot.getChildren()){
-                           if(d.getKey().equals("userA")){
-                               userOne = d.getValue().toString();
-                           }
-                           if(d.getKey().equals("userB")){
-                               userTwo = d.getValue().toString();
-                           }
-                       }
-                   }
 
-                   @Override
-                   public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                       for(DataSnapshot d : dataSnapshot.getChildren()){
-                           if(d.getKey().equals("userA")){
-                               userOne = d.getValue().toString();
-                           }
-                           if(d.getKey().equals("userB")){
-                               userTwo = d.getValue().toString();
-                           }
-                       }
-                   }
-
-
-                   @Override
-                   public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                   }
-
-                   @Override
-                   public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                   }
-
-                   @Override
-                   public void onCancelled(DatabaseError databaseError) {
-
-                   }
-               });
-
-*/
                // gi = new GameInfo(getState(), "yes", "yes", null, userOne, userTwo);
-                mRootRef.child("SynchronousGames").child(gameID).child("gamePlaying").setValue("yes");
+                mRootRef.child("AsynchronousGames").child(gameID).child("gamePlaying").setValue("yes");
 
-                mRootRef.child("SynchronousGames").child(gameID).child("gameState").setValue(getState());
+                mRootRef.child("AsynchronousGames").child(gameID).child("gameState").setValue(getState());
 
 
             }
 
             private void putGameState(){
-                mRootRef.child("SynchronousGames").addChildEventListener(
-                        new ChildEventListener() {
+                mRootRef.child("AsynchronousGames").addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 gi = dataSnapshot.getValue(GameInfo.class);
@@ -296,7 +307,12 @@ if(getActivity()!=null) {
                     getActivity().finish();
                 }
             });
-    mDialog = builder.show();
+    try {
+        mDialog = builder.show();
+    }catch (Error e){
+        e.printStackTrace();
+    }
+mHandler.removeCallbacks(mRunnable);
 
 }
 
@@ -317,9 +333,18 @@ if(getActivity()!=null) {
             }
 
 
-            private void doTransactionForGameState(){
+
+    public void flipTiles(int x){
+        for(int large =0; large< 9 ;large++){
+            for(int small = 0; small<9 ;small++){
+                mSmallTiles[large][small].updateFlipState(x);
+            }
+        }
+    }
+
+            public void doTransactionForGameState(){
                 mRootRef
-                        .child("SynchronousGames")
+                        .child("AsynchronousGames")
                         .child(gameID)
                         .child("gameState")
                         .runTransaction(new Transaction.Handler() {
@@ -342,54 +367,6 @@ if(getActivity()!=null) {
 
 
 
-/*
-    private void gameStateChanger(){
-        mRootRef.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Log.d("Arrived.", "hereOnline");
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Log.d("Arrived.", "here2On");
-
-                   if(child.getKey().equals("SynchronousGames")){
-
-                       for(DataSnapshot finalChild : child.getChildren()){
-                           if(finalChild.getKey().equals(userKey)){
-                               Log.d("putting", "state");
-                               putState(finalChild.getValue().toString());
-
-                           }
-                       }
-
-                    //   putState(child.getValue().toString());
-                   }
-
-                }
-
-            }
-
-
-
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-    private void triggerOtherPlayer(){
-
-
-        mRootRef = FirebaseDatabase.getInstance().getReference();
-        mRootRef.child("GameData").child("msgForOpponent").setValue("yes");
-
-    }
-
-*/
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -397,8 +374,8 @@ if(getActivity()!=null) {
         v = (TextView) getActivity().findViewById(R.id.counter_view);
         v1 = (TextView) getActivity().findViewById(R.id.score_view);
         e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
-        e.setText(" ");
-        muteMusic = (ImageButton) getActivity().findViewById((R.id.mute));
+       // restoreMyWords();
+        muteMusic = (ImageButton) getActivity().findViewById((R.id.mute_async));
         muteMusic.setImageLevel(1);
         muteMusic.setOnClickListener(new View.OnClickListener(){
 
@@ -411,10 +388,10 @@ if(getActivity()!=null) {
                 }else{
                     muteMusic.setImageLevel(0);
                 }
-                if(ScroggleMultiplayerActivity.mMediaPlayer.isPlaying()){
-                ScroggleMultiplayerActivity.mMediaPlayer.pause();}
+                if(ScroggleMultiplayerAsyncActivity.mMediaPlayer.isPlaying()){
+                ScroggleMultiplayerAsyncActivity.mMediaPlayer.pause();}
                 else{
-                    ScroggleMultiplayerActivity.mMediaPlayer.start();}
+                    ScroggleMultiplayerAsyncActivity.mMediaPlayer.start();}
                 }
 
         });
@@ -457,12 +434,11 @@ if(getActivity()!=null) {
     public void onResume() {
         super.onResume();
 
-        setAvailableAccordingToLargeTileOwner();
 
 
 
         if(muteClicked){
-         ScroggleMultiplayerActivity.mMediaPlayer.pause();
+         ScroggleMultiplayerAsyncActivity.mMediaPlayer.pause();
             muteMusic.setImageLevel(0);
         }
         if(!gameOver){
@@ -500,123 +476,96 @@ if(getActivity()!=null) {
 
 
 
-    public Runnable mRunnable = new Runnable() {
+    private Runnable mRunnable = new Runnable() {
 
         @Override
         public void run() {
-            t--;
-            v.setText("Time left: "+String.valueOf(t)+"  ");
-            v1.setText("Score: "+String.valueOf(currentScore)+"  ");
-            if(t<11){
-                beep();
+            if(mGameOver.equals("no")) {
+                t--;
 
-                try {
-                    RunAnimation(v);
-                }catch (NullPointerException e){
-
+                if (quitState) {
+                    mHandler.removeCallbacks(mRunnable);
                 }
 
-            }
-            //while(t!=0) {
+                v.setVisibility(View.VISIBLE);
+                v1.setVisibility(View.VISIBLE);
+                doneView.setVisibility(View.VISIBLE);
+                v.setText("Time left: " + String.valueOf(t) + "  ");
+                v1.setText("Score: " + String.valueOf(currentScore) + "  ");
+                if (t < 5) {
+                    beep();
+                    try {
+                        RunAnimation(v);
+                    } catch (NullPointerException e) {
 
+                    }
+                }
 
+                if (t == 0) {
+                    turns++;
+                    putScoreOnFireBase();
 
-            if(t==0||DoneTiles.size()==9){
+                    if (turns >= 9) {
+                        getScoresFromFireBase();
+                        putScoreOnScoreBoard();
+                        notifyForGameOver();
+                        currentScore = 0;
+                    } else {
+                        v.setVisibility(View.GONE);
+                        v1.setVisibility(View.GONE);
+                        doneView.setVisibility(View.GONE);
+                        mHandler.removeCallbacks(mRunnable);
+                        checkStates();
+                        notifyOpponent();
+                    }
 
+                } else {
+                    mHandler.postDelayed(mRunnable, 1000);
+                }
 
-                putScoreOnFireBase();
-               // putFinalScoreOnFireBase();
-                putScoreOnScoreBoard();
+            }else
+            if(mGameOver.equals("yes")){
+                mHandler.removeCallbacks(mRunnable);
                 getScoresFromFireBase();
-
-
-
-
-            }else {
-                mHandler.postDelayed(mRunnable, 1000);
+                putScoreOnScoreBoard();
             }
                 }
 
 
     };
 
+    private void putScoreOnScoreBoard(){
+        mRootRef
+                .child("scoreBoard")
+                .runTransaction(new Transaction.Handler() {
+                    @Override
+                    public Transaction.Result doTransaction(MutableData mutableData) {
 
-    private void putFinalScoreOnFireBase(){
+                        for(MutableData d : mutableData.getChildren()){
+                            if (d.getKey().equals(mAuth.getCurrentUser().getDisplayName().toString())) {
+                                d.setValue(Integer.parseInt(d.getValue().toString())+currentScore);
+                            }
+                        }
+                        return Transaction.success(mutableData);
+                    }
 
+                    @Override
+                    public void onComplete(DatabaseError databaseError, boolean b,
+                                           DataSnapshot dataSnapshot) {
 
+                    }
+                });
     }
 
-    private void getScoresFromFireBase(){
 
-        DatabaseReference r = mRootRef.child("SynchronousGames").child(gameID);
-        r.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String otherUser="";
+    private void putScoreOnFireBase(){
+        if(user == Tile.Owner.X) {
+            mRootRef.child("AsynchronousGames").child(gameID).child("scoreA").setValue(currentScore);
+        }
 
-                if(userOne!=null) {
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        if (d.getKey().equals("scoreA")) {
-                            scores = userOne + ": " + d.getValue().toString() + "\n";
-                        }
-
-                    }
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        if (d.getKey().equals("userB")) {
-                            otherUser = d.getValue().toString();
-                        }
-
-
-                    }
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        if (d.getKey().equals("scoreB")) {
-                            scores += otherUser + ": " + d.getValue().toString() + "\n";
-                        }
-                        if(getActivity()!=null){
-                        showScores(scores);}
-
-                    }
-
-                }
-                else
-
-                if(userTwo!=null){
-
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        if (d.getKey().equals("scoreB")) {
-                            scores = userTwo + ": " + d.getValue().toString() + "\n";
-                        }
-
-                    }
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        if (d.getKey().equals("userA")) {
-                            otherUser = d.getValue().toString();
-                        }
-
-
-                    }
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                        if (d.getKey().equals("scoreA")) {
-                            scores += otherUser + ": " + d.getValue().toString() + "\n";
-                        }
-                        if(getActivity()!=null){
-                        showScores(scores);}
-
-                    }
-
-
-                }
-
-
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        if(user == Tile.Owner.O){
+            mRootRef.child("AsynchronousGames").child(gameID).child("scoreB").setValue(currentScore);
+        }
     }
 
     private void showScores(String scores){
@@ -636,37 +585,263 @@ if(getActivity()!=null) {
             public void onClick(View v) {
                 alertDialog.cancel();
                 getActivity().finish();
+                mRootRef.child("AsynchronousGames").child(gameID).removeValue();
             }
         });
         alertDialog.show();
 
     }
 
-    private void clearAvailableForLargeTile(){
-        mAvailableForLargeTile.clear();
+    private void getScoresFromFireBase(){
+
+        DatabaseReference r = mRootRef.child("AsynchronousGames").child(gameID);
+        r.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot d :dataSnapshot.getChildren()){
+                    if(d.getKey().equals("scoreA")){
+                        scores=userOne+": "+d.getValue().toString()+"\n";}
+
+
+                }
+                for(DataSnapshot d :dataSnapshot.getChildren()){
+                    if(d.getKey().equals("scoreB")){
+                            scores+=userTwo+": "+d.getValue().toString()+"\n";}
+                    showScores(scores);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
-    private void addAllTilesForLargeTiles(){
-        for(int large = 0; large<9;large++){
-            for(int small= 0; small<9; small++){
-                TileMultiplayer tile = mSmallTiles[large][small];
-mAvailableForLargeTile.add(tile);
+
+
+
+    private void checkStates(){
+        for(int large = 0; large<9 ;large++){
+            for(int small = 0; small<9; small++){
+                TileMultiplayer tile = mSmallTiles[small][large];
+                if(tile.getOwner()==TileMultiplayer.Owner.X||tile.getOwner()== TileMultiplayer.Owner.O||tile.getOwner()== TileMultiplayer.Owner.CLICKED){
+                    if (!DoneTiles.contains(large)){
+                        for(int i = 0;i<9 ;i++){
+                            TileMultiplayer tile1 = mSmallTiles[large][i];
+                            tile1.setOwner(TileMultiplayer.Owner.NOTCLICKED);
+                            tile1.updateDrawableState('a', 0);
+                            mAvailable.add(tile1);
+                        }
+                    }else{
+                        mAvailable.remove(tile);
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkStates(int lastLarge){
+        for(int large = 0; large <9; large++){
+            for(int small = 0; small< 9; small++){
+                if(large==lastLarge){
+                    TileMultiplayer tile = mSmallTiles[lastLarge][small];
+                   mAvailable.add(tile);
+                }
             }
         }
 
+
     }
 
-    private void addAvailableForLargeTile(TileMultiplayer tile){
-        mAvailableForLargeTile.add(tile);
+
+    private void notifyForGameOver(){
+        if(user == Tile.Owner.X) {
+            notify =userTwo;
+        }else
+        if(user==Tile.Owner.O){
+            notify =  userOne;}
+
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+
+        DatabaseReference r1 = mRootRef.child("All Users");
+        r1.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+
+                    for (DataSnapshot finalvalue : child.getChildren()) {
+
+
+                        if (finalvalue.getValue().equals(notify)) {
+
+                            for (DataSnapshot d : child.getChildren()){
+                                if (d.getKey().equals("token")) {
+                                    token = d.getValue().toString();
+                                    sendNotification(token, "yes");
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        doTransactionForGameState();
     }
 
-    private boolean isAvailableForLargeTIle(TileMultiplayer tile){
-        if(mAvailableForLargeTile.contains(tile)){
-            return true;
-        }else{
-            return false;
+
+
+    private void notifyOpponent(){
+        if(user == Tile.Owner.X) {
+            notify =userTwo;
+        }else
+        if(user==Tile.Owner.O){
+            notify =  userOne;}
+
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+
+        DatabaseReference r1 = mRootRef.child("All Users");
+        r1.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+
+                    for (DataSnapshot finalvalue : child.getChildren()) {
+
+
+                        if (finalvalue.getValue().equals(notify)) {
+
+                            for (DataSnapshot d : child.getChildren()){
+                                if (d.getKey().equals("token")) {
+                                    token = d.getValue().toString();
+                                    sendNotification(token, "no");
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        doTransactionForGameState();
+        noVisibility();
+    }
+
+
+
+    private void sendNotification(String token, String gameOver){
+        final String final_token = token;
+        final String game_Over = gameOver;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                pushNotification(final_token, game_Over);
+            }
+        }).start();
+    }
+
+    private void pushNotification(String token, String gameOver){
+        //     Log.d(user_one,"User One");
+        //    Log.d(user_two, "User Two");
+        JSONObject jPayload = new JSONObject();
+        JSONObject jNotification = new JSONObject();
+        JSONObject jData = new JSONObject();
+
+        try {
+            jNotification.put("title", "Scroggle");
+            jNotification.put("body", "Your turn");
+            jNotification.put("sound", "default");
+            jNotification.put("badge", "1");
+            jNotification.put("click_action", "openIt");
+
+            jData.put("GameKey", gameID);
+            jData.put("userOne", userOne);
+            jData.put("userTwo", userTwo);
+            jData.put("notifier", mAuth.getCurrentUser().getDisplayName().toString());
+            jData.put("turns", String.valueOf(turns));
+            if(gameOver.equals("yes")){
+                jData.put("gameOver", "yes");
+            }
+            else{
+                jData.put("gameOver", "no");
+            }
+
+            // If sending to a single client
+            // if(token!=null){
+            //Log.d("finalllllll tokeennnn", token);}
+            jPayload.put("to", token);
+jPayload.put("data",jData);
+            /*
+            // If sending to multiple clients (must be more than 1 and less than 1000)
+            JSONArray ja = new JSONArray();
+            ja.put(CLIENT_REGISTRATION_TOKEN);
+            // Add Other client tokens
+            ja.put(FirebaseInstanceId.getInstance().getToken());
+            jPayload.put("registration_ids", ja);
+            */
+
+            jPayload.put("priority", "high");
+            jPayload.put("notification", jNotification);
+
+            URL url = new URL("https://fcm.googleapis.com/fcm/send");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", SERVER_KEY);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            // Send FCM message content.
+            OutputStream outputStream = conn.getOutputStream();
+            outputStream.write(jPayload.toString().getBytes());
+            outputStream.close();
+
+            // Read FCM response.
+            InputStream inputStream = conn.getInputStream();
+            final String resp = convertStreamToString(inputStream);
+
+            Handler h = new Handler(Looper.getMainLooper());
+            h.post(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e(TAG, "run: " + resp);
+                    if(getActivity()!=null){
+                    Toast.makeText(getActivity(),resp,Toast.LENGTH_LONG);}
+                }
+            });
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
         }
+
     }
+    private String convertStreamToString(InputStream is) {
+        Scanner s = new Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next().replace(",", ",\n") : "";
+    }
+
+
+
+
 
 
     private void clearAvailable() {
@@ -716,10 +891,16 @@ mAvailableForLargeTile.add(tile);
 
         initViews(rootView);
         loadScores();
+
        updateAllTiles();
         getCounter();
-        saveGameDataOnFireBase();
-        putGameState();
+       // saveGameDataOnFireBase();
+            putGameState();
+
+
+
+
+
 
 
         return rootView;
@@ -815,14 +996,6 @@ mAvailableForLargeTile.add(tile);
     }
 
 
-    private void setLargeTileOwner(int largeTile){
-
-        if(!LargeTileOwner.containsKey(largeTile)){
-        LargeTileOwner.put(largeTile, mAuth.getCurrentUser().getDisplayName().toString());}else{
-            repeatClick = true;
-        }
-
-    }
 
 
     private void initViews(View rootView) {
@@ -849,17 +1022,15 @@ mAvailableForLargeTile.add(tile);
                 inner.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                     //   smallTile.animate();
+                    //    smallTile.animateAsync();
                         totalClicks++;
 
-                       setAvailableAccordingToLargeTileOwner();
 
-                            entryCheck = isAvailable(smallTile) && (!gameOver) && isAvailableForLargeTIle(smallTile);
+                            entryCheck = isAvailable(smallTile) && (!gameOver);
 
                         if (entryCheck) {
                            //(getActivity()).startThinking();
                             mSoundPool.play(mSoundX, mVolume, mVolume, 1, 0, 1f);
-                            setLargeTileOwner(fLarge);
 wrongWord = false;
                             for(int i = 0;i<9;i++){
                                 TileMultiplayer tile = mSmallTiles[fLarge][i];
@@ -878,16 +1049,16 @@ wrongWord = false;
 
 
                             doTransactionForGameState();   //does getstate putstate
-                            if(!repeatClick){
-                           doTransactionForLargeTileOwner();}
-                            repeatClick = false;
+                          //  if(!repeatClick){
+                           //doTransactionForLargeTileOwner();}
+                            //repeatClick = false;
 
                             touchedLargeTile =fLarge;
                             touchedSmallTiles[fSmall] = fSmall+1;
                             getButtonText(smallTile);
 
                             //think();
-                            setCorrectStates(fLarge);
+                           // setCorrectStates(fLarge);
 
                         } else {
                             mSoundPool.play(mSoundMiss, mVolume, mVolume, 1, 0, 1f);
@@ -898,161 +1069,6 @@ wrongWord = false;
 
             }
         }
-
-
-    }
-
-
-    private String getLargeTileOwnerString(){
-        StringBuilder largeTileOwnerStringBuilder = new StringBuilder();
-        for(int i = 0; i<9;i++) {
-
-if(LargeTileOwner.containsKey(i)) {
-    largeTileOwnerStringBuilder.append(i);
-    largeTileOwnerStringBuilder.append(',');
-    largeTileOwnerStringBuilder.append(LargeTileOwner.get(i));
-    largeTileOwnerStringBuilder.append(',');
-}
-}
-        return largeTileOwnerStringBuilder.toString();
-    }
-
-    private void doTransactionForLargeTileOwner(){
-
-
-        mRootRef
-                .child("SynchronousGames")
-                .child(gameID)
-                .child("largeTileOwnerList")
-                .runTransaction(new Transaction.Handler() {
-                    @Override
-                    public Transaction.Result doTransaction(MutableData mutableData) {
-
-                        gi.largeTileOwnerList = getLargeTileOwnerString();
-                        String currentData ="";
-                        if(mutableData.getValue()!=null){
-                         currentData  = mutableData.getValue().toString();}
-
-                        mutableData.setValue(currentData+getLargeTileOwnerString());
-
-                        return Transaction.success(mutableData);
-                    }
-
-                    @Override
-                    public void onComplete(DatabaseError databaseError, boolean b,
-                                           DataSnapshot dataSnapshot) {
-
-                    }
-                });
-    }
-
-    public void flipTiles(int x){
-for(int large =0; large< 9 ;large++){
-    for(int small = 0; small<9 ;small++){
-        mSmallTiles[large][small].updateFlipState(x);
-    }
-}
-    }
-
-    private void setCorrectStates(int large){
-        for(int l = 0; l<9 ;l++){
-            for(int small =0;small<9;small++){
-
-                if(l!=large){
-
-                   TileMultiplayer tile = mSmallTiles[l][small];
-                    if(tile.getOwner().equals(TileMultiplayer.Owner.NOTCLICKED)){
-                       // tile.setOwner(TileMultiplayer.Owner.FREEZED);
-
-                     }
-
-                }
-                TileMultiplayer tile = mSmallTiles[large][small];
-                if(LargeTileOwner.containsKey(large)){
-                    tile.updateDrawableState('a', 0);
-
-                }
-
-            }
-        }
-    }
-
-    private void setAvailableAccordingToLargeTileOwner(){
-
-        //Log.d(gi.toString(), "check");
-
-        mRootRef =  FirebaseDatabase.getInstance().getReference();
-
-        DatabaseReference r = mRootRef.child("SynchronousGames").child(gameID);
-
-        r.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.d("comes here", "??");
-
-
-                for(DataSnapshot d : dataSnapshot.getChildren()){
-  //                  Log.d("comes here", "???");
-
-    if(d.getKey().equals("largeTileOwnerList")){
-       final String list = d.getValue().toString();
-
-        String[] fields = list.split(",");
-        //int index = 0;
-        for(int index = 0; index<fields.length;index++){
-
-            int tileNumber = Integer.parseInt(fields[index++]);
-            String userName = fields[index];
-            for(int largetiles = 0; largetiles<9;largetiles++) {
-                for (int smaltiles = 0; smaltiles < 9; smaltiles++) {
-
-                    TileMultiplayer tile = mSmallTiles[largetiles][smaltiles];
-                    if (largetiles == tileNumber) {
-                        if (userName.equals(mAuth.getCurrentUser().getDisplayName().toString())) {
-                            //  tile1.setOwner(TileMultiplayer.Owner.CLICKED);
-                            if (!mAvailableForLargeTile.contains(tile)) {
-                                mAvailableForLargeTile.add(tile);
-                            }
-                            // tile1.updateDrawableState('a', 0);
-                        } else {
-
-                            if (mAvailableForLargeTile.contains(tile)) {
-                                mAvailableForLargeTile.remove(tile);
-                            }
-                        }
-
-                        tile.updateDrawableState('a', 0);
-
-                    }
-                    else{
-
-                       // tile.setOwner(TileMultiplayer.Owner.NOTCLICKED);
-                     //   if (!mAvailableForLargeTile.contains(tile)) {
-                       //     mAvailableForLargeTile.add(tile);
-
-                        //}
-                      //  mAvailable.add(tile);
-
-                        tile.updateDrawableState('a', 0);
-
-                    }
-                }
-            }
-        }
-
-
-    }                 }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-
 
 
     }
@@ -1127,10 +1143,22 @@ for(int large =0; large< 9 ;large++){
                 DoneTiles.add(touchedLargeTile);
 
                 DictionaryAssignment3.result.setText("");
-
+            v.setVisibility(View.GONE);
+            v1.setVisibility(View.GONE);
+            doneView.setVisibility(View.GONE);
+            mHandler.removeCallbacks(mRunnable);
+            turns++;
             putScoreOnFireBase();
-            //putScoreOnScoreBoard();
-            wrongWord = false;
+
+            if(turns>=9){
+                getScoresFromFireBase();
+                putScoreOnScoreBoard();
+                notifyForGameOver();
+            }
+
+            checkStates();
+           //    writeMyWords();
+notifyOpponent();
 
             }  else {
 
@@ -1163,11 +1191,10 @@ for(int large =0; large< 9 ;large++){
                             });
                     mDialog = builder.show();
 
-                  //  tile.animate();
+                 //   tile.animateAsync();
 
                     for (int i = 0; i < 9; i++) {
                         TileMultiplayer tiles = mSmallTiles[touchedLargeTile][i];
-
                         tiles.setOwner(TileMultiplayer.Owner.NOTCLICKED);
                         tiles.updateDrawableState('a', 0);
                         addAvailable(tiles);}
@@ -1179,16 +1206,14 @@ for(int large =0; large< 9 ;large++){
                 enteredStringSroggle = "";
 
             }
-            setLargeTileOwner(touchedLargeTile);
-        //    doTransactionForLargeTileOwner();
             wrongWord = true;
+            checkStates(touchedLargeTile);
         }
 
 
             if (touchedLargeTile == 0) {
                 for (int i = 0; i < 9; i++) {
                     TileMultiplayer tiles = mSmallTiles[touchedLargeTile][i];
-
                     if ((tiles.getOwner() == TileMultiplayer.Owner.NOTCLICKED)&&(((Button)tiles.getView()).getText().charAt(0)!=' ')) {
 
                         addAvailable(tiles);
@@ -1210,45 +1235,6 @@ doTransactionForGameState();
 
 
 
-
-    public void onPasue(){
-        super.onPause();
-        mDialog.dismiss();
-    }
-    private void putScoreOnScoreBoard(){
-        mRootRef
-                .child("scoreBoard")
-                .runTransaction(new Transaction.Handler() {
-                    @Override
-                    public Transaction.Result doTransaction(MutableData mutableData) {
-
-                        for(MutableData d : mutableData.getChildren()){
-                            if (d.getKey().equals(mAuth.getCurrentUser().getDisplayName().toString())) {
-
-                                d.setValue(Integer.parseInt(d.getValue().toString())+(currentScore));
-                            }
-                        }
-                        return Transaction.success(mutableData);
-                    }
-
-                    @Override
-                    public void onComplete(DatabaseError databaseError, boolean b,
-                                           DataSnapshot dataSnapshot) {
-
-                    }
-                });
-    }
-
-
-    private void putScoreOnFireBase(){
-        if(user == Tile.Owner.X) {
-            mRootRef.child("SynchronousGames").child(gameID).child("scoreA").setValue(currentScore);
-        }
-
-        if(user == Tile.Owner.O){
-            mRootRef.child("SynchronousGames").child(gameID).child("scoreB").setValue(currentScore);
-        }
-    }
 
     private void updateScore(String x, int bonus){
 
@@ -1440,7 +1426,7 @@ doTransactionForGameState();
                             if (i != large) {//Correct answer
                                 TileMultiplayer tile = mSmallTiles[i][dest];
 
-                                if(tile.getOwner()== TileMultiplayer.Owner.CLICKED||tile.getOwner()== TileMultiplayer.Owner.O||tile.getOwner()== TileMultiplayer.Owner.X){
+                                if(tile.getOwner()== TileMultiplayer.Owner.CLICKED){
                                     continue;
                                 }else {
 
@@ -1631,120 +1617,120 @@ doTransactionForGameState();
 
 private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Integer> DoneTiles){
     for(int i =0; i<9;i++){
-        for(int j = 0; j<9;j++) {
+        for(int j = 0; j<9;j++){
             TileMultiplayer tile = mSmallTiles[i][j];
-            if ((tile.getOwner() == TileMultiplayer.Owner.X) || (tile.getOwner() == TileMultiplayer.Owner.O)) {
-                if (!DoneTiles.contains(i)) {
-                    mAvailable.add(tile);
-                } else {
+
+           if((tile.getOwner()== TileMultiplayer.Owner.X)||(tile.getOwner()== TileMultiplayer.Owner.O)){
+                if(!DoneTiles.contains(i)){
+                    mAvailable.add(tile);}else
+                {
                     mAvailable.remove(tile);
-                    LargeTileOwner.remove(tile);
-                    if (getLargeTileOwnerString() != "") {
-                        //    doTransactionForLargeTileOwner();
-                    }
 
                 }
+
                 //  mAvailable.remove(tile);
             }
+if(!wrongWord) {
+    if (i == large) {
+        switch (smallx) {
+            case 0:
+                int a[] = adjacencyList.get(0);
 
-            if (!wrongWord){
-                if (i == large) {
-                    switch (smallx) {
-                        case 0:
-                            int a[] = adjacencyList.get(0);
+                for (int x : a) {
+                    TileMultiplayer tile1 = mSmallTiles[large][x];
+                    //if(mAvailable.contains(tile1)) {
+                    mAvailable.remove(tile1);
+                    //}
+                }
+                break;
+            case 1:
+                int a1[] = adjacencyList.get(1);
 
-                            for (int x : a) {
-                                TileMultiplayer tile1 = mSmallTiles[large][x];
-                                //if(mAvailable.contains(tile1)) {
-                                mAvailable.remove(tile1);
-                                //}
-                            }
-                            break;
-                        case 1:
-                            int a1[] = adjacencyList.get(1);
-
-                            for (int x : a1) {
-                                TileMultiplayer tile2 = mSmallTiles[large][x];
-                                // if(mAvailable.contains(tile2)) {
-                                mAvailable.remove(tile2);
-                                //}
-                            }
-                            break;
-                        case 2:
-                            int a2[] = adjacencyList.get(2);
-                            for (int x : a2) {
-                                TileMultiplayer tile3 = mSmallTiles[large][x];
-                                // if(mAvailable.contains(tile3)) {
-                                mAvailable.remove(tile3);
-                                // }
-                            }
-                            break;
-                        case 3:
-                            int a3[] = adjacencyList.get(3);
-                            for (int x : a3) {
-                                TileMultiplayer tile4 = mSmallTiles[large][x];
-                                //if(mAvailable.contains(tile4)) {
-                                mAvailable.remove(tile4);
-                                // }
-                            }
-                            break;
-                        case 4:
-                            int a4[] = adjacencyList.get(4);
-                            for (int x : a4) {
-                                TileMultiplayer tile5 = mSmallTiles[large][x];
-                                //if(mAvailable.contains(tile5)) {
-                                mAvailable.remove(tile5);//}
-
-                            }
-                            break;
-                        case 5:
-                            int a5[] = adjacencyList.get(5);
-                            for (int x : a5) {
-                                TileMultiplayer tile6 = mSmallTiles[large][x];
-                                //if(mAvailable.contains(tile6)) {
-                                mAvailable.remove(tile6);//}
-
-                            }
-                            break;
-                        case 6:
-                            int a6[] = adjacencyList.get(6);
-                            for (int x : a6) {
-                                TileMultiplayer tile7 = mSmallTiles[large][x];
-                                //if(mAvailable.contains(tile7)) {
-                                mAvailable.remove(tile7);//}
-
-
-                            }
-                            break;
-                        case 7:
-                            int a7[] = adjacencyList.get(7);
-                            for (int x : a7) {
-                                TileMultiplayer tile8 = mSmallTiles[large][x];
-                                // if(mAvailable.contains(tile8)) {
-                                mAvailable.remove(tile8);//}
-                                // tile8.updateDrawableState(' ', 0)
-
-                            }
-                            break;
-                        case 8:
-                            int a8[] = adjacencyList.get(8);
-                            for (int x : a8) {
-                                TileMultiplayer tile9 = mSmallTiles[large][x];
-                                //if(mAvailable.contains(tile9)) {
-                                mAvailable.remove(tile9);//}
-                                //    tile9.updateDrawableState(' ', 0)
-
-                            }
-                            break;
-                    }
+                for (int x : a1) {
+                    TileMultiplayer tile2 = mSmallTiles[large][x];
+                    // if(mAvailable.contains(tile2)) {
+                    mAvailable.remove(tile2);
+                    //}
+                }
+                break;
+            case 2:
+                int a2[] = adjacencyList.get(2);
+                for (int x : a2) {
+                    TileMultiplayer tile3 = mSmallTiles[large][x];
+                    // if(mAvailable.contains(tile3)) {
+                    mAvailable.remove(tile3);
+                    // }
+                }
+                break;
+            case 3:
+                int a3[] = adjacencyList.get(3);
+                for (int x : a3) {
+                    TileMultiplayer tile4 = mSmallTiles[large][x];
+                    //if(mAvailable.contains(tile4)) {
+                    mAvailable.remove(tile4);
+                    // }
+                }
+                break;
+            case 4:
+                int a4[] = adjacencyList.get(4);
+                for (int x : a4) {
+                    TileMultiplayer tile5 = mSmallTiles[large][x];
+                    //if(mAvailable.contains(tile5)) {
+                    mAvailable.remove(tile5);//}
 
                 }
-                wrongWord = false;
+                break;
+            case 5:
+                int a5[] = adjacencyList.get(5);
+                for (int x : a5) {
+                    TileMultiplayer tile6 = mSmallTiles[large][x];
+                    //if(mAvailable.contains(tile6)) {
+                    mAvailable.remove(tile6);//}
+
+                }
+                break;
+            case 6:
+                int a6[] = adjacencyList.get(6);
+                for (int x : a6) {
+                    TileMultiplayer tile7 = mSmallTiles[large][x];
+                    //if(mAvailable.contains(tile7)) {
+                    mAvailable.remove(tile7);//}
+
+
+                }
+                break;
+            case 7:
+                int a7[] = adjacencyList.get(7);
+                for (int x : a7) {
+                    TileMultiplayer tile8 = mSmallTiles[large][x];
+                    // if(mAvailable.contains(tile8)) {
+                    mAvailable.remove(tile8);//}
+                    // tile8.updateDrawableState(' ', 0)
+
+                }
+                break;
+            case 8:
+                int a8[] = adjacencyList.get(8);
+                for (int x : a8) {
+                    TileMultiplayer tile9 = mSmallTiles[large][x];
+                    //if(mAvailable.contains(tile9)) {
+                    mAvailable.remove(tile9);//}
+                    //    tile9.updateDrawableState(' ', 0)
+
+                }
+                break;
         }
+
+    }
+    wrongWord = false;
+}
                 if(DoneTiles.size()==9){
                     mAvailable.clear();
                 }
 
+            if(tile.getOwner()== TileMultiplayer.Owner.CLICKED){
+                mAvailable.remove(tile);
+            }
 
 
 
@@ -1756,7 +1742,7 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
 }
 
 
-    /** Create a string containing the state of the game. */
+
 
 
 
@@ -1764,27 +1750,15 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
 
         StringBuilder builder = new StringBuilder();
 
-       // if(e!=null) {
-
-
-   // if (e.getText() != null) {
-        //builder.append(e.getText());
-       // builder.append(',');
-
-//    }
-
-
-        //}
      //   builder.append(muteClicked);
        // builder.append(',');
 
-
-     //   builder.append(wrongWord);
-       // builder.append(',');
+        builder.append(wrongWord);
+        builder.append(',');
         builder.append(gameOver);
         builder.append(',');
        // builder.append(wordsDetectedByUser.size());
-       // builder.append(',');
+        //builder.append(',');
         //for(int i =0;i<wordsDetectedByUser.size();i++)
         //{ builder.append(wordsDetectedByUser.get(i));
         //builder.append(',');}
@@ -1814,7 +1788,7 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
                 return builder.toString();
     }
 
-    /** Restore the state of the game from the given string. */
+
 
     public void putState(String gameData) {
         try {
@@ -1822,24 +1796,25 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
 
             int index = 0;
 
-         //   muteClicked = Boolean.parseBoolean(fields[index++]);
+       //     muteClicked = Boolean.parseBoolean(fields[index++]);
 
-        //    wrongWord = Boolean.parseBoolean(fields[index++]);
+            wrongWord = Boolean.parseBoolean(fields[index++]);
+
             gameOver = Boolean.parseBoolean(fields[index++]);
 
 
-           // int size = Integer.parseInt(fields[index++]);
+         //   int size = Integer.parseInt(fields[index++]);
            // e = (TextView) getActivity().findViewById(R.id.scroggle_text_view);
 
-           // e.setText("");
+         //   e.setText("");
 
-            //for (int i = 0; i < size; i++) {
+           // for (int i = 0; i < size; i++) {
 
-              //  wordsDetectedByUser.put(i, fields[index++]);
+             //   wordsDetectedByUser.put(i, fields[index++]);
 
-         //       e.append(wordsDetectedByUser.get(i) + " ");
+               // e.append(wordsDetectedByUser.get(i) + " ");
 
-           //x }
+            //}
             notValidWord = Boolean.parseBoolean(fields[index++]);
 
 
@@ -1877,15 +1852,9 @@ private void setAvailableAccordingToGamePhase(int smallx, int large, HashSet<Int
 Log.d("Updating", "drawable state");
                 TileMultiplayer tile = mSmallTiles[large][small];
                 tile.updateDrawableState(' ', 0);
-
-
-
-
             }
         }
     }
-
-
 
 
     class RemainingDictionary implements Runnable {

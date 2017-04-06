@@ -98,7 +98,9 @@
 
         <activity android:name=".assignment7.ScroggleMultiplayerActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitle"/>
+            android:theme="@style/NoTitle">
+
+        </activity>
 
         <activity android:name=".assignment7.ScroggleMultiplayerAsyncActivity"
             android:screenOrientation="portrait"
@@ -106,7 +108,7 @@
             <intent-filter>
                 <action android:name="openIt"></action>
                 <category android:name="android.intent.category.DEFAULT"></category>
-                </intent-filter>
+            </intent-filter>
         </activity>
 
 
@@ -140,7 +142,12 @@
 
         <activity android:name=".assignment7.PreInitializingGameActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitle" />
+            android:theme="@style/NoTitle" >
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY_SYNC"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+            </activity>
 
 
 

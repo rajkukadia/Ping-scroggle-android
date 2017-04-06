@@ -79,6 +79,9 @@ public class OnlineOfflineActivity extends Activity{
         if(ScroggleMultiplayerAsyncFragment.gameID!=null){
             mRootRef.child("AsynchronousGames").child(ScroggleMultiplayerAsyncFragment.gameID).removeValue();
         }
+        if(ScroggleMultiplayerFragment.gameID!=null){
+            mRootRef.child("SynchronousGames").child(ScroggleMultiplayerFragment.gameID).removeValue();
+        }
 
         final LinearLayout OnlineFriendList = (LinearLayout)(findViewById(R.id.online_friend_list));
         OnlineFriendList.removeAllViews();
@@ -422,7 +425,7 @@ mRootRef.child("gameMode").setValue("offline");
             jNotification.put("body", mAuth.getCurrentUser().getDisplayName().toString()+" wants to play with you...");
             jNotification.put("sound", "default");
             jNotification.put("badge", "1");
-            jNotification.put("click_action", "OPEN_ACTIVITY_1");
+            jNotification.put("click_action", "OPEN_ACTIVITY_SYNC");
 
             // If sending to a single client
            // if(token!=null){
@@ -474,9 +477,11 @@ mRootRef.child("gameMode").setValue("offline");
     protected void onResume() {
         super.onResume();
         Once = true;
-        mRootRef.child("All Users").child(mAuth.getCurrentUser().getUid().toString()).child("opponent").removeValue();
+        if(mAuth.getCurrentUser()!=null) {
+            mRootRef.child("All Users").child(mAuth.getCurrentUser().getUid().toString()).child("opponent").removeValue();
 
-        mRootRef.child("active users").child(mAuth.getCurrentUser().getUid().toString()).child("opponent").removeValue();
+            mRootRef.child("active users").child(mAuth.getCurrentUser().getUid().toString()).child("opponent").removeValue();
+        }
       if(ScroggleMultiplayerFragment.gameID!=null){
        mRootRef.child("SynchronousGames").child(ScroggleMultiplayerFragment.gameID).removeValue();}
        // if(ScroggleMultiplayerAsyncFragment.gameID!=null){

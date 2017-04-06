@@ -30,7 +30,7 @@ public class WaitingForOpponentActivity extends Activity{
 
 
     TextView FriendList;
-    private int t = 10;
+    private int t = 20;
     private TextView waiting_for_opponent_timer;
     private Handler mHandler = new Handler();
     private DatabaseReference mRootRef;
