@@ -1,0 +1,24 @@
+
+<LinearLayout
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:layout_width="match_parent"
+   android:layout_height="wrap_content"
+   android:orientation="horizontal"
+   android:padding="@dimen/control_padding"
+   tools:context=".assignment5.ScroggleAssignment5">
+
+   <ImageButton
+      android:id="@+id/button_restart"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:elevation="@dimen/elevation_low"
+       android:src="@drawable/restart"/>
+
+   <ImageButton
+      android:id="@+id/button_main"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:elevation="@dimen/elevation_low"
+       android:src="@drawable/menu_image"/>
+</LinearLayout>

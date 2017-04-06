@@ -1,0 +1,18 @@
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    tools:context=".assignment5.UT3MainActivityScroggleAssignment5">
+
+    <fragment
+        android:id="@+id/main_fragment_scroggle"
+        class="edu.neu.madcourse.raj__kukadia.assignment5.UT3MainFragmentScroggleAssignment5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:layout="@layout/fragment_main_scroggle_assignment5"/>
+</FrameLayout>

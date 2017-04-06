@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/menu_button_margin"
+    android:orientation="vertical"
+    tools:context=".assignment7.GoogleSignInActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/about_margin_space"
+        android:textSize="@dimen/sign_in_with_google"
+        android:text="@string/signingoogle_label"/>
+    <com.google.android.gms.common.SignInButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/googlesigninbutton">
+    </com.google.android.gms.common.SignInButton>
+    
+
+
+
+</LinearLayout>

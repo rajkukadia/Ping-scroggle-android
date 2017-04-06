@@ -1,0 +1,18 @@
+
+<LinearLayout
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:layout_width="match_parent"
+   android:layout_height="wrap_content"
+   android:orientation="horizontal"
+   android:padding="@dimen/control_padding"
+   tools:context=".assignment7.ScroggleMultiplayerAsyncActivity">
+
+
+   <ImageButton
+      android:id="@+id/button_main_multiplayer_async"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:elevation="@dimen/elevation_low"
+       android:src="@drawable/menu_image"/>
+</LinearLayout>

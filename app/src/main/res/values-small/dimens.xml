@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="stroke_width">1dp</dimen>
+    <dimen name="corner_radius">4dp</dimen>
+    <dimen name="tile_size">25dp</dimen>
+    <dimen name="tile_margin">0dp</dimen>
+    <dimen name="tile_padding">3dp</dimen>
+    <dimen name="control_padding">2dp</dimen>
+    <dimen name="control_height">72dp</dimen>
+    <dimen name="tile_text_size">14sp</dimen>
+    <dimen name="small_screen_text">12sp</dimen>
+    <dimen name="small_screen_instruction_text">18sp</dimen>
+
+
+
+
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+        <dimen name="activity_horizontal_margin">16dp</dimen>
+        <dimen name="activity_vertical_margin">16dp</dimen>
+        <dimen name="menu_button_padding">8dp</dimen>
+        <dimen name="menu_button_margin">8dp</dimen>
+        <dimen name="about_text_size">15sp</dimen>
+        <dimen name="about_margin_space">20dp</dimen>
+        <dimen name="button_radius">100dp</dimen>
+        <dimen name="button_border">3dp</dimen>
+
+
+        <!-- Game -->
+        <dimen name="activity_horizontal_margin_game">8dp</dimen>
+        <dimen name="activity_vertical_margin_game">8dp</dimen>
+
+        <dimen name="small_board_padding">2dp</dimen>
+        <dimen name="small_board_margin">2dp</dimen>
+        <dimen name="elevation_low">4dp</dimen>
+        <dimen name="elevation_high">8dp</dimen>
+        <dimen name="thinking_progress_size">50dp</dimen>
+
+
+        <dimen name="menu_padding">10dp</dimen>
+        <dimen name="menu_space">10dp</dimen>
+        <dimen name="menu_text_size">32sp</dimen>
+        <dimen name="menu_button_margin_game">4dp</dimen>
+        <dimen name="menu_button_padding_game">5dp</dimen>
+
+
+
+    <dimen name="sign_in_with_google">10sp</dimen>
+
+
+    <dimen name="standard_field_width">200dp</dimen>
+
+    </resources>
+
+
+
+

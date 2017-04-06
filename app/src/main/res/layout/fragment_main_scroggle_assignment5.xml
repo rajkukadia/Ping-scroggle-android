@@ -1,0 +1,100 @@
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/elevation_high"
+    android:orientation="vertical"
+    android:padding="@dimen/menu_padding"
+    tools:context=".assignment5.UT3MainFragmentScroggleAssignment5">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/menu_space"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/scroggle_label"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="@dimen/menu_text_size"/>
+
+    <Button
+        android:id="@+id/continue_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/menu_button_margin_game"
+        android:padding="@dimen/menu_button_padding_game"
+        android:text="@string/continue_label"
+        android:background="@drawable/button_style"
+        />
+
+    <Button
+        android:id="@+id/new_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/menu_button_margin_game"
+        android:padding="@dimen/menu_button_padding_game"
+        android:text="@string/new_game_label"
+        android:background="@drawable/button_style"
+        />
+
+        <Button
+            android:id="@+id/how_to_play_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/menu_button_margin_game"
+            android:padding="@dimen/menu_button_padding_game"
+            android:text="@string/how_to_play_label"
+            android:background="@drawable/button_style"
+            />
+
+
+    <Button
+        android:id="@+id/about_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/menu_button_margin_game"
+        android:padding="@dimen/menu_button_padding_game"
+        android:text="@string/about_label"
+        android:soundEffectsEnabled="true"
+        android:background="@drawable/button_style"
+        />
+
+
+
+
+        <Button
+        android:id="@+id/scroggle_ack_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/menu_button_margin"
+        android:padding="@dimen/menu_button_padding_game"
+        android:text="@string/ack_label"
+        android:background="@drawable/button_style"
+        />
+    <Button
+        android:id="@+id/scroggle_quit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/menu_button_margin_game"
+        android:padding="@dimen/menu_button_padding_game"
+        android:text="@string/quit_label"
+        android:background="@drawable/button_style"
+        />
+
+    </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
