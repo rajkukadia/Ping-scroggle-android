@@ -4,6 +4,7 @@ package edu.neu.madcourse.raj__kukadia.ping;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ListView;
 
 import edu.neu.madcourse.raj__kukadia.R;
@@ -11,6 +12,8 @@ import edu.neu.madcourse.raj__kukadia.R;
 public class MyContactsActivity extends Activity implements View.OnClickListener {
 
     private ListView myContacts;
+    private Adapter contactAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
