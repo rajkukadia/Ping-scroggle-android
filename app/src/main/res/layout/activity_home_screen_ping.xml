@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     tools:context=".ping.PingHomeScreenActivity"
     >
-    <TextView
-        android:id="@+id/enter_phone_number"
+
+    <Button
+        android:id="@+id/show_my_contacts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome!"
+        android:text="Show my contacts"
         android:layout_centerInParent="true"  />
 
 </RelativeLayout>
