@@ -14,6 +14,7 @@ public class MyContactsActivity extends Activity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_contacts_ping);
+
     }
 
     @Override
