@@ -36,9 +36,6 @@
             android:theme="@style/NoTitle" />
 
 
-
-
-
         <activity
             android:name=".AboutActivity"
             android:parentActivityName=".MainActivity"
@@ -153,6 +150,14 @@
 
         <!--<activity android:name=".realtimedatabase.RealtimeDatabaseActivity"></activity>
         -->
+
+
+        <!--..................PING........................................-->
+        <activity android:name=".ping.UserInformationActivity"
+            android:theme="@style/NoTitle" />
+
+        <activity android:name=".ping.PingHomeScreenActivity"
+            android:theme="@style/NoTitle" />
 
 
     </application>

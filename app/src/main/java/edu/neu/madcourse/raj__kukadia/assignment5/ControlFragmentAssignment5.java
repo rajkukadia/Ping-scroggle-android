@@ -24,7 +24,7 @@ public class ControlFragmentAssignment5 extends Fragment {
          @Override
          public void onClick(View view) {
             confirm();
-            //getActivity().finish();
+            getActivity().finish();
          }
       });
       restart.setOnClickListener(new View.OnClickListener() {

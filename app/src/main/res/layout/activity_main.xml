@@ -30,6 +30,17 @@
                  />
 
             <Button
+                android:id="@+id/ping_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/menu_button_margin"
+                android:padding="@dimen/menu_button_padding"
+                android:layout_gravity="center"
+                android:text="Trickiest Part"
+                android:background="@drawable/button_style"
+                />
+
+            <Button
                 android:id="@+id/dict_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

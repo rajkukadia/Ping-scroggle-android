@@ -172,7 +172,11 @@ both sides in the larger game.
         firebase server and how to create a firebase database. \n Google sign in: https://developers.google.com/identity/sign-in/android/sign-in
     \n </string>
 
+<!-- ...................................PING ................................................................-->
 
+    <string name="ping_label">Ping</string>
+    <string name="jump_in_label">Jump In</string>
+    <string name="enter_number_label">Enter your phone number </string>
 
 
 
