@@ -200,7 +200,6 @@ public class MultiPlayerHomePageActivity extends Activity {
 
                         if (!isPresent) {
                             r.child(mAuth.getCurrentUser().getDisplayName().toString()).setValue("0");
-                            ;
                         }
                     }
                     }

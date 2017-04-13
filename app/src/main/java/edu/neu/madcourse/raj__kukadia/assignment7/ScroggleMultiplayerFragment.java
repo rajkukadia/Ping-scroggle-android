@@ -661,11 +661,7 @@ mAvailableForLargeTile.add(tile);
     }
 
     private boolean isAvailableForLargeTIle(TileMultiplayer tile){
-        if(mAvailableForLargeTile.contains(tile)){
-            return true;
-        }else{
-            return false;
-        }
+        return mAvailableForLargeTile.contains(tile);
     }
 
 

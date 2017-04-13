@@ -12,7 +12,10 @@ import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ import java.util.List;
 import edu.neu.madcourse.raj__kukadia.R;
 
 public class MyContactsActivity extends Activity  {
-
+    private ArrayList<ContactUser> contactUserList=new ArrayList<>();
     private ListView listViewContacts;
     private Adapter contactsAdapter;
     final int REQUEST_PERMISSION=123;
@@ -86,18 +89,38 @@ public class MyContactsActivity extends Activity  {
             return;
         }
         */
-
+                //content Resolover
                 ContentResolver cr=getContentResolver();
 
                 Cursor cursor=cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, new String [] {ContactsContract.CommonDataKinds.Phone.NUMBER,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME}, null,null,null);
-                List<String> contacts=new ArrayList<String>();
                 if((cursor.moveToNext())){
                     do{
-                        contacts.add(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))+"  "+cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
+                        String newContactNumber=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        String newContactName=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                        if(newContactName.length()<10)continue;
+                        ContactUser newcontactUser=new ContactUser(newContactName,newContactNumber);
+                        contactUserList.add(newcontactUser);
 
                     }while(cursor.moveToNext());
                 }
-        showMessage("Contacts",contacts.toString());
+                cursor.close();
+        String []listOfContacts=new String[contactUserList.size()];
+        int i=0;
+        for(ContactUser user:contactUserList){
+            listOfContacts[i++]=user.getName();
+        }
+
+        ArrayAdapter adapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1,listOfContacts);
+        listViewContacts.setAdapter(adapter);
+        listViewContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                showMessage("Selected",contactUserList.get(position).toString());
+            }
+        });
+
+ //       showMessage("Contacts",contactUserList.toString());
 
             }
     public void showMessage(String title,String Message){
