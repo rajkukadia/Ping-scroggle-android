@@ -37,6 +37,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -128,6 +129,7 @@ public class MyContactsActivity extends Activity  {
                     }while(cursor.moveToNext());
                 }
                 cursor.close();
+        Collections.sort(contactUserList);
         String []listOfContacts=new String[contactUserList.size()];
         int i=0;
         for(ContactUser user:contactUserList){

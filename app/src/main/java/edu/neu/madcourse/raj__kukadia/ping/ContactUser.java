@@ -1,10 +1,14 @@
 package edu.neu.madcourse.raj__kukadia.ping;
 
+import android.support.annotation.NonNull;
+
+import java.util.Comparator;
+
 /**
  * Created by Dharak on 4/12/2017.
  */
 
-public class ContactUser {
+public class ContactUser implements Comparable<ContactUser>{
     private String name;
     private String number;
     private String allowedNumber="1234567890";
@@ -56,5 +60,10 @@ try not to put number less than 10 this handles data for greater than 10
         }
         //newNumber.contentEquals()
         return newNumber.substring(newNumber.length()-10,newNumber.length());
+    }
+
+    @Override
+    public int compareTo(@NonNull ContactUser o) {
+        return name.compareTo(o.getName());
     }
 }
