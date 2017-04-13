@@ -13,6 +13,10 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import edu.neu.madcourse.raj__kukadia.R;
 
 public class UserInformationActivity extends Activity implements View.OnClickListener {
@@ -21,12 +25,20 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
     private Button jumpIn;
     private EditText phoneNumberArea;
     private TextView info;
+    DatabaseReference mRootRef;
+    private String token;
+    public static final String SERVER_KEY = "key=AAAAV5p0wJk:APA91bGhB6kA308eCdUD5OyYe_SBD57BQB2dhxVob9vPBuGm2Angf351qYNDFcuoJ9x2IzvJOHgKqQQ71-MFWfoh6y14hDLnuP9RcCxPld_5okjZeWG_SKqB2Q-AGep8l9dfub7UTrtY";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         firstUser = getSharedPreferences("checkFirstUser", MODE_PRIVATE);
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        token = FirebaseInstanceId.getInstance().getToken();
+
+
 
         if(firstUser.getBoolean("firstuser", true)){
             handleFirstUser();
@@ -74,7 +86,6 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
         });
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -83,6 +94,7 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         firstUser.edit().putBoolean("firstuser", false).commit();
-startActivity(new Intent(UserInformationActivity.this, PingHomeScreenActivity.class));
+        mRootRef.child("Ping").child("All Users").child(phoneNumberArea.getText().toString()).child("token").setValue(token);
+        startActivity(new Intent(UserInformationActivity.this, PingHomeScreenActivity.class));
     }
 }
