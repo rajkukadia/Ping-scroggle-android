@@ -162,6 +162,11 @@
         <activity android:name=".ping.MyContactsActivity"
             android:theme="@style/NoTitle" />
 
+        <activity android:name=".ping.MySearchActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+        />
+
+
 
     </application>
 

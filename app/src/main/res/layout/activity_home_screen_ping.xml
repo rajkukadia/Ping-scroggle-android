@@ -12,5 +12,13 @@
         android:layout_height="wrap_content"
         android:text="Show my contacts"
         android:layout_centerInParent="true"  />
+    <Button
+        android:id="@+id/search_activities"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search Activities"
+        android:layout_below="@id/show_my_contacts"
+        android:layout_centerHorizontal="true"/>
+
 
 </RelativeLayout>

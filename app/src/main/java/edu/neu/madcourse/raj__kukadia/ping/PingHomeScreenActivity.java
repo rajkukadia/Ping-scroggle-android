@@ -13,18 +13,26 @@ public class PingHomeScreenActivity extends Activity implements View.OnClickList
 
 
     private Button showMyContacts;
+    private Button showActivities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen_ping);
         showMyContacts = (Button) findViewById(R.id.show_my_contacts);
+        showActivities = (Button) findViewById(R.id.search_activities);
         showMyContacts.setOnClickListener(this);
+        showActivities.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View v) {
-startActivity(new Intent(PingHomeScreenActivity.this, MyContactsActivity.class));
+        if(v.getId()==R.id.show_my_contacts){
+startActivity(new Intent(PingHomeScreenActivity.this, MyContactsActivity.class));}
+        if(v.getId()==R.id.search_activities){
+            startActivity(new Intent(PingHomeScreenActivity.this, MySearchActivity.class));}
+
     }
-}
+    }
+
