@@ -28,6 +28,7 @@ import java.util.Map;
 
 import edu.neu.madcourse.raj__kukadia.MainActivity;
 import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.ping.MySearchActivity;
 
 public class WordGameMessagingService extends FirebaseMessagingService {
 
@@ -65,6 +66,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         String userTwo="";
         String notifier="";
         String turns="";
+        String ping="";
         String gameOver ="";
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
@@ -72,16 +74,21 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             Map jData = remoteMessage.getData();
-           gameID = jData.get("GameKey").toString();
-             userOne = jData.get("userOne").toString();
-             userTwo = jData.get("userTwo").toString();
-            notifier = jData.get("notifier").toString();
-            turns = jData.get("turns").toString();
-            gameOver = jData.get("gameOver").toString();
+            Log.d("recee", "asda11");
+            ping = jData.get("ping").toString();
+
+          // gameID = jData.get("GameKey").toString();
+            // userOne = jData.get("userOne").toString();
+             //userTwo = jData.get("userTwo").toString();
+            //notifier = jData.get("notifier").toString();
+            //turns = jData.get("turns").toString();
+            //gameOver = jData.get("gameOver").toString();
         }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
+            Log.d("recee", "asda1111");
+
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             final String gameKey = gameID;
             final String userA = userOne;
@@ -89,7 +96,14 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             final String mNotifier = notifier;
             final String mTurns = turns;
             final String mgameOver = gameOver;
-            mRootRef = FirebaseDatabase.getInstance().getReference();
+
+            if(ping.equals("open")){
+                Log.d("recee", "yoo");
+
+                sendNotification(remoteMessage.getNotification().getBody());
+            }
+
+         /*   mRootRef = FirebaseDatabase.getInstance().getReference();
 
 
             mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -133,7 +147,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
                 }
             });
 
-
+*/
 
         }
 
@@ -246,6 +260,36 @@ public class WordGameMessagingService extends FirebaseMessagingService {
 
 
     }
+
+
+
+    private void sendNotification(String messageBody){
+
+        Log.d("recee", "asda");
+        Intent intent = new Intent(this, MySearchActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                //  .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("PING")
+                .setContentText(messageBody)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+
+    }
+
 
 
 

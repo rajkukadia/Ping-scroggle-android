@@ -112,7 +112,7 @@ public class MyContactsActivity extends Activity  {
             return;
         }
         */
-        reference= FirebaseDatabase.getInstance().getReference("Ping").child("All User");
+        reference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users");
                 //content Resolover
                 ContentResolver cr=getContentResolver();
 
@@ -168,13 +168,18 @@ public class MyContactsActivity extends Activity  {
             return true if player was found online and return true if succesfully  send an internet message
              otherwise returns false
          */
-        DatabaseReference newReference=reference.child(number);
+        DatabaseReference newReference=reference.child(number).child("token");
         if(newReference!=null){
 
-            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            newReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                String token;
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    String token=dataSnapshot.getValue(String.class);
+
+
+                            token = dataSnapshot.getValue().toString();
+                    Log.d("tttttttttttt", token);
+
                     if(token!=null){
                         pushInternetFCM(token);
                     }
@@ -200,10 +205,12 @@ public class MyContactsActivity extends Activity  {
         new Thread(){
          public void run(){
              JSONObject jPayload = new JSONObject();
+
              JSONObject jNotification = new JSONObject();
-             //JSONObject jData=new JSONObject();
+             JSONObject jData=new JSONObject();
              try {
                  jPayload.put("to",token);
+                 jData.put("ping", "open");
                  jNotification.put("title", "PING");
                  jNotification.put("body", "PING FROM YOUR BUDDY ");
                  jNotification.put("sound", "default");
@@ -214,10 +221,13 @@ public class MyContactsActivity extends Activity  {
 
                  //jPayload.put("notification", jNotification);
 
+                 jPayload.put("notification", jNotification);
+                 jPayload.put("data", jData);
+
                  URL url = new URL("https://fcm.googleapis.com/fcm/send");
                  HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                  conn.setRequestMethod("POST");
-                 conn.setRequestProperty("Authorization", SERVER_KEY);
+                 conn.setRequestProperty("Authorization", "key=AAAAIJKsPeE:APA91bHkUeOjkpMKSV9gmCv1kzJEadSJGPjaKSA5xjI-R2waz2RJRv1zqcHz-t4I9XSrB5HaCLNLQSW0TTvXkhkVHTDn0FFCOZop-2lP9cTWG1acrTYGxg9WuJjFygeQaLo7URrr9sQo");
                  conn.setRequestProperty("Content-Type", "application/json");
                  conn.setDoOutput(true);
 
@@ -225,7 +235,6 @@ public class MyContactsActivity extends Activity  {
                  OutputStream outputStream = conn.getOutputStream();
                  outputStream.write(jPayload.toString().getBytes());
                  outputStream.close();
-                 jPayload.put("notification", jNotification);
 
 
                  // Read FCM response.
