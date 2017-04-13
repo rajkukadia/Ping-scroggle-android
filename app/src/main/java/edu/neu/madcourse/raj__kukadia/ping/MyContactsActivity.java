@@ -64,8 +64,7 @@ public class MyContactsActivity extends Activity  {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     permission=true;
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+
                     contactFunction();
 
                 } else {
