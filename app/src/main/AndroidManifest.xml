@@ -157,7 +157,13 @@
             android:theme="@style/NoTitle" />
 
         <activity android:name=".ping.PingHomeScreenActivity"
-            android:theme="@style/NoTitle" />
+            android:theme="@style/NoTitle">
+        <intent-filter>
+            <action android:name="ping.action.PingHome"/>
+            <category android:name="android.intent.category.DEFAULT"/>
+        </intent-filter>
+
+        </activity>
 
         <activity android:name=".ping.MyContactsActivity"
             android:theme="@style/NoTitle" />
