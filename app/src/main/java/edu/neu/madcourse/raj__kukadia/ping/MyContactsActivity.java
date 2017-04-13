@@ -179,8 +179,8 @@ public class MyContactsActivity extends Activity  {
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
 
-                            token = dataSnapshot.getValue().toString();
-                    Log.d("tttttttttttt", token);
+                            token = dataSnapshot.getValue(String.class);
+                    //Log.d("tttttttttttt", token);
 
                     if(token!=null){
                         pushInternetFCM(token);
