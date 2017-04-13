@@ -8,25 +8,48 @@ import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import edu.neu.madcourse.raj__kukadia.R;
+
+import static edu.neu.madcourse.raj__kukadia.ping.UserInformationActivity.SERVER_KEY;
 
 public class MyContactsActivity extends Activity  {
     private ArrayList<ContactUser> contactUserList=new ArrayList<>();
     private ListView listViewContacts;
     private Adapter contactsAdapter;
+    DatabaseReference reference;
+
     final int REQUEST_PERMISSION=123;
     private boolean permission=false;
     @Override
@@ -89,6 +112,7 @@ public class MyContactsActivity extends Activity  {
             return;
         }
         */
+        reference= FirebaseDatabase.getInstance().getReference("Ping").child("All User");
                 //content Resolover
                 ContentResolver cr=getContentResolver();
 
@@ -116,7 +140,15 @@ public class MyContactsActivity extends Activity  {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                showMessage("Selected",contactUserList.get(position).toString());
+                //showMessage("Selected",contactUserList.get(position).toString());
+                Boolean result=findPlayerOnlineSend(contactUserList.get(position).getNumber());
+                if(result){
+                    //showMessage("PING",contactUserList.get(position).getName()+ " is succesfully pinged");
+
+                }else{
+                    showMessage("INVITE",contactUserList.get(position).getName()+ " is not pinged please invite");
+
+                }
             }
         });
 
@@ -129,6 +161,95 @@ public class MyContactsActivity extends Activity  {
         builder.setTitle(title);
         builder.setMessage(Message);
         builder.show();
+    }
+    public boolean findPlayerOnlineSend(String number){
+
+        /*
+            return true if player was found online and return true if succesfully  send an internet message
+             otherwise returns false
+         */
+        DatabaseReference newReference=reference.child(number);
+        if(newReference!=null){
+
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String token=dataSnapshot.getValue(String.class);
+                    if(token!=null){
+                        pushInternetFCM(token);
+                    }
+                    else{
+                        return ;
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            return true;
+        }
+        else{
+            return false;
+        }
+
+
+    }
+    public void pushInternetFCM(final String token){
+        new Thread(){
+         public void run(){
+             JSONObject jPayload = new JSONObject();
+             JSONObject jNotification = new JSONObject();
+             //JSONObject jData=new JSONObject();
+             try {
+                 jPayload.put("to",token);
+                 jNotification.put("title", "PING");
+                 jNotification.put("body", "PING FROM YOUR BUDDY ");
+                 jNotification.put("sound", "default");
+                 jNotification.put("badge", "1");
+                 jNotification.put("click_action", "MySearchActivity");
+
+
+
+                 //jPayload.put("notification", jNotification);
+
+                 URL url = new URL("https://fcm.googleapis.com/fcm/send");
+                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                 conn.setRequestMethod("POST");
+                 conn.setRequestProperty("Authorization", SERVER_KEY);
+                 conn.setRequestProperty("Content-Type", "application/json");
+                 conn.setDoOutput(true);
+
+                 // Send FCM message content.
+                 OutputStream outputStream = conn.getOutputStream();
+                 outputStream.write(jPayload.toString().getBytes());
+                 outputStream.close();
+                 jPayload.put("notification", jNotification);
+
+
+                 // Read FCM response.
+                 InputStream inputStream = conn.getInputStream();
+                 final String resp = convertStreamToString(inputStream);
+                 //Log.d("Sending notifcation3=",requesting);
+                 Handler h = new Handler(Looper.getMainLooper());
+                 h.post(new Runnable() {
+                     @Override
+                     public void run() {
+                         Log.e("notifcationf3", "run: " + resp);
+                         Toast.makeText(MyContactsActivity.this,"Ping succesfully",Toast.LENGTH_LONG).show();
+                     }
+                 });
+             } catch (JSONException | IOException e) {
+                 e.printStackTrace();
+             }
+
+         }
+        }.start();
+    }
+    private String convertStreamToString(InputStream is) {
+        Scanner s = new Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next().replace(",", ",\n") : "";
     }
 
         }
