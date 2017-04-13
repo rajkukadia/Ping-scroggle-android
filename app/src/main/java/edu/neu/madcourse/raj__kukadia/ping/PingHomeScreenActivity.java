@@ -20,6 +20,7 @@ public class PingHomeScreenActivity extends Activity implements View.OnClickList
         setContentView(R.layout.activity_home_screen_ping);
         showMyContacts = (Button) findViewById(R.id.show_my_contacts);
         showMyContacts.setOnClickListener(this);
+
     }
 
     @Override
