@@ -154,10 +154,14 @@
 
         <!--..................PING........................................-->
         <activity android:name=".ping.UserInformationActivity"
-            android:theme="@style/NoTitle" />
+            android:theme="@style/NoTitle"
+            android:screenOrientation="portrait"
+            />
 
         <activity android:name=".ping.PingHomeScreenActivity"
-            android:theme="@style/NoTitle">
+            android:theme="@style/NoTitle"
+            android:screenOrientation="portrait"
+            >
         <intent-filter>
             <action android:name="ping.action.PingHome"/>
             <category android:name="android.intent.category.DEFAULT"/>
@@ -166,11 +170,14 @@
         </activity>
 
         <activity android:name=".ping.MyContactsActivity"
-            android:theme="@style/NoTitle" />
+            android:theme="@style/NoTitle"
+            android:screenOrientation="portrait"
+            />
 
         <activity android:name=".ping.MySearchActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-        />
+            android:screenOrientation="portrait"
+            />
 
 
 
