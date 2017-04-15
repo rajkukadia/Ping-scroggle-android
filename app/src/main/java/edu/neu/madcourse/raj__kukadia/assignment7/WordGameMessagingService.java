@@ -68,6 +68,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         String turns="";
         String ping="";
         String gameOver ="";
+        String phoneNumber="";
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
         // Check if message contains a data payload.
@@ -76,7 +77,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             Map jData = remoteMessage.getData();
             Log.d("recee", "asda11");
             ping = jData.get("ping").toString();
-
+            phoneNumber=jData.get("phonenumber").toString();
           // gameID = jData.get("GameKey").toString();
             // userOne = jData.get("userOne").toString();
              //userTwo = jData.get("userTwo").toString();
@@ -100,7 +101,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             if(ping.equals("open")){
                 Log.d("recee", "yoo");
 
-                sendNotification(remoteMessage.getNotification().getBody());
+                sendNotification(remoteMessage.getNotification().getBody(),phoneNumber);
             }
 
          /*   mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -263,10 +264,11 @@ public class WordGameMessagingService extends FirebaseMessagingService {
 
 
 
-    private void sendNotification(String messageBody){
+    private void sendNotification(String messageBody,String phoneNumber){
 
         Log.d("recee", "asda");
         Intent intent = new Intent(this, MySearchActivity.class);
+        intent.putExtra("phonenumber",phoneNumber);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

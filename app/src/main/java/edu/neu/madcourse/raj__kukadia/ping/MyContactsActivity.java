@@ -219,7 +219,7 @@ public class MyContactsActivity extends Activity  {
                  jNotification.put("sound", "default");
                  jNotification.put("badge", "1");
                  jNotification.put("click_action", "MySearchActivity");
-
+                 jData.put("phonenumber",UserInformationActivity.phoneNumber);
                  //jPayload.put("notification", jNotification);
 
                  jPayload.put("notification", jNotification);
