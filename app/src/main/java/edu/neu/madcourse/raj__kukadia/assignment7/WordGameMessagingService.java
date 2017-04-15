@@ -272,6 +272,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
 
         Log.d("recee", "asda");
         Intent intent = new Intent(this, MySearchActivity.class);
+        intent.putExtra("phonenumber",phoneNumber);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

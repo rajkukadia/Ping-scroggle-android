@@ -104,7 +104,7 @@ startRecognizing();
          intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                  RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
          intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                 "Speak your message...");
+                 "Speak your activity...");
          startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
      }
 
@@ -218,13 +218,11 @@ startRecognizing();
              }
          }.start();
      }
+
      private String convertStreamToString(InputStream is) {
          Scanner s = new Scanner(is).useDelimiter("\\A");
          return s.hasNext() ? s.next().replace(",", ",\n") : "";
      }
-
-
-
 
      private void searchItem(String item){
          for(Iterator<String>iterator=activityList.iterator();iterator.hasNext();){
