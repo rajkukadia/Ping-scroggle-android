@@ -50,7 +50,7 @@ public class MyContactsActivity extends Activity  {
     private ListView listViewContacts;
     private Adapter contactsAdapter;
     DatabaseReference reference;
-
+    private String token;
     final int REQUEST_PERMISSION=123;
     private boolean permission=false;
     @Override
@@ -186,7 +186,7 @@ public class MyContactsActivity extends Activity  {
                         pushInternetFCM(token);
                     }
                     else{
-                        return ;
+                        Toast.makeText(MyContactsActivity.this,"User not on Ping",Toast.LENGTH_SHORT).show() ;
                     }
                 }
 
@@ -248,10 +248,10 @@ public class MyContactsActivity extends Activity  {
                      @Override
                      public void run() {
                          Log.e("notifcationf3", "run: " + resp);
-                         Toast.makeText(MyContactsActivity.this,"Ping succesfully",Toast.LENGTH_LONG).show();
                      }
                  });
              } catch (JSONException | IOException e) {
+                 Toast.makeText(MyContactsActivity.this,"Ping unsuccesfully",Toast.LENGTH_LONG).show();
                  e.printStackTrace();
              }
 
