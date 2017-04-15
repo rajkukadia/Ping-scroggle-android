@@ -76,6 +76,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             Map jData = remoteMessage.getData();
             Log.d("recee", "asda11");
+
             ping = jData.get("ping").toString();
             phoneNumber=jData.get("phonenumber").toString();
           // gameID = jData.get("GameKey").toString();
