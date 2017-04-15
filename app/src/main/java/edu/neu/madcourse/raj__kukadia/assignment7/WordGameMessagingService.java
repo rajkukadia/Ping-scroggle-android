@@ -29,6 +29,7 @@ import java.util.Map;
 import edu.neu.madcourse.raj__kukadia.MainActivity;
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.ping.MySearchActivity;
+import edu.neu.madcourse.raj__kukadia.ping.PingHomeScreenActivity;
 
 public class WordGameMessagingService extends FirebaseMessagingService {
 
@@ -103,6 +104,9 @@ public class WordGameMessagingService extends FirebaseMessagingService {
                 Log.d("recee", "yoo");
 
                 sendNotification(remoteMessage.getNotification().getBody(),phoneNumber);
+            }
+            else{
+                sendNotificationReply(remoteMessage.getNotification().getBody(),phoneNumber);
             }
 
          /*   mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -295,5 +299,31 @@ public class WordGameMessagingService extends FirebaseMessagingService {
 
 
 
+    private void sendNotificationReply(String messageBody,String phoneNumber){
 
+        Log.d("recee", "asda");
+        Intent intent = new Intent(this, PingHomeScreenActivity.class);
+        intent.putExtra("phonenumber",phoneNumber);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                //  .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("PING REPLY")
+                .setContentText(messageBody)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+
+    }
 }

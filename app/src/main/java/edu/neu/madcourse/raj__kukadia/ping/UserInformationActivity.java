@@ -44,6 +44,7 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
         if(firstUser.getBoolean("firstuser", true)){
             handleFirstUser();
         }else{
+            phoneNumber = firstUser.getString("phonenumber", null);
             startActivity(new Intent(UserInformationActivity.this, PingHomeScreenActivity.class));
             finish();
         }
@@ -94,8 +95,10 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        firstUser.edit().putBoolean("firstuser", false).commit();
         phoneNumber = phoneNumberArea.getText().toString();
+
+        firstUser.edit().putBoolean("firstuser", false).commit();
+        firstUser.edit().putString("phonenumber", phoneNumber).commit();
         mRootRef.child("Ping").child("All Users").child(phoneNumberArea.getText().toString()).child("token").setValue(token);
         startActivity(new Intent(UserInformationActivity.this, PingHomeScreenActivity.class));
     }
