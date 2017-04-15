@@ -1,9 +1,12 @@
  package edu.neu.madcourse.raj__kukadia.ping;
 
  import android.app.Activity;
+ import android.content.Intent;
  import android.os.Bundle;
  import android.os.Handler;
  import android.os.Looper;
+ import android.provider.ContactsContract;
+ import android.speech.RecognizerIntent;
  import android.support.annotation.Nullable;
  import android.text.Editable;
  import android.text.TextWatcher;
@@ -12,7 +15,9 @@
  import android.view.View;
  import android.widget.AdapterView;
  import android.widget.ArrayAdapter;
+ import android.widget.Button;
  import android.widget.EditText;
+ import android.widget.ImageButton;
  import android.widget.ListView;
  import android.widget.Toast;
 
@@ -32,7 +37,9 @@
  import java.net.URL;
  import java.util.ArrayList;
  import java.util.Arrays;
+ import java.util.HashMap;
  import java.util.Iterator;
+ import java.util.Map;
  import java.util.Scanner;
 
  import edu.neu.madcourse.raj__kukadia.R;
@@ -41,10 +48,13 @@
 
      private ListView lv;
      private EditText e;
+     private ImageButton googleMic;
+     private String voiceText;
      private ArrayAdapter<String> adapter;
      ArrayList<String> activityList;
      private String phoneNumber;
      DatabaseReference reference;
+     public static final int VOICE_RECOGNITION_REQUEST_CODE = 1230;
 
      @Override
      protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,13 +63,21 @@
 
          e = (EditText) findViewById(R.id.search_bar);
          lv = (ListView) findViewById(R.id.activity_list);
-
+         googleMic = (ImageButton) findViewById(R.id.mic);
 
          Bundle b = getIntent().getExtras();
 if(b!=null&&b.getString("phonenumber")!=null) {
     phoneNumber = b.getString("phonenumber");
 }
          initList();
+
+         googleMic.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+startRecognizing();
+             }
+         });
+
 
          e.addTextChangedListener(new TextWatcher() {
              @Override
@@ -80,6 +98,38 @@ if(b!=null&&b.getString("phonenumber")!=null) {
              }
          });
      }
+
+     private void startRecognizing(){
+         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                 "Speak your message...");
+         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
+     }
+
+     @Override
+     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
+             ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+             voiceText = matches.get(0);
+
+             Log.d("Result", voiceText);
+
+
+             //  mList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, matches));
+             if (activityList.contains(voiceText)) {
+                 getTheTOken(voiceText);
+             }
+             else{
+                  Toast.makeText(this, "Try again!",
+                    Toast.LENGTH_LONG).show();
+             }
+
+
+         }
+     }
+
 
      private void initList(){
          activityList = new ArrayList<>();
@@ -111,8 +161,6 @@ if(b!=null&&b.getString("phonenumber")!=null) {
 
              }
          });
-
-
 
          return "";
      }

@@ -179,14 +179,14 @@ both sides in the larger game.
     <string name="enter_number_label">Enter your phone number </string>
     <string-array name="activity_array">
 
-        <item>Running</item>
-        <item>Walking</item>
-        <item>Walk</item>
-        <item>Bathing</item>
-        <item>Cooking</item>
-        <item>Dancing</item>
-        <item>Biking</item>
-        <item>Sitting</item>
+        <item>running</item>
+        <item>walking</item>
+        <item>walk</item>
+        <item>bathing</item>
+        <item>cooking</item>
+        <item>dancing</item>
+        <item>biking</item>
+        <item>sitting</item>
 
 
     </string-array>
