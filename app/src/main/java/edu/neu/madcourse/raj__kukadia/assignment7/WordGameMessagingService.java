@@ -77,7 +77,6 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             Map jData = remoteMessage.getData();
             Log.d("recee", "asda11");
-
             ping = jData.get("ping").toString();
             phoneNumber=jData.get("phonenumber").toString();
           // gameID = jData.get("GameKey").toString();
@@ -273,7 +272,6 @@ public class WordGameMessagingService extends FirebaseMessagingService {
 
         Log.d("recee", "asda");
         Intent intent = new Intent(this, MySearchActivity.class);
-        intent.putExtra("phonenumber",phoneNumber);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

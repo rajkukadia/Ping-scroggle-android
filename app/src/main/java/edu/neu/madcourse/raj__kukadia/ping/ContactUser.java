@@ -42,10 +42,7 @@ public class ContactUser implements Comparable<ContactUser>{
 
     @Override
     public String toString() {
-        return "ContactUser{" +
-                "name='" + name + '\'' +
-                ", number='" + number + '\'' +
-                '}';
+        return getName();
     }
 
     private String numberFormat(String number){

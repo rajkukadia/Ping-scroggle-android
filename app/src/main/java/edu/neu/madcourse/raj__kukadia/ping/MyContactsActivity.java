@@ -14,11 +14,14 @@ import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,10 +30,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -48,10 +49,13 @@ import static edu.neu.madcourse.raj__kukadia.ping.UserInformationActivity.SERVER
 public class MyContactsActivity extends Activity  {
     private ArrayList<ContactUser> contactUserList=new ArrayList<>();
     private ListView listViewContacts;
-    private Adapter contactsAdapter;
+    private ArrayList <ContactUser> duplicateListViewContacts=new ArrayList<>();
+    private ArrayAdapter contactsAdapter;
     DatabaseReference reference;
+    EditText searchBar;
     private String token;
     final int REQUEST_PERMISSION=123;
+   // EditText
     private boolean permission=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +63,7 @@ public class MyContactsActivity extends Activity  {
         setContentView(R.layout.activity_my_contacts_ping);
         //contactFunction();
         listViewContacts = (ListView) findViewById(R.id.contact_list);
-
+        searchBar=(EditText) findViewById(R.id.contact_search_bar);
         if (ContextCompat.checkSelfPermission(MyContactsActivity.this,
                 Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -79,6 +83,7 @@ public class MyContactsActivity extends Activity  {
             permission = true;
 
             contactFunction();
+            searchActivity();//class addes serach activty
         }
         //contactFunction();
     }
@@ -93,6 +98,7 @@ public class MyContactsActivity extends Activity  {
                     permission=true;
 
                     contactFunction();
+                    searchActivity();
 
                 } else {
                     permission=false;
@@ -106,6 +112,47 @@ public class MyContactsActivity extends Activity  {
             // permissions this app might request
         }
     }
+    private void searchActivity(){
+        searchBar.setVisibility(View.VISIBLE);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                OntextChanged(searchBar.getText().toString());
+            }
+        });
+    }
+    private void OntextChanged(String str){
+        duplicateListViewContacts=new ArrayList<>();
+        for(ContactUser contactUser:contactUserList) {
+            duplicateListViewContacts.add(contactUser);
+        }
+        ArrayList<ContactUser>remove=new ArrayList();
+        int i=0;
+        for(ContactUser user:duplicateListViewContacts){
+            Log.d(str,user.getName()+user.getName().toString().contains(str));
+            if(!user.getName().toString().toLowerCase().contains(str.toLowerCase())){
+                Log.d("Dharak",String.valueOf(i++));
+                remove.add(user);
+            }
+        }
+        for(ContactUser j:remove){
+            duplicateListViewContacts.remove(j);
+        }
+        Log.d("removal=",Integer.toString(remove.size())+ duplicateListViewContacts.size());
+        contactsAdapter=new ArrayAdapter(MyContactsActivity.this,android.R.layout.simple_list_item_1,duplicateListViewContacts);
+        listViewContacts.setAdapter(contactsAdapter);
+        //contactsAdapter.notifyDataSetChanged();
+    }
+
     public void contactFunction(){
         /*
         if(!permission){
@@ -130,25 +177,23 @@ public class MyContactsActivity extends Activity  {
                 }
                 cursor.close();
         Collections.sort(contactUserList);
-        String []listOfContacts=new String[contactUserList.size()];
-        int i=0;
-        for(ContactUser user:contactUserList){
-            listOfContacts[i++]=user.getName();
+        duplicateListViewContacts=new ArrayList<>();
+        for(ContactUser contactUser:contactUserList) {
+            duplicateListViewContacts.add(contactUser);
         }
-
-        ArrayAdapter adapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1,listOfContacts);
-        listViewContacts.setAdapter(adapter);
+      contactsAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1,duplicateListViewContacts);
+        listViewContacts.setAdapter(contactsAdapter);
         listViewContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 //showMessage("Selected",contactUserList.get(position).toString());
-                Boolean result=findPlayerOnlineSend(contactUserList.get(position).getNumber());
+                Boolean result=findPlayerOnlineSend(duplicateListViewContacts.get(position).getNumber());
                 if(result){
                     //showMessage("PING",contactUserList.get(position).getName()+ " is succesfully pinged");
 
                 }else{
-                    showMessage("INVITE",contactUserList.get(position).getName()+ " is not pinged please invite");
+                    showMessage("INVITE",duplicateListViewContacts.get(position).getName()+ " is not pinged please invite");
 
                 }
             }
