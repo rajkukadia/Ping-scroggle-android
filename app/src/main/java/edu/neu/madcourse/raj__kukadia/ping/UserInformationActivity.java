@@ -27,6 +27,7 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
     private TextView info;
     DatabaseReference mRootRef;
     private String token;
+    public static String phoneNumber ;
     public static final String SERVER_KEY = "key=AAAAV5p0wJk:APA91bGhB6kA308eCdUD5OyYe_SBD57BQB2dhxVob9vPBuGm2Angf351qYNDFcuoJ9x2IzvJOHgKqQQ71-MFWfoh6y14hDLnuP9RcCxPld_5okjZeWG_SKqB2Q-AGep8l9dfub7UTrtY";
 
 
@@ -94,6 +95,7 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         firstUser.edit().putBoolean("firstuser", false).commit();
+        phoneNumber = phoneNumberArea.getText().toString();
         mRootRef.child("Ping").child("All Users").child(phoneNumberArea.getText().toString()).child("token").setValue(token);
         startActivity(new Intent(UserInformationActivity.this, PingHomeScreenActivity.class));
     }

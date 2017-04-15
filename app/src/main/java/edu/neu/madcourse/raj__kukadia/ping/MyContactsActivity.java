@@ -122,7 +122,7 @@ public class MyContactsActivity extends Activity  {
                     do{
                         String newContactNumber=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         String newContactName=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                        if(newContactName.length()<10)continue;
+                        if(newContactName.length()<10)continue; //It should be contact number here instead of name!
                         ContactUser newcontactUser=new ContactUser(newContactName,newContactNumber);
                         contactUserList.add(newcontactUser);
 
@@ -170,14 +170,15 @@ public class MyContactsActivity extends Activity  {
             return true if player was found online and return true if succesfully  send an internet message
              otherwise returns false
          */
+
         DatabaseReference newReference=reference.child(number).child("token");
         if(newReference!=null){
 
             newReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 String token;
+
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-
 
                             token = dataSnapshot.getValue(String.class);
                     //Log.d("tttttttttttt", token);
@@ -200,9 +201,9 @@ public class MyContactsActivity extends Activity  {
         else{
             return false;
         }
-
-
     }
+
+
     public void pushInternetFCM(final String token){
         new Thread(){
          public void run(){
@@ -218,8 +219,6 @@ public class MyContactsActivity extends Activity  {
                  jNotification.put("sound", "default");
                  jNotification.put("badge", "1");
                  jNotification.put("click_action", "MySearchActivity");
-
-
 
                  //jPayload.put("notification", jNotification);
 
@@ -237,7 +236,6 @@ public class MyContactsActivity extends Activity  {
                  OutputStream outputStream = conn.getOutputStream();
                  outputStream.write(jPayload.toString().getBytes());
                  outputStream.close();
-
 
                  // Read FCM response.
                  InputStream inputStream = conn.getInputStream();
@@ -262,8 +260,7 @@ public class MyContactsActivity extends Activity  {
         Scanner s = new Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next().replace(",", ",\n") : "";
     }
-
-        }
+}
 
 
 

@@ -6,6 +6,9 @@
  import android.text.Editable;
  import android.text.TextWatcher;
 
+ import android.util.Log;
+ import android.view.View;
+ import android.widget.AdapterView;
  import android.widget.ArrayAdapter;
  import android.widget.EditText;
  import android.widget.ListView;
@@ -30,6 +33,7 @@
 
          e = (EditText) findViewById(R.id.search_bar);
          lv = (ListView) findViewById(R.id.activity_list);
+
 
          initList();
 
@@ -58,6 +62,12 @@
          activityList.addAll(Arrays.asList(getResources().getStringArray(R.array.activity_array)));
          adapter = new ArrayAdapter<String>(MySearchActivity.this, android.R.layout.simple_list_item_1, activityList);
          lv.setAdapter(adapter);
+         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+             @Override
+             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(activityList.get(position).toString(), "check");
+             }
+         });
      }
 
      private void searchItem(String item){
