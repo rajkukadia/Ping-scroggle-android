@@ -169,7 +169,7 @@ public class MyContactsActivity extends Activity  {
                     do{
                         String newContactNumber=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         String newContactName=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                        if(newContactName.length()<10)continue; //It should be contact number here instead of name!
+                        if(newContactNumber.length()<10)continue;
                         ContactUser newcontactUser=new ContactUser(newContactName,newContactNumber);
                         contactUserList.add(newcontactUser);
 
