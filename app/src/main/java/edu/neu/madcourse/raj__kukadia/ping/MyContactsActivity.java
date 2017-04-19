@@ -50,7 +50,7 @@ public class MyContactsActivity extends Activity  {
     private ArrayList<ContactUser> contactUserList=new ArrayList<>();
     private ListView listViewContacts;
     private ArrayList <ContactUser> duplicateListViewContacts=new ArrayList<>();
-    private ArrayAdapter contactsAdapter;
+    private CustomAdapterPing contactsAdapter;
     DatabaseReference reference;
     EditText searchBar;
     private String token;
@@ -148,7 +148,7 @@ public class MyContactsActivity extends Activity  {
             duplicateListViewContacts.remove(j);
         }
         Log.d("removal=",Integer.toString(remove.size())+ duplicateListViewContacts.size());
-        contactsAdapter=new ArrayAdapter(MyContactsActivity.this,android.R.layout.simple_list_item_1,duplicateListViewContacts);
+        contactsAdapter=new CustomAdapterPing(MyContactsActivity.this,android.R.layout.simple_list_item_1,duplicateListViewContacts);
         listViewContacts.setAdapter(contactsAdapter);
         //contactsAdapter.notifyDataSetChanged();
     }
@@ -171,6 +171,7 @@ public class MyContactsActivity extends Activity  {
                         String newContactName=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                         if(newContactNumber.length()<10)continue;
                         ContactUser newcontactUser=new ContactUser(newContactName,newContactNumber);
+
                         contactUserList.add(newcontactUser);
 
                     }while(cursor.moveToNext());
@@ -181,7 +182,7 @@ public class MyContactsActivity extends Activity  {
         for(ContactUser contactUser:contactUserList) {
             duplicateListViewContacts.add(contactUser);
         }
-      contactsAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1,duplicateListViewContacts);
+      contactsAdapter=new CustomAdapterPing(this,R.layout.layout_contact_ping,duplicateListViewContacts);
         listViewContacts.setAdapter(contactsAdapter);
         listViewContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -245,6 +246,16 @@ public class MyContactsActivity extends Activity  {
         }
         else{
             return false;
+        }
+    }
+    public void onClickViewListiner(int position,ContactUser contactUser){
+        Boolean result=findPlayerOnlineSend(contactUser.getNumber());
+        if(contactUser.isUsesPing()){
+            Toast.makeText(this,"Pinged to "+contactUser.getName(),Toast.LENGTH_SHORT).show();
+
+        }else{
+            Toast.makeText(this,"SMS send to "+contactUser.getName(),Toast.LENGTH_SHORT).show();
+
         }
     }
 

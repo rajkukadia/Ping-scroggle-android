@@ -1,6 +1,13 @@
 package edu.neu.madcourse.raj__kukadia.ping;
 
 import android.support.annotation.NonNull;
+import android.widget.Button;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Comparator;
 
@@ -12,6 +19,9 @@ public class ContactUser implements Comparable<ContactUser>{
     private String name;
     private String number;
     private String allowedNumber="1234567890";
+    private boolean usesPing;
+    private String token;
+    private Button buttonUpate;
     public String getName() {
         return name;
     }
@@ -24,8 +34,40 @@ public class ContactUser implements Comparable<ContactUser>{
         return number;
     }
 
+    public String getAllowedNumber() {
+        return allowedNumber;
+    }
+
+    public void setAllowedNumber(String allowedNumber) {
+        this.allowedNumber = allowedNumber;
+    }
+
+    public boolean isUsesPing() {
+        return usesPing;
+    }
+
+    public void setUsesPing(boolean usesPing) {
+        this.usesPing = usesPing;
+    }
+
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Button getButtonUpate() {
+        return buttonUpate;
+    }
+
+    public void setButtonUpate(Button buttonUpate) {
+        this.buttonUpate = buttonUpate;
     }
 
     ContactUser(String name, String number){
@@ -37,6 +79,29 @@ public class ContactUser implements Comparable<ContactUser>{
         catch(Exception exe){
             return ;
         }
+
+        DatabaseReference newReference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users").child(number).child("token");
+        newReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String token=dataSnapshot.getValue(String.class);
+                if(token!=null){
+                    usesPing=true;
+                    if(buttonUpate!=null){
+                        buttonUpate.setText("Ping");
+                    }
+                }
+                else{
+                    usesPing=false;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
     }
 
