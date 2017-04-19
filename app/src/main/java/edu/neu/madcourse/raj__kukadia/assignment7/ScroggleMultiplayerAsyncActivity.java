@@ -103,9 +103,7 @@ public class ScroggleMultiplayerAsyncActivity extends Activity implements Sensor
                 mGameFragment.flipTiles(0);
             } else {
                 mGameFragment.flipTiles(270);
-
             }
-
         }
     }
 

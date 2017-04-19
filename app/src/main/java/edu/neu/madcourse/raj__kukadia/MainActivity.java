@@ -85,7 +85,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         checkPermissions();
         //getActionBar().setTitle("Raj Kukadia");
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);

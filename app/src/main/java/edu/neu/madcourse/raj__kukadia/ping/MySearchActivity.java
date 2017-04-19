@@ -1,6 +1,7 @@
  package edu.neu.madcourse.raj__kukadia.ping;
 
  import android.app.Activity;
+ import android.content.Context;
  import android.content.Intent;
  import android.os.Bundle;
  import android.os.Handler;
@@ -12,12 +13,17 @@
  import android.text.TextWatcher;
 
  import android.util.Log;
+ import android.view.LayoutInflater;
  import android.view.View;
+ import android.view.ViewGroup;
  import android.widget.AdapterView;
  import android.widget.ArrayAdapter;
+ import android.widget.BaseAdapter;
  import android.widget.Button;
  import android.widget.EditText;
+ import android.widget.GridView;
  import android.widget.ImageButton;
+ import android.widget.ImageView;
  import android.widget.ListView;
  import android.widget.Toast;
 
@@ -42,18 +48,21 @@
  import java.util.Map;
  import java.util.Scanner;
 
+ import edu.neu.madcourse.raj__kukadia.MainActivity;
  import edu.neu.madcourse.raj__kukadia.R;
 
  public class MySearchActivity extends Activity {
 
-     private ListView lv;
+     private GridView gv;
      private EditText e;
      private ImageButton googleMic;
      private String voiceText;
-     private ArrayAdapter<String> adapter;
-     ArrayList<String> activityList;
+    // private ArrayAdapter<String> adapter;
+     ArrayList<MyActivity> activityList;
+     ArrayList<String> activityStringList;
      private String phoneNumber;
-     DatabaseReference reference;
+     Adapter adapter;
+             DatabaseReference reference;
      public static final int VOICE_RECOGNITION_REQUEST_CODE = 1230;
 
      @Override
@@ -62,8 +71,8 @@
          setContentView(R.layout.activity_my_search_ping);
 
          e = (EditText) findViewById(R.id.search_bar);
-         lv = (ListView) findViewById(R.id.activity_list);
-         googleMic = (ImageButton) findViewById(R.id.mic);
+                googleMic = (ImageButton) findViewById(R.id.mic);
+         Log.d("OnCreate", "called");
 
          Bundle b = getIntent().getExtras();
 if(b!=null&&b.getString("phonenumber")!=null) {
@@ -88,7 +97,7 @@ startRecognizing();
              @Override
              public void onTextChanged(CharSequence s, int start, int before, int count) {
                  initList();
-                     searchItem(s.toString());
+                    searchItem(s.toString());
 
              }
 
@@ -118,7 +127,7 @@ startRecognizing();
 
 
              //  mList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, matches));
-             if (activityList.contains(voiceText)) {
+             if (activityStringList.contains(voiceText)) {
                  getTheTOken(voiceText);
              }
              else{
@@ -133,17 +142,35 @@ startRecognizing();
 
      private void initList(){
          activityList = new ArrayList<>();
-         activityList.addAll(Arrays.asList(getResources().getStringArray(R.array.activity_array)));
-         adapter = new ArrayAdapter<String>(MySearchActivity.this, android.R.layout.simple_list_item_1, activityList);
-         lv.setAdapter(adapter);
-         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+         activityStringList = new ArrayList<>();
+
+         //activityList.addAll(Arrays.asList(getResources().getStringArray(R.array.activity_array)));
+         //adapter = new ArrayAdapter<String>(MySearchActivity.this, android.R.layout.simple_list_item_1, activityList);
+        if(activityStringList!=null){
+         activityStringList.clear();}
+         if(activityList!=null) {
+             activityList.clear();
+         }
+         gv = (GridView) findViewById(R.id.activity_list);
+         adapter = new Adapter(this);
+         activityList = adapter.getList();
+         for(int i = 0; i<activityList.size();i++){
+             String x = activityList.get(i).activityName;
+             activityStringList.add(x);
+         }
+         gv.setAdapter(adapter);
+         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
              @Override
              public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                   ViewHolder vh = (ViewHolder) view.getTag();
 
-                 getTheTOken(activityList.get(position).toString());
+                 MyActivity ma = (MyActivity) parent.getAdapter().getItem(position);
+                 Log.d("name", ma.activityName);
+                 getTheTOken(ma.activityName);
 
              }
          });
+
      }
 
      private String getTheTOken(final String activitySelected){
@@ -164,6 +191,8 @@ startRecognizing();
 
          return "";
      }
+
+
 
 
      private void replyToPing(final String activitySelected, final String token){
@@ -225,15 +254,104 @@ startRecognizing();
      }
 
      private void searchItem(String item){
-         for(Iterator<String>iterator=activityList.iterator();iterator.hasNext();){
+
+         for(Iterator<String>iterator=activityStringList.iterator();iterator.hasNext();){
              {
                  String value = iterator.next();
+                 Log.d("value", value);
                  if(!value.contains(item)){
-                      iterator.remove();
+                     Log.d("insidevalue", value);
+                     for(int i = 0; i<activityList.size();i++){
+                         if(activityList.get(i).activityName.equals(value)){
+                             activityList.remove(i);
+                                break;
+                         }
+                     }
+                     iterator.remove();
                  }
              }
          }
          adapter.notifyDataSetChanged();
+     }
+ }
+
+ class MyActivity {
+     String activityName;
+     int imageId;
+     MyActivity(String activityName, int imageId){
+         Log.d("Activity", "called");
+         this.activityName = activityName;
+         this.imageId = imageId;
+     }
+ }
+
+ class ViewHolder{
+
+     ImageView myActivity;
+
+     ViewHolder(View v){
+         myActivity = (ImageView) v.findViewById(R.id.activity_image);
+     }
+ }
+
+ class Adapter extends BaseAdapter{
+
+     public ArrayList<MyActivity> activityList;
+     Context c;
+
+     Adapter(Context c){
+         Log.d("Adapter", "called");
+         this.c = c;
+         activityList = new ArrayList<MyActivity>() ;
+         String [ ] tempActivityName =c.getResources().getStringArray(R.array.activity_array);
+         int [] tempImageId = {R.drawable.running, R.drawable.walking, R.drawable.bathing, R.drawable.cooking, R.drawable.dancing, R.drawable.biking, R.drawable.sitting};
+         for(int i = 0; i<7;i++){
+             MyActivity tempActivity = new MyActivity(tempActivityName[i], tempImageId[i]);
+             activityList.add(tempActivity);
+         }
+
+     }
+
+    public ArrayList<MyActivity> getList(){
+        return activityList;
+    }
+
+     @Override
+     public int getCount() {
+
+         return activityList.size();
+     }
+
+     @Override
+     public Object getItem(int position) {
+         return activityList.get(position);
+     }
+
+     @Override
+     public long getItemId(int position) {
+         return position;
+     }
+
+
+
+     @Override
+     public View getView(int position, View convertView, ViewGroup parent) {
+         Log.d("View", "called");
+         View row = convertView;
+         ViewHolder holder = null;
+         if(row == null){
+             LayoutInflater inflater = (LayoutInflater) c.getSystemService(c.LAYOUT_INFLATER_SERVICE);
+             row = inflater.inflate(R.layout.activity_list, parent, false);
+             holder = new ViewHolder(row);
+             row.setTag(holder);
+         }
+         else{
+             holder = (ViewHolder) row.getTag();
+         }
+         MyActivity temp = activityList.get(position);
+
+         holder.myActivity.setImageResource(temp.imageId);
+         return row;
      }
  }
 

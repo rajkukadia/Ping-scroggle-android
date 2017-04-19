@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.neu.madcourse.raj__kukadia">
-<uses-permission android:name="android.permission.READ_CONTACTS"/>
+
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -153,6 +154,7 @@
 
 
         <!--..................PING........................................-->
+
         <activity android:name=".ping.UserInformationActivity"
             android:theme="@style/NoTitle"
             android:screenOrientation="portrait"
@@ -178,8 +180,6 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait"
             />
-
-
 
     </application>
 
