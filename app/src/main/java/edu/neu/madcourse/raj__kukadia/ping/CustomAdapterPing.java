@@ -52,7 +52,6 @@ public class CustomAdapterPing extends ArrayAdapter<ContactUser> {
 
         final ContactUser contactUser = (ContactUser) getItem(position);
 
-// 2
         userNameTextView.setText(contactUser.getName());
         contactUser.setButtonUpate(inviteButton);
         if(contactUser.isUsesPing()){
@@ -60,6 +59,8 @@ public class CustomAdapterPing extends ArrayAdapter<ContactUser> {
             inviteButton.setVisibility(View.VISIBLE);
         }
         else{
+
+            //
             inviteButton.setVisibility(View.VISIBLE);
         }
             inviteButton.setOnClickListener(new View.OnClickListener() {
