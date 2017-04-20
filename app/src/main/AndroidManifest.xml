@@ -7,10 +7,10 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/gameicon"
-        android:label="NUMAD17S-RajKukadia"
         android:supportsRtl="true">
         <activity
+            android:icon="@mipmap/gameicon"
+            android:label="NUMAD17S-RajKukadia"
             android:name=".MainActivity"
             android:theme="@style/MainActivityTheme">
             <intent-filter>
@@ -160,9 +160,13 @@
 
         <activity android:name=".ping.PingHomeScreenActivity"
             android:theme="@style/NoTitle"
+            android:icon="@mipmap/ping_icon"
+            android:label="MAD17S-Ping"
             android:screenOrientation="portrait"
             >
         <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
             <action android:name="ping.action.PingHome"/>
             <category android:name="android.intent.category.DEFAULT"/>
         </intent-filter>
@@ -175,7 +179,7 @@
             />
 
         <activity android:name=".ping.MySearchActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/My_Theme"
             android:screenOrientation="portrait"
             />
 
