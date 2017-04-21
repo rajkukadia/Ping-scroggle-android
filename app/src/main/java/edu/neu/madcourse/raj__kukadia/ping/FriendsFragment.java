@@ -43,6 +43,8 @@ import java.util.Collections;
 import java.util.Scanner;
 
 import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
+import edu.neu.madcourse.raj__kukadia.ping.persistent_model.PersistentModel;
 
 /**
  * Created by Dharak on 4/21/2017.
@@ -68,7 +70,7 @@ public class FriendsFragment extends Fragment {
                 inflater.inflate(
                         R.layout.fragment_my_contacts_ping, container, false);
         //contactFunction();
-
+        reference=FirebaseDatabase.getInstance().getReference("Ping").child("All Users");
         this.rootView=rootView;
         //contactFunction();
         return rootView;
@@ -187,24 +189,8 @@ public class FriendsFragment extends Fragment {
             return;
         }
         */
-        reference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users");
-        //content Resolover
-        ContentResolver cr=getActivity().getContentResolver();
-
-        Cursor cursor=cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, new String [] {ContactsContract.CommonDataKinds.Phone.NUMBER,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME}, null,null,null);
-        if((cursor.moveToNext())){
-            do{
-                String newContactNumber=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                String newContactName=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                if(newContactNumber.length()<10)continue;
-                ContactUser newcontactUser=new ContactUser(newContactName,newContactNumber);
-
-                contactUserList.add(newcontactUser);
-
-            }while(cursor.moveToNext());
-        }
-        cursor.close();
-        Collections.sort(contactUserList);
+        PersistentModel.getInstance().loadContactFromPhone(getActivity());
+        contactUserList=PersistentModel.getInstance().getAllContactUser();
         duplicateListViewContacts=new ArrayList<>();
         for(ContactUser contactUser:contactUserList) {
             duplicateListViewContacts.add(contactUser);

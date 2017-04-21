@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
 
 /**
  * Created by Dharak on 4/19/2017.

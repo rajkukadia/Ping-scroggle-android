@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 
 import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
 
 
 public class MyContactsActivity extends Activity  {

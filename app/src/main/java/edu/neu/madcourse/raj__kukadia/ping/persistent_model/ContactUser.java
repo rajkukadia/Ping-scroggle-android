@@ -1,4 +1,4 @@
-package edu.neu.madcourse.raj__kukadia.ping;
+package edu.neu.madcourse.raj__kukadia.ping.persistent_model;
 
 import android.support.annotation.NonNull;
 import android.widget.Button;
@@ -9,7 +9,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Comparator;
 import java.util.Date;
 
 /**
