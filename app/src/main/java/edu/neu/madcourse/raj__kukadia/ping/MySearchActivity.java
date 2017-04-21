@@ -3,6 +3,7 @@
  import android.app.Activity;
  import android.content.Context;
  import android.content.Intent;
+ import android.content.SharedPreferences;
  import android.os.Bundle;
  import android.os.Handler;
  import android.os.Looper;
@@ -45,6 +46,7 @@
  import java.util.Arrays;
  import java.util.HashMap;
  import java.util.Iterator;
+ import java.util.List;
  import java.util.Map;
  import java.util.Scanner;
 
@@ -54,14 +56,21 @@
  public class MySearchActivity extends Activity {
 
      private GridView gv;
+     private GridView rgv;
      private EditText e;
      private ImageButton googleMic;
      private String voiceText;
-    // private ArrayAdapter<String> adapter;
+     public static SharedPreferences recentActivities;
+     public static final String ACTIVITY_STRING = "activity_string";
+     private static final String RECENT_ACTIVITIES = "recent_activities";
+     public static final String IMAGE_STRING = "image_string";
+     // private ArrayAdapter<String> adapter;
      ArrayList<MyActivity> activityList;
+     ArrayList<MyRecentActivity> recentActivityList;
      ArrayList<String> activityStringList;
      private String phoneNumber;
      Adapter adapter;
+     RecentActivityAdapter recentAdapter;
              DatabaseReference reference;
      public static final int VOICE_RECOGNITION_REQUEST_CODE = 1230;
 
@@ -71,12 +80,15 @@
          setContentView(R.layout.activity_my_search_ping);
 
          e = (EditText) findViewById(R.id.search_bar);
+
+         recentActivities = getSharedPreferences(RECENT_ACTIVITIES, MODE_PRIVATE);
+
                 googleMic = (ImageButton) findViewById(R.id.mic);
          Log.d("OnCreate", "called");
 
          Bundle b = getIntent().getExtras();
-if(b!=null&&b.getString("phonenumber")!=null) {
-    phoneNumber = b.getString("phonenumber");
+        if(b!=null&&b.getString("phonenumber")!=null) {
+         phoneNumber = b.getString("phonenumber");
 }
          initList();
 
@@ -139,9 +151,9 @@ startRecognizing();
          }
      }
 
-
      private void initList(){
          activityList = new ArrayList<>();
+         recentActivityList = new ArrayList<>();
          activityStringList = new ArrayList<>();
 
          //activityList.addAll(Arrays.asList(getResources().getStringArray(R.array.activity_array)));
@@ -152,6 +164,7 @@ startRecognizing();
              activityList.clear();
          }
          gv = (GridView) findViewById(R.id.activity_list);
+         rgv = (GridView) findViewById(R.id.recent_activity_list);
          adapter = new Adapter(this);
          activityList = adapter.getList();
          for(int i = 0; i<activityList.size();i++){
@@ -159,18 +172,80 @@ startRecognizing();
              activityStringList.add(x);
          }
          gv.setAdapter(adapter);
+
+
          gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
              @Override
              public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                    ViewHolder vh = (ViewHolder) view.getTag();
-
                  MyActivity ma = (MyActivity) parent.getAdapter().getItem(position);
                  Log.d("name", ma.activityName);
-                 getTheTOken(ma.activityName);
 
+             //    MyRecentActivity mra = (MyRecentActivity) parent.getAdapter().getItem(position);
+                 String activities ="";
+                 String images = "";
+                Log.d("recent", "zero");
+                if(recentActivities.getString(IMAGE_STRING, null)!=null){
+                     Log.d("recent", "one");
+                     images = recentActivities.getString(IMAGE_STRING, null);
+
+                    String []imageArray =  images.split(",");
+                    List<String> s = new ArrayList<String>();
+                    s  = Arrays.asList(imageArray);
+
+                    if(s.size()>3) {
+                        s = s.subList(0, 3);
+                        images="";
+                        for (String x : s) {
+                            images =images+x + ",";
+                        }
+                        Log.d("NEW IMAGES", images);
+                    }}
+
+
+                 if(recentActivities.getString(ACTIVITY_STRING, null)!=null){
+                     Log.d("recent", "two");
+                     activities = recentActivities.getString(ACTIVITY_STRING, null);
+                     String []tempString =  activities.split(",");
+                     List<String> s = new ArrayList<String>();
+                     s  = Arrays.asList(tempString);
+
+if(s.size()>3) {
+    s = s.subList(0, 3);
+activities="";
+    for (String x : s) {
+        activities =activities+x + ",";
+    }
+    Log.d("NEW ACTIVITIES", activities);
+}}
+
+                 if(!activities.equals("")){
+                     Log.d("recent", "three");
+                     recentActivities.edit().putString(ACTIVITY_STRING, ma.activityName+","+activities).commit();
+                 }
+                 else {
+                     Log.d("recent", "four");
+                     recentActivities.edit().putString(ACTIVITY_STRING, ma.activityName).commit();
+                 }
+
+                 if(!images.equals("")){
+                     Log.d("recent", "five");
+                     recentActivities.edit().putString(IMAGE_STRING, ma.imageId+","+images).commit();
+                 }
+                 else {
+                     Log.d("recent", "six");
+                     recentActivities.edit().putString(IMAGE_STRING, String.valueOf(ma.imageId)).commit();
+                 }
+
+                // getTheTOken(ma.activityName);
              }
          });
 
+
+        if(recentActivities.getString(ACTIVITY_STRING, null)!=null){
+            recentAdapter = new RecentActivityAdapter(MySearchActivity.this);
+            rgv.setAdapter(recentAdapter);
+       }
      }
 
      private String getTheTOken(final String activitySelected){
@@ -180,19 +255,14 @@ startRecognizing();
              @Override
              public void onDataChange(DataSnapshot dataSnapshot) {
                  replyToPing(activitySelected, dataSnapshot.getValue().toString());
-
              }
 
              @Override
              public void onCancelled(DatabaseError databaseError) {
-
              }
          });
-
          return "";
      }
-
-
 
 
      private void replyToPing(final String activitySelected, final String token){
@@ -243,7 +313,6 @@ startRecognizing();
                      Toast.makeText(MySearchActivity.this,"Ping unsuccesfully",Toast.LENGTH_LONG).show();
                      e.printStackTrace();
                  }
-
              }
          }.start();
      }
@@ -284,13 +353,94 @@ startRecognizing();
          this.imageId = imageId;
      }
  }
+ class MyRecentActivity {
+     String activityName;
+     int imageId;
 
+     MyRecentActivity(String activityName, int imageId){
+         Log.d("Activity", "called");
+         this.activityName = activityName;
+         this.imageId = imageId;
+
+     }
+ }
  class ViewHolder{
 
      ImageView myActivity;
 
      ViewHolder(View v){
          myActivity = (ImageView) v.findViewById(R.id.activity_image);
+     }
+ }
+
+ class RecentActivityViewHolder{
+
+     ImageView myActivity;
+
+     RecentActivityViewHolder(View v){
+         myActivity = (ImageView) v.findViewById(R.id.activity_image);
+     }
+
+ }
+
+
+
+ class RecentActivityAdapter extends BaseAdapter{
+
+     public ArrayList<MyRecentActivity> activityList;
+     Context c;
+
+
+     RecentActivityAdapter(Context c){
+         Log.d("RecentActivityAdapter", "called");
+         this.c = c;
+         activityList = new ArrayList<>() ;
+
+         String [] tempActivityName = (MySearchActivity.recentActivities.getString(MySearchActivity.ACTIVITY_STRING, null)).split(",");
+         String [] tempImageId = (MySearchActivity.recentActivities.getString(MySearchActivity.IMAGE_STRING, null).split(","));
+         for(int i = 0; i<tempActivityName.length;i++){
+             MyRecentActivity tempActivity = new MyRecentActivity(tempActivityName[i], Integer.parseInt(tempImageId[i]));
+             activityList.add(tempActivity);
+             Log.d(tempActivityName[i], "recent_activity");
+         }
+     }
+     public ArrayList<MyRecentActivity> getList(){
+         return activityList;
+     }
+
+     @Override
+     public int getCount() {
+         return activityList.size();
+     }
+
+     @Override
+     public Object getItem(int position) {
+         return activityList.get(position);
+     }
+
+     @Override
+     public long getItemId(int position) {
+         return position;
+     }
+
+     @Override
+     public View getView(int position, View convertView, ViewGroup parent) {
+         Log.d("RecentView", "called");
+         View row = convertView;
+         RecentActivityViewHolder holder = null;
+         if(row == null){
+             LayoutInflater inflater = (LayoutInflater) c.getSystemService(c.LAYOUT_INFLATER_SERVICE);
+             row = inflater.inflate(R.layout.activity_list, parent, false);
+             holder = new RecentActivityViewHolder(row);
+             row.setTag(holder);
+         }
+         else{
+             holder = (RecentActivityViewHolder) row.getTag();
+         }
+         MyRecentActivity temp = activityList.get(position);
+
+         holder.myActivity.setImageResource(temp.imageId);
+         return row;
      }
  }
 
@@ -309,7 +459,6 @@ startRecognizing();
              MyActivity tempActivity = new MyActivity(tempActivityName[i], tempImageId[i]);
              activityList.add(tempActivity);
          }
-
      }
 
     public ArrayList<MyActivity> getList(){
@@ -354,7 +503,3 @@ startRecognizing();
          return row;
      }
  }
-
-
-
-

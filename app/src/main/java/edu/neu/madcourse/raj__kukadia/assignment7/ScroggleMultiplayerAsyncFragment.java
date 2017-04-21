@@ -729,7 +729,6 @@ mHandler.removeCallbacks(mRunnable);
                                 if (d.getKey().equals("token")) {
                                     token = d.getValue().toString();
                                     sendNotification(token, "no");
-
                                 }
                             }
                         }
