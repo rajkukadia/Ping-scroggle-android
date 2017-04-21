@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -47,10 +46,11 @@ public class PersistentModel {
     }
 
     private PersistentModel() {
+        reference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users");
 
     }
     public void loadContactFromPhone(Context context){
-        reference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users");
+        allContactUser=new ArrayList<>();
         //content Resolover
         ContentResolver cr=context.getContentResolver();
 
@@ -61,7 +61,6 @@ public class PersistentModel {
                 String newContactName=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 if(newContactNumber.length()<10)continue;
                 ContactUser newcontactUser=new ContactUser(newContactName,newContactNumber);
-
                 allContactUser.add(newcontactUser);
 
             }while(cursor.moveToNext());

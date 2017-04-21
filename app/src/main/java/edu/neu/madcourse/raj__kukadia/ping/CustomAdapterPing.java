@@ -1,25 +1,14 @@
 package edu.neu.madcourse.raj__kukadia.ping;
 
 import android.content.Context;
-import android.database.DataSetObserver;
-import android.graphics.Typeface;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Size;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-import java.util.List;
-
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
 
@@ -62,8 +51,6 @@ public class CustomAdapterPing extends ArrayAdapter<ContactUser> {
             inviteButton.setVisibility(View.VISIBLE);
         }
         else{
-
-            //
             inviteButton.setVisibility(View.VISIBLE);
         }
             inviteButton.setOnClickListener(new View.OnClickListener() {

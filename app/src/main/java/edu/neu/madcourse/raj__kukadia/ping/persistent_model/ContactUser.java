@@ -1,7 +1,11 @@
 package edu.neu.madcourse.raj__kukadia.ping.persistent_model;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,13 +13,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
+import java.util.Scanner;
+
+import edu.neu.madcourse.raj__kukadia.ping.UserInformationActivity;
+import edu.neu.madcourse.raj__kukadia.ping.applicatonlogic.myTasks;
 
 /**
  * Created by Dharak on 4/12/2017.
  */
 
-public class ContactUser implements Comparable<ContactUser>{
+public class ContactUser implements Comparable<ContactUser>,myTasks {
     private String name;
     private String number;
     private String allowedNumber="1234567890";
@@ -151,16 +167,22 @@ public class ContactUser implements Comparable<ContactUser>{
         catch(Exception exe){
             return ;
         }
+        if(name.contains("rak")){
+            if(true){
 
-        DatabaseReference newReference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users").child(number).child("token");
+            }
+        }
+        DatabaseReference newReference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users").child(this.number).child("token");
         newReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String token=dataSnapshot.getValue(String.class);
-                if(token!=null){
+                String token1=dataSnapshot.getValue(String.class);
+                if(token1!=null){
+                    token=token1;
                     usesPing=true;
+
                     if(contactSearchButtonUpdate!=null){
-                        if(contactSearchButtonUpdate.isShown())
+                        Log.d("Inside","the the thing");
                         contactSearchButtonUpdate.setText("Ping");
                     }
                 }
@@ -204,6 +226,73 @@ try not to put number less than 10 this handles data for greater than 10
     @Override
     public int compareTo(@NonNull ContactUser o) {
         return name.compareTo(o.getName());
+    }
+
+    @Override
+    public boolean doTask() {
+        pushInternetFCM();
+        return true;
+    }
+    public void pushInternetFCM(){
+                JSONObject jPayload = new JSONObject();
+
+                JSONObject jNotification = new JSONObject();
+                JSONObject jData=new JSONObject();
+                try {
+                    jPayload.put("to",token);
+                    jData.put("ping", "open");
+                    jNotification.put("title", "PING");
+                    jNotification.put("body", "PING FROM YOUR BUDDY ");
+                    jNotification.put("sound", "default");
+                    jNotification.put("badge", "1");
+                    jNotification.put("click_action", "MySearchActivity");
+                    jData.put("phonenumber", UserInformationActivity.phoneNumber);
+                    //jPayload.put("notification", jNotification);
+
+                    jPayload.put("notification", jNotification);
+                    jPayload.put("data", jData);
+
+                    URL url = new URL("https://fcm.googleapis.com/fcm/send");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Authorization", "key=AAAAIJKsPeE:APA91bHkUeOjkpMKSV9gmCv1kzJEadSJGPjaKSA5xjI-R2waz2RJRv1zqcHz-t4I9XSrB5HaCLNLQSW0TTvXkhkVHTDn0FFCOZop-2lP9cTWG1acrTYGxg9WuJjFygeQaLo7URrr9sQo");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setDoOutput(true);
+
+                    // Send FCM message content.
+                    OutputStream outputStream = conn.getOutputStream();
+                    outputStream.write(jPayload.toString().getBytes());
+                    outputStream.close();
+
+                    // Read FCM response.
+                    InputStream inputStream = conn.getInputStream();
+
+                    final String resp = convertStreamToString(inputStream);
+                    //Log.d("Sending notifcation3=",requesting);
+                    Handler h = new Handler(Looper.getMainLooper());
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.e("notifcationf3", "run: " + resp);
+                        }
+                    });
+                } catch (JSONException | IOException e) {
+                    //Toast.makeText(getActivity(),"Ping unsuccesfully",Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+
+            }
+
+
+    private String convertStreamToString(InputStream is) {
+        Scanner s = new Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next().replace(",", ",\n") : "";
+    }
+
+
+    @Override
+    public void OnTaskfailed() {
+
     }
 }
 
