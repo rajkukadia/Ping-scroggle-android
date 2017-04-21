@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,10 +48,11 @@ public class CustomAdapterPing extends ArrayAdapter<ContactUser> {
 
 
         Button inviteButton=(Button)rowView.findViewById(R.id.isUsesPingFieldButton);
+        //rowView.setPadding(100,100,100,100);
 
 // Get detail element
 
-        final ContactUser contactUser = (ContactUser) getItem(position);
+        final ContactUser contactUser = getItem(position);
 
         userNameTextView.setText(contactUser.getName());
         contactUser.setButtonUpate(inviteButton);

@@ -87,6 +87,8 @@ public class MyContactsActivity extends Activity  {
         }
         //contactFunction();
     }
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -112,6 +114,8 @@ public class MyContactsActivity extends Activity  {
             // permissions this app might request
         }
     }
+
+
     private void searchActivity(){
         searchBar.setVisibility(View.VISIBLE);
         searchBar.addTextChangedListener(new TextWatcher() {

@@ -17,7 +17,8 @@
 
     <ListView
     android:id="@+id/contact_list"
-    android:background="@android:color/black"
+        android:padding="@dimen/menu_padding"
+        android:dividerHeight="@dimen/menu_button_padding"
     android:layout_width="match_parent"
     android:layout_height="match_parent"></ListView>
 
