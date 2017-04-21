@@ -6,20 +6,10 @@
     android:orientation="vertical"
     tools:context=".ping.MyContactsActivity"
     >
-
-    <EditText
-        android:id="@+id/contact_search_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Type here to search"
-        android:visibility="gone"
-        android:layout_gravity="center"/>
-
-    <ListView
-    android:id="@+id/contact_list"
-        android:padding="@dimen/menu_padding"
-        android:dividerHeight="@dimen/menu_button_padding"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"></ListView>
-
+    <fragment
+        android:id="@+id/fragmentFriends"
+        android:name="edu.neu.madcourse.raj__kukadia.ping.FriendsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/activity_my_contacts_ping"/>
 </LinearLayout>
