@@ -146,8 +146,6 @@ startRecognizing();
                   Toast.makeText(this, "Try again!",
                     Toast.LENGTH_LONG).show();
              }
-
-
          }
      }
 
@@ -209,20 +207,21 @@ startRecognizing();
                      String []tempString =  activities.split(",");
                      List<String> s = new ArrayList<String>();
                      s  = Arrays.asList(tempString);
-
-if(s.size()>3) {
-    s = s.subList(0, 3);
-activities="";
-    for (String x : s) {
-        activities =activities+x + ",";
+            if(s.size()>3) {
+                s = s.subList(0, 3);
+                activities="";
+                for (String x : s) {
+                activities =activities+x + ",";
     }
     Log.d("NEW ACTIVITIES", activities);
 }}
 
                  if(!activities.equals("")){
                      Log.d("recent", "three");
-                     recentActivities.edit().putString(ACTIVITY_STRING, ma.activityName+","+activities).commit();
-                 }
+                     if(!activities.contains(ma.activityName)) {
+                         recentActivities.edit().putString(ACTIVITY_STRING, ma.activityName + "," + activities).commit();
+                     }
+                     }
                  else {
                      Log.d("recent", "four");
                      recentActivities.edit().putString(ACTIVITY_STRING, ma.activityName).commit();
@@ -230,8 +229,10 @@ activities="";
 
                  if(!images.equals("")){
                      Log.d("recent", "five");
-                     recentActivities.edit().putString(IMAGE_STRING, ma.imageId+","+images).commit();
-                 }
+                     if(!images.contains(String.valueOf(ma.imageId))) {
+                         recentActivities.edit().putString(IMAGE_STRING, ma.imageId + "," + images).commit();
+                     }
+                     }
                  else {
                      Log.d("recent", "six");
                      recentActivities.edit().putString(IMAGE_STRING, String.valueOf(ma.imageId)).commit();

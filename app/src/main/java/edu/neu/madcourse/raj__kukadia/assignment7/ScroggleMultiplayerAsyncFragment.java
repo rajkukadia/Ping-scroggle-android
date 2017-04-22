@@ -718,13 +718,8 @@ mHandler.removeCallbacks(mRunnable);
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-
                     for (DataSnapshot finalvalue : child.getChildren()) {
-
-
                         if (finalvalue.getValue().equals(notify)) {
-
                             for (DataSnapshot d : child.getChildren()){
                                 if (d.getKey().equals("token")) {
                                     token = d.getValue().toString();
@@ -735,7 +730,6 @@ mHandler.removeCallbacks(mRunnable);
                     }
                 }
             }
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -894,7 +888,7 @@ jPayload.put("data",jData);
        updateAllTiles();
         getCounter();
        // saveGameDataOnFireBase();
-            putGameState();
+        putGameState();
 
 
 
