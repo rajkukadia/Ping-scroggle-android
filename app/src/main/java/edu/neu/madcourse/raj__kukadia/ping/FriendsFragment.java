@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.ping.network.InternetThread;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.PersistentModel;
 
@@ -262,8 +263,9 @@ public class FriendsFragment extends Fragment {
         }
     }
     public void onClickViewListiner(int position,ContactUser contactUser){
-        Boolean result=findPlayerOnlineSend(contactUser.getNumber());
+        //Boolean result=findPlayerOnlineSend(contactUser.getNumber());
         if(contactUser.isUsesPing()){
+            InternetThread.getinstance().addTasks(contactUser);
             Toast.makeText(getActivity(),"Pinged to "+contactUser.getName(),Toast.LENGTH_SHORT).show();
 
         }else{

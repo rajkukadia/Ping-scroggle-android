@@ -157,13 +157,21 @@
 
         <activity android:name=".ping.UserInformationActivity"
             android:theme="@style/NoTitle"
+
             android:screenOrientation="portrait"
-            />
+            android:icon="@mipmap/ping_icon"
+            android:label="NUMAD17S-RajKukadia">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+            <action android:name="ping.action.PingHome"/>
+            <category android:name="android.intent.category.DEFAULT"/>
+        </intent-filter>
+        </activity>
 
         <activity android:name=".ping.PingHomeScreenActivity"
             android:theme="@style/NoTitle"
-            android:icon="@mipmap/ping_icon"
-            android:label="MAD17S-Ping"
+
             android:screenOrientation="portrait"
             >
         <intent-filter>

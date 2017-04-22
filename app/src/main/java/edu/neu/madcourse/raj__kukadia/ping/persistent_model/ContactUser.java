@@ -167,12 +167,8 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         catch(Exception exe){
             return ;
         }
-        if(name.contains("rak")){
-            if(true){
 
-            }
-        }
-        DatabaseReference newReference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users").child(this.number).child("token");
+        DatabaseReference newReference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users").child(number).child("token");
         newReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -230,10 +226,9 @@ try not to put number less than 10 this handles data for greater than 10
 
     @Override
     public boolean doTask() {
-        pushInternetFCM();
-        return true;
+        return pushInternetFCM();
     }
-    public void pushInternetFCM(){
+    public boolean pushInternetFCM(){
                 JSONObject jPayload = new JSONObject();
 
                 JSONObject jNotification = new JSONObject();
@@ -276,10 +271,12 @@ try not to put number less than 10 this handles data for greater than 10
                             Log.e("notifcationf3", "run: " + resp);
                         }
                     });
+                    if(resp.contains("\"success\":1"))return true;
                 } catch (JSONException | IOException e) {
                     //Toast.makeText(getActivity(),"Ping unsuccesfully",Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
+                return false;
 
             }
 
