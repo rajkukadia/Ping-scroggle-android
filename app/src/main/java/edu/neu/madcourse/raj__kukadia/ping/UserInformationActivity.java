@@ -1,8 +1,12 @@
 package edu.neu.madcourse.raj__kukadia.ping;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -11,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,13 +28,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import edu.neu.madcourse.raj__kukadia.R;
 
 public class UserInformationActivity extends Activity implements View.OnClickListener {
 
-    private static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1234;
+    private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 9999 ;
     private SharedPreferences firstUser = null;
     private Button jumpIn;
     private EditText phoneNumberArea;
@@ -38,6 +47,7 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
     DatabaseReference mRootRef;
     String detectedPhoneNumber;
     private String token;
+    private SmsReceiver receiver;
     private boolean permission;
     public static String phoneNumber ;
     public static final String SERVER_KEY = "key=AAAAV5p0wJk:APA91bGhB6kA308eCdUD5OyYe_SBD57BQB2dhxVob9vPBuGm2Angf351qYNDFcuoJ9x2IzvJOHgKqQQ71-MFWfoh6y14hDLnuP9RcCxPld_5okjZeWG_SKqB2Q-AGep8l9dfub7UTrtY";
@@ -50,7 +60,7 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
         firstUser = getSharedPreferences("checkFirstUser", MODE_PRIVATE);
         mRootRef = FirebaseDatabase.getInstance().getReference();
         token = FirebaseInstanceId.getInstance().getToken();
-
+        permission = true;
 
 
 
@@ -63,42 +73,97 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
         }
     }
 
-    protected void checkPermissions() {
-        if ((ContextCompat.checkSelfPermission(UserInformationActivity.this,
-                android.Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED) && (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) && (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
 
-            ActivityCompat.requestPermissions(UserInformationActivity.this,
-                    new String[]{android.Manifest.permission.READ_PHONE_STATE},
-                    MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
+    protected boolean checkAndRequestPermissions(){
+        int permissionSendMessage = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.SEND_SMS);
+        int permissionReceiveMessage = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECEIVE_SMS);
+        int permissionReadPhoneState = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+        int permissionReadMessage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (permissionReadMessage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_SMS);
         }
+        if (permissionSendMessage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.SEND_SMS);
+        }
+        if (permissionReadPhoneState != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (permissionReceiveMessage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.RECEIVE_SMS);
+        }
+        if(!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_ID_MULTIPLE_PERMISSIONS);
+            return false;
+        }
+        return true;
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_PHONE_STATE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                permission = true;
-                    TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                    detectedPhoneNumber = tMgr.getLine1Number();
-                    if(detectedPhoneNumber!=null||!detectedPhoneNumber.equals("")){
-                        phoneNumberArea.setText(detectedPhoneNumber.substring(1, 11));
+            case REQUEST_ID_MULTIPLE_PERMISSIONS: {
+
+                Map<String, Integer> perms = new HashMap<>();
+
+                perms.put(Manifest.permission.SEND_SMS, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.RECEIVE_SMS, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.READ_SMS, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.READ_PHONE_STATE, PackageManager.PERMISSION_GRANTED);
+
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+                    // Check for both permissions
+                    if (perms.get(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
+                            && perms.get(Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED && perms.get(Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED
+                            && perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                        detectedPhoneNumber = tMgr.getLine1Number();
+                        phoneNumberArea.setText(detectedPhoneNumber.substring(1,11));
                         jumpIn.setVisibility(View.VISIBLE);
+                        permission = true;
+                        Log.d("All permissions", "granted");
+                    } else {
+                        permission = false;
+
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_SMS)
+                                || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
+                            showDialogOK("SMS access permission is required for this app",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            switch (which) {
+                                                case DialogInterface.BUTTON_POSITIVE:
+                                                    checkAndRequestPermissions();
+                                                    break;
+                                                case DialogInterface.BUTTON_NEGATIVE:
+                                                    // proceed with logic by disabling the related features or quit the app.
+                                                    break;
+                                            }
+                                        }
+                                    });
+                        }
                     }
-                } else {
-                    permission = false;
+
                 }
             }
-
         }
     }
-
+    private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", okListener)
+                .create()
+                .show();
+    }
     private void  handleFirstUser(){
         setContentView(R.layout.activity_user_information_ping);
-        checkPermissions();
+        checkAndRequestPermissions();
         jumpIn = (Button) findViewById(R.id.jump_in_button);
         phoneNumberArea = (EditText) findViewById(R.id.phone_number_area);
         verificationCodeArea = (EditText) findViewById(R.id.verification_code_area);
@@ -150,19 +215,30 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
 
 
         if(jumpIn.getText().toString().equals("Verify")){
+            if(permission) {
             verificationCodeArea.setVisibility(View.VISIBLE);
             jumpIn.setVisibility(View.GONE);
             int code = getCode();
-          //  SmsReceiver receiver = SmsReceiver();
+            receiver = new SmsReceiver();
+            IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+            registerReceiver(receiver, filter);
 
-            SmsManager.getDefault().sendTextMessage(detectedPhoneNumber, null,"Verification Message/n"+String.valueOf(code), null, null);
-            //send msg
+                if (detectedPhoneNumber != null) {
+                    SmsManager.getDefault().sendTextMessage(detectedPhoneNumber, null, "Your verification code is:\n" + String.valueOf(code), null, null);
+                } else {
+                    SmsManager.getDefault().sendTextMessage(phoneNumberArea.getText().toString(), null, "Verification Message\n" + String.valueOf(code), null, null);
+                }
+            }  else{
+                checkAndRequestPermissions();
+                Toast.makeText(this, "No permission granted", Toast.LENGTH_LONG).show();
+            }
         }else{
             phoneNumber = phoneNumberArea.getText().toString();
             firstUser.edit().putBoolean("firstuser", false).commit();
             firstUser.edit().putString("phonenumber", phoneNumber).commit();
             mRootRef.child("Ping").child("All Users").child(phoneNumberArea.getText().toString()).child("token").setValue(token);
             startActivity(new Intent(UserInformationActivity.this, PingHomeScreenActivity.class));
+        //    unregisterReceiver(receiver);
         }
     }
 

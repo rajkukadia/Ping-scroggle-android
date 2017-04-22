@@ -24,7 +24,7 @@
 
     <EditText
         android:id="@+id/verification_code_area"
-        android:hint="A B C D"
+        android:hint="1 2 3 4 5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
