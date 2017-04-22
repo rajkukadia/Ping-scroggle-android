@@ -42,8 +42,9 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
     private SharedPreferences firstUser = null;
     private Button jumpIn;
     private EditText phoneNumberArea;
-    private EditText verificationCodeArea;
+    public static EditText verificationCodeArea;
     private TextView info;
+    private int code;
     DatabaseReference mRootRef;
     String detectedPhoneNumber;
     private String token;
@@ -56,14 +57,18 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initData();
+        takeUserDecission();
+    }
 
+    private void initData(){
         firstUser = getSharedPreferences("checkFirstUser", MODE_PRIVATE);
         mRootRef = FirebaseDatabase.getInstance().getReference();
         token = FirebaseInstanceId.getInstance().getToken();
         permission = true;
+    }
 
-
-
+    private void takeUserDecission(){
         if(firstUser.getBoolean("firstuser", true)){
             handleFirstUser();
         }else{
@@ -72,7 +77,6 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
             finish();
         }
     }
-
 
     protected boolean checkAndRequestPermissions(){
         int permissionSendMessage = ContextCompat.checkSelfPermission(this,
@@ -121,12 +125,8 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
                     if (perms.get(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
                             && perms.get(Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED && perms.get(Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED
                             && perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-                        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                        detectedPhoneNumber = tMgr.getLine1Number();
-                        phoneNumberArea.setText(detectedPhoneNumber.substring(1,11));
-                        jumpIn.setVisibility(View.VISIBLE);
+                       grabPhoneNumber();
                         permission = true;
-                        Log.d("All permissions", "granted");
                     } else {
                         permission = false;
 
@@ -153,6 +153,14 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
             }
         }
     }
+
+    private void grabPhoneNumber(){
+        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        detectedPhoneNumber = tMgr.getLine1Number();
+        phoneNumberArea.setText(detectedPhoneNumber.substring(1,11));
+        jumpIn.setVisibility(View.VISIBLE);
+    }
+
     private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(this)
                 .setMessage(message)
@@ -201,10 +209,61 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
             }
         });
 
+        verificationCodeArea.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(verificationCodeArea.getText().toString().toCharArray().length==10) {
+                    String codeString =formatCode(code);
+
+                    if(codeString.equals(verificationCodeArea.getText().toString())) {
+                        jumpIn.setText("Jump In");
+                        jumpIn.setVisibility(View.VISIBLE);
+                    }else{
+                        Toast.makeText(UserInformationActivity.this, "Invalid code", Toast.LENGTH_LONG).show();
+                    }
+                }
+                else{
+                    jumpIn.setText("Verify");
+                    jumpIn.setVisibility(View.GONE);
+                }
+                }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
     }
+    private String formatCode(int code ){
+        String codeString="";
+        char a[] = String.valueOf(code).toCharArray();
+        for(char temp:a){
+            codeString+=temp+" ";
+        }
+    return codeString;
+    }
 
+private void verify(){
+    verificationCodeArea.setVisibility(View.VISIBLE);
+    jumpIn.setVisibility(View.GONE);
+    code = getCode();
+    receiver = new SmsReceiver();
+    IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+    registerReceiver(receiver, filter);
+
+    if (detectedPhoneNumber != null) {
+        SmsManager.getDefault().sendTextMessage(detectedPhoneNumber, null, "Your verification code is:\n" + String.valueOf(code), null, null);
+    } else {
+        SmsManager.getDefault().sendTextMessage(phoneNumberArea.getText().toString(), null, "Verification Message\n" + String.valueOf(code), null, null);
+    }
+}
     @Override
     protected void onResume() {
         super.onResume();
@@ -216,30 +275,23 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
 
         if(jumpIn.getText().toString().equals("Verify")){
             if(permission) {
-            verificationCodeArea.setVisibility(View.VISIBLE);
-            jumpIn.setVisibility(View.GONE);
-            int code = getCode();
-            receiver = new SmsReceiver();
-            IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-            registerReceiver(receiver, filter);
-
-                if (detectedPhoneNumber != null) {
-                    SmsManager.getDefault().sendTextMessage(detectedPhoneNumber, null, "Your verification code is:\n" + String.valueOf(code), null, null);
-                } else {
-                    SmsManager.getDefault().sendTextMessage(phoneNumberArea.getText().toString(), null, "Verification Message\n" + String.valueOf(code), null, null);
-                }
+                verify();
             }  else{
                 checkAndRequestPermissions();
                 Toast.makeText(this, "No permission granted", Toast.LENGTH_LONG).show();
             }
         }else{
-            phoneNumber = phoneNumberArea.getText().toString();
-            firstUser.edit().putBoolean("firstuser", false).commit();
-            firstUser.edit().putString("phonenumber", phoneNumber).commit();
-            mRootRef.child("Ping").child("All Users").child(phoneNumberArea.getText().toString()).child("token").setValue(token);
-            startActivity(new Intent(UserInformationActivity.this, PingHomeScreenActivity.class));
-        //    unregisterReceiver(receiver);
+            jumpIn();
+            unregisterReceiver(receiver);
         }
+    }
+
+    private void jumpIn(){
+        phoneNumber = phoneNumberArea.getText().toString();
+        firstUser.edit().putBoolean("firstuser", false).commit();
+        firstUser.edit().putString("phonenumber", phoneNumber).commit();
+        mRootRef.child("Ping").child("All Users").child(phoneNumberArea.getText().toString()).child("token").setValue(token);
+        startActivity(new Intent(UserInformationActivity.this, PingHomeScreenActivity.class));
     }
 
     private int getCode(){

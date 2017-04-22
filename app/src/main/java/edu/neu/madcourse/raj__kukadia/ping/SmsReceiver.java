@@ -24,7 +24,13 @@ class SmsReceiver extends BroadcastReceiver{
 
         String number = msg.getOriginatingAddress();
         String message = msg.getMessageBody();
-        Log.d("Incomming message", message);
+        String code[] = message.split("\n");
+        String codeString = "";
+        char a[]=code[1].toCharArray();
+        for(char temp:a){
+            codeString+=temp+" ";
+        }
+               UserInformationActivity.verificationCodeArea.setText(codeString);
     }
 
 }
