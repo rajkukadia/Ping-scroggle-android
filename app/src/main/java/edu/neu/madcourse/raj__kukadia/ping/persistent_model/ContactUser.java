@@ -5,17 +5,14 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.Toast;
-
+import android.widget.TextView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -23,24 +20,36 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.Scanner;
-
 import edu.neu.madcourse.raj__kukadia.ping.UserInformationActivity;
 import edu.neu.madcourse.raj__kukadia.ping.applicatonlogic.myTasks;
+
+import static edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser.TargetScreenMessage.InvalidStatus;
+import static edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser.TargetScreenMessage.Pinged;
+import static edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser.TargetScreenMessage.ShowActivity;
 
 /**
  * Created by Dharak on 4/12/2017.
  */
 
 public class ContactUser implements Comparable<ContactUser>,myTasks {
+    public static enum TargetScreenMessage{
+        ShowActivity,InvalidStatus,Pinged
+    }
+    private TargetScreenMessage targetScreenMessage;
     private String name;
     private String number;
     private String allowedNumber="1234567890";
     private boolean usesPing;
+    private boolean PingedUser;
+    private long pingTime;
     private String token;
     private Button contactSearchButtonUpdate;
     private Button targetsButtonUpdate;
     private Button receivedButton;
     private String activity;
+    TextView messageTargetFrament;
+    String messageTargetScreen;
+    TextView timeMessage;
     private long milliseconds;// this actually milliseconds 1 January 1970, 00:00:00.000 UTC
     public String getName() {
         return name;
@@ -49,7 +58,72 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         Date date=new Date();
         return date.getTime();
     }
-    private boolean isActivityRecent(){
+
+    public TargetScreenMessage getTargetScreenMessage() {
+
+        return targetScreenMessage;
+    }
+
+    public void setTargetScreenMessage(TargetScreenMessage targetScreenMessage) {
+        this.targetScreenMessage = targetScreenMessage;
+    }
+    public void updateStatus() {
+        if(isActivityRecentThanPinged()){
+            targetScreenMessage=ShowActivity;
+        }else{
+            if(isActivityRecent())
+                targetScreenMessage=InvalidStatus;
+            else if(isPingRecent()){
+                targetScreenMessage=Pinged;
+            }
+        }
+    }
+    public boolean isActivityRecentThanPinged(){
+        if(getMilliseconds()-getPingTime()>0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public String getMessageTargetScreen() {
+        updateStatus();
+     switch (targetScreenMessage){
+        case ShowActivity:
+            return activity;
+         case Pinged:
+             return "Pinged";
+         case InvalidStatus:
+             return "";
+        }
+        return "";
+     }
+    public void setMessageTargetScreen(String messageTargetScreen) {
+        this.messageTargetScreen = messageTargetScreen;
+    }
+
+    public TextView getMessageTargetFrament() {
+        return messageTargetFrament;
+    }
+
+    public void setMessageTargetFrament(TextView messageTargetFrament) {
+        this.messageTargetFrament = messageTargetFrament;
+    }
+
+    public TextView getTimeMessage() {
+        return timeMessage;
+    }
+
+    public void setTimeMessage(TextView timeMessage) {
+        this.timeMessage = timeMessage;
+    }
+
+    public boolean isActivityRecent(){
+        if(getCurretTime()-milliseconds<=900000)return true;
+        else return false;
+    }
+    public boolean isPingRecent(){
         if(getCurretTime()-milliseconds<=900000)return true;
         else return false;
     }
@@ -72,7 +146,6 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
     public void setMilliseconds(long milliseconds) {
         this.milliseconds = milliseconds;
     }
-
     public boolean setActivityWithTime(String activity, long milliseconds){
         /*
         check whether current activity is given activity is recent previous activity
@@ -89,9 +162,6 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
     }
     return false;
     }
-
-
-
 
     public void setContactSearchButtonUpdate(Button contactSearchButtonUpdate) {
         this.contactSearchButtonUpdate = contactSearchButtonUpdate;
@@ -271,7 +341,10 @@ try not to put number less than 10 this handles data for greater than 10
                             Log.e("notifcationf3", "run: " + resp);
                         }
                     });
-                    if(resp.contains("\"success\":1"))return true;
+                    if(resp.contains("\"success\":1")){
+                        setPingTime(getCurretTime());
+                        setPingedUser(true);
+                        return true;}
                 } catch (JSONException | IOException e) {
                     //Toast.makeText(getActivity(),"Ping unsuccesfully",Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -280,6 +353,21 @@ try not to put number less than 10 this handles data for greater than 10
 
             }
 
+    public boolean isPingedUser() {
+        return PingedUser;
+    }
+
+    public void setPingedUser(boolean pingedUser) {
+        PingedUser = pingedUser;
+    }
+
+    public long getPingTime() {
+        return pingTime;
+    }
+
+    public void setPingTime(long pingTime) {
+        this.pingTime = pingTime;
+    }
 
     private String convertStreamToString(InputStream is) {
         Scanner s = new Scanner(is).useDelimiter("\\A");

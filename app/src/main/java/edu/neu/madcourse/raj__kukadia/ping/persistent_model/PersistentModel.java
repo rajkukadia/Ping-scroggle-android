@@ -15,8 +15,9 @@ import java.util.Collections;
  */
 
 public class PersistentModel {
-    private ArrayList<ContactUser> allContactUser =new ArrayList<ContactUser>();
+    private ArrayList<ContactUser> allContactUser ;
     private static final PersistentModel ourInstance = new PersistentModel();
+    private ArrayList<ContactUser>pingUser;
     DatabaseReference reference;
     public static PersistentModel getInstance() {
         return ourInstance;
@@ -50,6 +51,23 @@ public class PersistentModel {
 
     }
     public void loadContactFromPhone(Context context){
+        if(allContactUser==null){
+            forceLoadContactFromPhone(context);
+        }
+        else{
+            //do nothing because contact are already loaded
+        }
+    }
+    public ContactUser getParticularUserByPhoneNumber(String phoneNumer){
+        for(ContactUser contactUser:getAllContactUser()){
+            if(contactUser.getNumber().equals(phoneNumer))return contactUser;
+        }
+        return null;
+    }
+
+
+
+    public void forceLoadContactFromPhone(Context context){
         allContactUser=new ArrayList<>();
         //content Resolover
         ContentResolver cr=context.getContentResolver();
@@ -68,10 +86,20 @@ public class PersistentModel {
         cursor.close();
         Collections.sort(allContactUser);
     }
-    public ContactUser getParticularUserByPhoneNumber(String phoneNumer){
+
+
+    public ArrayList<ContactUser>getPingUser(){
+        if(allContactUser==null) return null;
+
+
+        pingUser=new ArrayList<>();
         for(ContactUser contactUser:getAllContactUser()){
-            if(contactUser.getNumber().equals(phoneNumer))return contactUser;
+            if(contactUser.isUsesPing())pingUser.add(contactUser);
         }
-        return null;
+
+    return pingUser;
     }
+
+
+
 }
