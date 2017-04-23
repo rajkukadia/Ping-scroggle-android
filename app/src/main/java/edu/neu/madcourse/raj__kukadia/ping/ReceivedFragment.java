@@ -47,7 +47,7 @@ public class ReceivedFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView =
                 inflater.inflate(
-                        R.layout.fragment_my_targets_ping, container, false);
+                        R.layout.fragment_my_received_ping, container, false);
         //contactFunction();
         reference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users");
         this.rootView=rootView;
@@ -66,7 +66,7 @@ public class ReceivedFragment extends Fragment {
                 Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
+
 
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.READ_CONTACTS},
@@ -184,7 +184,6 @@ public class ReceivedFragment extends Fragment {
 
         }
     }
-
 
 
 }
