@@ -69,7 +69,7 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView =
                 inflater.inflate(
-                        R.layout.fragment_my_targets_ping, container, false);
+                        R.layout.fragment_my_contacts_ping, container, false);
         //contactFunction();
         reference=FirebaseDatabase.getInstance().getReference("Ping").child("All Users");
         this.rootView=rootView;
@@ -168,16 +168,16 @@ public class FriendsFragment extends Fragment {
         ArrayList<ContactUser>remove=new ArrayList();
         int i=0;
         for(ContactUser user:duplicateListViewContacts){
-            Log.d(str,user.getName()+user.getName().toString().contains(str));
+            //Log.d(str,user.getName()+user.getName().toString().contains(str));
             if(!user.getName().toString().toLowerCase().contains(str.toLowerCase())){
-                Log.d("Dharak",String.valueOf(i++));
+                //Log.d("Dharak",String.valueOf(i++));
                 remove.add(user);
             }
         }
         for(ContactUser j:remove){
             duplicateListViewContacts.remove(j);
         }
-        Log.d("removal=",Integer.toString(remove.size())+ duplicateListViewContacts.size());
+        //Log.d("removal=",Integer.toString(remove.size())+ duplicateListViewContacts.size());
         contactsAdapter=new CustomAdapterPing(getActivity(),android.R.layout.simple_list_item_1,duplicateListViewContacts);
         listViewContacts.setAdapter(contactsAdapter);
         //contactsAdapter.notifyDataSetChanged();

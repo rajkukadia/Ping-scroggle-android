@@ -59,11 +59,12 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         initData();
         takeUserDecission();
+
     }
 
     private void initData(){
         firstUser = getSharedPreferences("checkFirstUser", MODE_PRIVATE);
-        mRootRef = FirebaseDatabase.getInstance().getReference();
+        mRootRef = FirebaseDatabase.getInstance().getReference("Ping");
         token = FirebaseInstanceId.getInstance().getToken();
         permission = true;
     }
@@ -174,6 +175,19 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
         checkAndRequestPermissions();
         jumpIn = (Button) findViewById(R.id.jump_in_button);
         phoneNumberArea = (EditText) findViewById(R.id.phone_number_area);
+        Button backdoorEntry=(Button) findViewById(R.id.backdoorEntry);
+        backdoorEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            phoneNumberArea.setText("8573996996");
+                mRootRef=FirebaseDatabase.getInstance().getReference("Ping");
+                phoneNumber="8573996996";
+            jumpIn();
+            }
+        });
+
+
+
         verificationCodeArea = (EditText) findViewById(R.id.verification_code_area);
         info = (TextView) findViewById(R.id.enter_phone_number);
         jumpIn.setText("Verify");
@@ -287,10 +301,12 @@ private void verify(){
     }
 
     private void jumpIn(){
+        if(phoneNumber==null)
         phoneNumber = phoneNumberArea.getText().toString();
+
         firstUser.edit().putBoolean("firstuser", false).commit();
         firstUser.edit().putString("phonenumber", phoneNumber).commit();
-        mRootRef.child("Ping").child("All Users").child(phoneNumberArea.getText().toString()).child("token").setValue(token);
+        mRootRef.child("All Users").child(phoneNumber).child("token").setValue(token);
         startActivity(new Intent(UserInformationActivity.this, PingHomeScreenActivity.class));
     }
 

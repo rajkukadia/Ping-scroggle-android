@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.google.firebase.database.DataSnapshot;
@@ -50,6 +51,7 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
     TextView messageTargetFrament;
     String messageTargetScreen;
     TextView timeMessage;
+    View targetEntireViewGroup;
     private long milliseconds;// this actually milliseconds 1 January 1970, 00:00:00.000 UTC
     public String getName() {
         return name;
@@ -64,6 +66,14 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         return targetScreenMessage;
     }
 
+    public View getTargetEntireViewGroup() {
+        return targetEntireViewGroup;
+    }
+
+    public void setTargetEntireViewGroup(View targetEntireViewGroup) {
+        this.targetEntireViewGroup = targetEntireViewGroup;
+    }
+
     public void setTargetScreenMessage(TargetScreenMessage targetScreenMessage) {
         this.targetScreenMessage = targetScreenMessage;
     }
@@ -71,11 +81,12 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         if(isActivityRecentThanPinged()){
             targetScreenMessage=ShowActivity;
         }else{
-            if(isActivityRecent())
+            if(!isActivityRecent())
                 targetScreenMessage=InvalidStatus;
             else if(isPingRecent()){
                 targetScreenMessage=Pinged;
             }
+
         }
     }
     public boolean isActivityRecentThanPinged(){
@@ -95,7 +106,7 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
          case Pinged:
              return "Pinged";
          case InvalidStatus:
-             return "";
+             return "-----";
         }
         return "";
      }
@@ -233,12 +244,14 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         try {
 
             this.number = numberFormat(number);
+        //    Log.d("Number",number);
         }
         catch(Exception exe){
             return ;
         }
 
-        DatabaseReference newReference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users").child(number).child("token");
+
+        DatabaseReference newReference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users").child(this.number).child("token");
         newReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -246,6 +259,10 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
                 if(token1!=null){
                     token=token1;
                     usesPing=true;
+                    PersistentModel.getInstance().updateTargetFields(ContactUser.this);
+                    if(getTargetEntireViewGroup()!=null){
+                        getTargetEntireViewGroup().setVisibility(View.VISIBLE);
+                    }
 
                     if(contactSearchButtonUpdate!=null){
                         Log.d("Inside","the the thing");
@@ -265,6 +282,7 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
 
 
     }
+
     public void removeContactSearchView(){
         contactSearchButtonUpdate=null;
     }
@@ -377,7 +395,7 @@ try not to put number less than 10 this handles data for greater than 10
 
     @Override
     public void OnTaskfailed() {
-
+Log.d("Field to ping","Yippee");
     }
 }
 

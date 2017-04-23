@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -58,7 +59,7 @@ public class TargetsFragment extends Fragment {
     }
 
     public void onCreateHelper() {
-        listViewContacts = (ListView) rootView.findViewById(R.id.contact_list);
+        listViewContacts = (ListView) rootView.findViewById(R.id.target_list);
         searchBar=(EditText)rootView. findViewById(R.id.contact_search_bar);
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.READ_CONTACTS)
@@ -111,6 +112,8 @@ public class TargetsFragment extends Fragment {
 
 
     private void searchActivity(){
+        listViewContacts=(ListView) rootView.findViewById(R.id.target_list);
+        searchBar=(EditText) rootView.findViewById(R.id.target_search_bar);
         searchBar.setVisibility(View.VISIBLE);
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -160,6 +163,7 @@ public class TargetsFragment extends Fragment {
         }
         customAdapterTargetPing=new CustomAdapterTargetPing(getActivity(),R.layout.layout_contact_ping,duplicateListViewContacts);
         listViewContacts.setAdapter(customAdapterTargetPing);
+
     }
     public void showMessage(String title,String Message){
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());

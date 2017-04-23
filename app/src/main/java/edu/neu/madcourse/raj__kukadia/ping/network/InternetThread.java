@@ -1,5 +1,7 @@
 package edu.neu.madcourse.raj__kukadia.ping.network;
 
+import java.util.Queue;
+
 import edu.neu.madcourse.raj__kukadia.ping.applicatonlogic.myTasks;
 
 /**
@@ -13,9 +15,9 @@ public class InternetThread implements Runnable  {
     MyInternetQue QueInterent;
     Thread thread;
     int DefaultTime=1000;
-    int maxSleepTime=32000;
+    int maxSleepTime=10000;
     int sleepTime=DefaultTime;
-
+    Boolean threadRunning=false;
     private static  InternetThread instance;
     public static InternetThread getinstance(){
         if(instance==null){
@@ -34,6 +36,7 @@ public class InternetThread implements Runnable  {
     @Override
     public void run() {
         //QueInterent=myInternetQue.getInstance();
+        threadRunning=true;
         while(QueInterent.size()>0){
             myTasks tasks=(myTasks) QueInterent.peek();
             boolean result=tasks.doTask();
@@ -41,7 +44,12 @@ public class InternetThread implements Runnable  {
                 resetSleep();
             }
             else{
-                tasks.OnTaskfailed();
+                if(sleepTime()>maxSleepTime){
+                    QueInterent.remove(tasks);
+                    tasks.OnTaskfailed();
+                    resetSleep();
+                }
+                //tasks.OnTaskfailed();
                 try {
                     Thread.sleep(sleepTime());
                 } catch (InterruptedException e) {
@@ -50,6 +58,7 @@ public class InternetThread implements Runnable  {
                 //internet failure do something about it;
             }
         }
+        threadRunning=false;
     }
     public void addTasks(myTasks tasks){
         if(QueInterent==null){
@@ -59,22 +68,19 @@ public class InternetThread implements Runnable  {
 
         //add tasks to Internet Tread
         QueInterent.add(tasks);
-    if(thread==null){
-        thread=new Thread(this);
-    }
-    if(thread.isAlive()){
+
+
+    if(threadRunning){
         //do nothing
     }
     else{
+        thread=new Thread(this);
         //if thread is not active start it
         thread.start();
     }
     }
     private int sleepTime(){
         sleepTime*=2;
-        if(sleepTime>=maxSleepTime){
-            sleepTime=maxSleepTime;
-        }
         return sleepTime;
     }
     private void resetSleep(){

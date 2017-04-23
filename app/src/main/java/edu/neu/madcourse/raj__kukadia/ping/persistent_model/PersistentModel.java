@@ -9,6 +9,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import edu.neu.madcourse.raj__kukadia.ping.MyContactsActivity;
+
 
 /**
  * Created by Dharak on 4/21/2017.
@@ -19,6 +21,7 @@ public class PersistentModel {
     private static final PersistentModel ourInstance = new PersistentModel();
     private ArrayList<ContactUser>pingUser;
     DatabaseReference reference;
+    Context context;
     public static PersistentModel getInstance() {
         return ourInstance;
     }
@@ -51,6 +54,10 @@ public class PersistentModel {
 
     }
     public void loadContactFromPhone(Context context){
+
+        if(context instanceof MyContactsActivity){
+            this.context=context;
+        }
         if(allContactUser==null){
             forceLoadContactFromPhone(context);
         }
@@ -68,8 +75,11 @@ public class PersistentModel {
 
 
     public void forceLoadContactFromPhone(Context context){
+        this.context=context;
         allContactUser=new ArrayList<>();
         //content Resolover
+
+
         ContentResolver cr=context.getContentResolver();
 
         Cursor cursor=cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, new String [] {ContactsContract.CommonDataKinds.Phone.NUMBER,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME}, null,null,null);
@@ -91,13 +101,23 @@ public class PersistentModel {
     public ArrayList<ContactUser>getPingUser(){
         if(allContactUser==null) return null;
 
+        if(pingUser==null) {
+            pingUser = new ArrayList<>();
+            for (ContactUser contactUser : getAllContactUser()) {
+                if (contactUser.isUsesPing()) pingUser.add(contactUser);
+            }
+        }
+    return pingUser;
+    }
 
-        pingUser=new ArrayList<>();
-        for(ContactUser contactUser:getAllContactUser()){
-            if(contactUser.isUsesPing())pingUser.add(contactUser);
+    public void updateTargetFields(ContactUser contactUser){
+        if(!pingUser.contains(contactUser)){
+            pingUser.add(contactUser);
         }
 
-    return pingUser;
+        if(context!=null){
+            ((MyContactsActivity)context).updateTargetListView();
+        }
     }
 
 

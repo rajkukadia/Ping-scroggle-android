@@ -28,11 +28,14 @@ public class MyContactsActivity extends Activity  {
     }
 
 
- void onClickViewListiner(int position,ContactUser contactUser){
+ public void onClickViewListiner(int position,ContactUser contactUser){
         FriendsFragment mFriendsFragment= (FriendsFragment) getFragmentManager().findFragmentById(R.id.fragmentFriends);
         if(mFriendsFragment!=null)mFriendsFragment.onClickViewListiner(position,contactUser);
     }
-
+ public void updateTargetListView(){
+     TargetsFragment mFriendsFragment= (TargetsFragment) getFragmentManager().findFragmentById(R.id.TargetFriends);
+    mFriendsFragment.contactFunction();
+ }
 
 
 }

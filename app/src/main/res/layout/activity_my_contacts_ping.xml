@@ -4,11 +4,20 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:weightSum="2"
     tools:context=".ping.MyContactsActivity"
     >
     <fragment
         android:id="@+id/fragmentFriends"
         android:name="edu.neu.madcourse.raj__kukadia.ping.FriendsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:layout="@layout/activity_my_contacts_ping"/>
+    <fragment
+        android:id="@+id/TargetFriends"
+        android:layout_weight="1"
+        android:name="edu.neu.madcourse.raj__kukadia.ping.TargetsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/activity_my_contacts_ping"/>

@@ -34,7 +34,7 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
         // Get view for row item
         View rowView = mInflater.inflate(R.layout.layout_target_ping, parent, false);
         TextView userNameTextView =
-                (TextView) rowView.findViewById(R.id.userNameContact);
+                (TextView) rowView.findViewById(R.id.userNameTarget);
 
         TextView time=(TextView)rowView.findViewById(R.id.timeTargetTextView);
         TextView Message=(TextView)rowView.findViewById(R.id.targetTextFieldMessage);
@@ -47,10 +47,15 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
         if(contactUser.isPingRecent())
             time.setText(String.valueOf(contactUser.getPingTime()));
         Message.setText(contactUser.getMessageTargetScreen());
-
         userNameTextView.setText(contactUser.getName());
+        contactUser.setMessageTargetFrament(Message);
+        contactUser.setTimeMessage(time);
+        contactUser.setTargetEntireViewGroup(rowView);
+        if(contactUser.isUsesPing()){
 
-
+        }
+        else
+        rowView.setVisibility(View.GONE);
 // 3
 
         return rowView;
