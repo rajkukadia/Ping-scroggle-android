@@ -3,45 +3,22 @@ package edu.neu.madcourse.raj__kukadia.ping;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.ContentResolver;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
-
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.ping.network.InternetThread;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
@@ -208,7 +185,6 @@ public class FriendsFragment extends Fragment {
         builder.show();
     }
     public void onClickViewListiner(int position,ContactUser contactUser){
-        //Boolean result=findPlayerOnlineSend(contactUser.getNumber());
         if(contactUser.isUsesPing()){
             InternetThread.getinstance().addTasks(contactUser);
             Toast.makeText(getActivity(),"Pinged to "+contactUser.getName(),Toast.LENGTH_SHORT).show();

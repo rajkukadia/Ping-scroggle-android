@@ -52,7 +52,6 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
         contactUser.setTimeMessage(time);
         contactUser.setTargetEntireViewGroup(rowView);
         if(contactUser.isUsesPing()){
-
         }
         else
         rowView.setVisibility(View.GONE);

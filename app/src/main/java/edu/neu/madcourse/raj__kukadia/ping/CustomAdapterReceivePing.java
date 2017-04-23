@@ -56,11 +56,9 @@ public class CustomAdapterReceivePing extends CustomAdapterPing {
             inviteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MyContactsActivity)mContext).onClickViewListiner(position,contactUser);
+                    ((PingHomeScreenActivity)mContext).onClickViewListiner(position,contactUser);
                 }
             });
-
-// 3
 
         return rowView;
     }

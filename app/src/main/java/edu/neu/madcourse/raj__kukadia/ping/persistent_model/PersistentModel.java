@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import edu.neu.madcourse.raj__kukadia.ping.MyContactsActivity;
+import edu.neu.madcourse.raj__kukadia.ping.PingHomeScreenActivity;
 
 
 /**
@@ -25,7 +26,6 @@ public class PersistentModel {
     public static PersistentModel getInstance() {
         return ourInstance;
     }
-
     public ArrayList<ContactUser> getAllContactUser() {
         return allContactUser;
     }
@@ -55,7 +55,7 @@ public class PersistentModel {
     }
     public void loadContactFromPhone(Context context){
 
-        if(context instanceof MyContactsActivity){
+        if(context instanceof PingHomeScreenActivity){
             this.context=context;
         }
         if(allContactUser==null){
@@ -75,12 +75,10 @@ public class PersistentModel {
 
 
     public void forceLoadContactFromPhone(Context context){
+        if(context instanceof PingHomeScreenActivity)
         this.context=context;
         allContactUser=new ArrayList<>();
-        //content Resolover
-
-
-        ContentResolver cr=context.getContentResolver();
+          ContentResolver cr=context.getContentResolver();
 
         Cursor cursor=cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, new String [] {ContactsContract.CommonDataKinds.Phone.NUMBER,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME}, null,null,null);
         if((cursor.moveToNext())){
@@ -116,7 +114,7 @@ public class PersistentModel {
         }
 
         if(context!=null){
-            ((MyContactsActivity)context).updateTargetListView();
+            ((PingHomeScreenActivity)context).updateTargetListView();
         }
     }
 
