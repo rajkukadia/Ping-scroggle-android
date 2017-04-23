@@ -8,6 +8,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import edu.neu.madcourse.raj__kukadia.ping.MySearchActivity;
 import edu.neu.madcourse.raj__kukadia.ping.PingHomeScreenActivity;
 import edu.neu.madcourse.raj__kukadia.ping.network.InternetThread;
 
@@ -119,6 +121,10 @@ public class PersistentModel {
         if(context!=null){
             ((PingHomeScreenActivity)context).updateTargetListView();
         }
+    }
+
+    public void sendReply(MySearchActivity object){
+        InternetThread.getinstance().addTasks(object);
     }
 
     public void sendFCM(ContactUser contactUser){

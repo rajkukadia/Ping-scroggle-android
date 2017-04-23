@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,7 +64,6 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
     private void initData(){
         firstUser = getSharedPreferences("checkFirstUser", MODE_PRIVATE);
         mRootRef = FirebaseDatabase.getInstance().getReference("Ping");
-        token = FirebaseInstanceId.getInstance().getToken();
         permission = true;
     }
 
@@ -71,6 +71,7 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
         if(firstUser.getBoolean("firstuser", true)){
             handleFirstUser();
         }else{
+            token = FirebaseInstanceId.getInstance().getToken();
             phoneNumber = firstUser.getString("phonenumber", null);
             startActivity(new Intent(UserInformationActivity.this, PingHomeScreenActivity.class));
             finish();
@@ -300,13 +301,14 @@ private void verify(){
     }
 
     private void jumpIn(){
-        if(phoneNumber==null)
+        //if(phoneNumber==null)
         phoneNumber = phoneNumberArea.getText().toString();
-
+        token = FirebaseInstanceId.getInstance().getToken();
         firstUser.edit().putBoolean("firstuser", false).commit();
         firstUser.edit().putString("phonenumber", phoneNumber).commit();
         mRootRef.child("All Users").child(phoneNumber).child("token").setValue(token);
         startActivity(new Intent(UserInformationActivity.this, PingHomeScreenActivity.class));
+        finish();
     }
 
     private int getCode(){

@@ -183,9 +183,11 @@ both sides in the larger game.
         <item>dancing</item>
         <item>biking</item>
         <item>sitting</item>
-
-
     </string-array>
+
+
+    <string name="doubletap">Always double tap to confirm</string>
+
     <string name="title_activity_ping_home_screen">PingHomeScreenActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
 

@@ -1,15 +1,20 @@
  package edu.neu.madcourse.raj__kukadia.ping;
 
  import android.app.Activity;
+ import android.app.Dialog;
  import android.content.Context;
  import android.content.Intent;
  import android.content.SharedPreferences;
+ import android.graphics.Color;
+ import android.graphics.drawable.ColorDrawable;
  import android.os.Bundle;
  import android.os.Handler;
  import android.os.Looper;
  import android.provider.ContactsContract;
  import android.speech.RecognizerIntent;
  import android.support.annotation.Nullable;
+ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
  import android.text.Editable;
  import android.text.TextWatcher;
 
@@ -17,6 +22,7 @@
  import android.view.LayoutInflater;
  import android.view.View;
  import android.view.ViewGroup;
+ import android.view.Window;
  import android.widget.AdapterView;
  import android.widget.ArrayAdapter;
  import android.widget.BaseAdapter;
@@ -52,14 +58,21 @@
 
  import edu.neu.madcourse.raj__kukadia.MainActivity;
  import edu.neu.madcourse.raj__kukadia.R;
+ import edu.neu.madcourse.raj__kukadia.ping.applicatonlogic.myTasks;
+ import edu.neu.madcourse.raj__kukadia.ping.persistent_model.PersistentModel;
 
- public class MySearchActivity extends Activity {
+ public class MySearchActivity extends AppCompatActivity implements myTasks {
 
+     public static final String ACTIVITY_CONFIRM = "activity_confirm";
+     public static final String ACTIVITY_CONFIRMED = "activity_confirmed";
      private GridView gv;
      private GridView rgv;
      private EditText e;
      private ImageButton googleMic;
      private String voiceText;
+     private String currentSelectedActivity;
+     private String token;
+     private SharedPreferences activityConfirm;
      public static SharedPreferences recentActivities;
      public static final String ACTIVITY_STRING = "activity_string";
      private static final String RECENT_ACTIVITIES = "recent_activities";
@@ -78,10 +91,19 @@
      protected void onCreate(@Nullable Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
          setContentView(R.layout.activity_my_search_ping);
+         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarreply);
+         toolbar.setTitle("Ping");
+
+         setSupportActionBar(toolbar);
+
 
          e = (EditText) findViewById(R.id.search_bar);
 
+         activityConfirm = getSharedPreferences(ACTIVITY_CONFIRM, MODE_PRIVATE);
+
          recentActivities = getSharedPreferences(RECENT_ACTIVITIES, MODE_PRIVATE);
+
+         activityConfirm.edit().remove(ACTIVITY_CONFIRMED).commit();
 
                 googleMic = (ImageButton) findViewById(R.id.mic);
          Log.d("OnCreate", "called");
@@ -91,7 +113,7 @@
          phoneNumber = b.getString("phonenumber");
 }
          initList();
-
+        getTheTOken();
          googleMic.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -140,7 +162,8 @@ startRecognizing();
 
              //  mList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, matches));
              if (activityStringList.contains(voiceText)) {
-                 getTheTOken(voiceText);
+                 currentSelectedActivity = voiceText;
+                 PersistentModel.getInstance().sendReply(MySearchActivity.this);
              }
              else{
                   Toast.makeText(this, "Try again!",
@@ -171,76 +194,105 @@ startRecognizing();
          }
          gv.setAdapter(adapter);
 
-
-         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+         rgv.setOnItemClickListener(new DoubleClickListener() {
              @Override
-             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                   ViewHolder vh = (ViewHolder) view.getTag();
-                 MyActivity ma = (MyActivity) parent.getAdapter().getItem(position);
-                 Log.d("name", ma.activityName);
-
-             //    MyRecentActivity mra = (MyRecentActivity) parent.getAdapter().getItem(position);
-                 String activities ="";
-                 String images = "";
-                Log.d("recent", "zero");
-                if(recentActivities.getString(IMAGE_STRING, null)!=null){
-                     Log.d("recent", "one");
-                     images = recentActivities.getString(IMAGE_STRING, null);
-
-                    String []imageArray =  images.split(",");
-                    List<String> s = new ArrayList<String>();
-                    s  = Arrays.asList(imageArray);
-
-                    if(s.size()>3) {
-                        s = s.subList(0, 3);
-                        images="";
-                        for (String x : s) {
-                            images =images+x + ",";
-                        }
-                        Log.d("NEW IMAGES", images);
-                    }}
-
-
-                 if(recentActivities.getString(ACTIVITY_STRING, null)!=null){
-                     Log.d("recent", "two");
-                     activities = recentActivities.getString(ACTIVITY_STRING, null);
-                     String []tempString =  activities.split(",");
-                     List<String> s = new ArrayList<String>();
-                     s  = Arrays.asList(tempString);
-            if(s.size()>3) {
-                s = s.subList(0, 3);
-                activities="";
-                for (String x : s) {
-                activities =activities+x + ",";
-    }
-    Log.d("NEW ACTIVITIES", activities);
-}}
-
-                 if(!activities.equals("")){
-                     Log.d("recent", "three");
-                     if(!activities.contains(ma.activityName)) {
-                         recentActivities.edit().putString(ACTIVITY_STRING, ma.activityName + "," + activities).commit();
-                     }
-                     }
-                 else {
-                     Log.d("recent", "four");
-                     recentActivities.edit().putString(ACTIVITY_STRING, ma.activityName).commit();
+             public void onSingleClick(View v, AdapterView<?> parent, int position) {
+                 Boolean confirmation = activityConfirm.getBoolean(ACTIVITY_CONFIRMED, true);
+                 if(confirmation){
+                     teach();
                  }
 
-                 if(!images.equals("")){
-                     Log.d("recent", "five");
-                     if(!images.contains(String.valueOf(ma.imageId))) {
-                         recentActivities.edit().putString(IMAGE_STRING, ma.imageId + "," + images).commit();
-                     }
-                     }
-                 else {
-                     Log.d("recent", "six");
-                     recentActivities.edit().putString(IMAGE_STRING, String.valueOf(ma.imageId)).commit();
-                 }
+             }
 
-                // getTheTOken(ma.activityName);
+             @Override
+             public void onDoubleClick(View v, AdapterView<?> parent, int position) {
+                 MyRecentActivity mra = (MyRecentActivity) parent.getAdapter().getItem(position);
+                 currentSelectedActivity = mra.activityName;
+                 PersistentModel.getInstance().sendReply(MySearchActivity.this);
              }
          });
+
+
+         gv.setOnItemClickListener(new DoubleClickListener() {
+                                       @Override
+                                       public void onSingleClick(View v, AdapterView<?> parent, int position) {
+                                           Boolean confirmation = activityConfirm.getBoolean(ACTIVITY_CONFIRMED, true);
+                                           if(confirmation){
+                                               teach();
+                                           }
+                                       }
+
+                                       @Override
+                                       public void onDoubleClick(View view, AdapterView<?> parent, int position) {
+
+                                           ViewHolder vh = (ViewHolder) view.getTag();
+                                               MyActivity ma = (MyActivity) parent.getAdapter().getItem(position);
+                                               Log.d("name", ma.activityName);
+
+                                               //    MyRecentActivity mra = (MyRecentActivity) parent.getAdapter().getItem(position);
+                                               String activities = "";
+                                               String images = "";
+                                               Log.d("recent", "zero");
+                                               if (recentActivities.getString(IMAGE_STRING, null) != null) {
+                                                   Log.d("recent", "one");
+                                                   images = recentActivities.getString(IMAGE_STRING, null);
+
+                                                   String[] imageArray = images.split(",");
+                                                   List<String> s = new ArrayList<String>();
+                                                   s = Arrays.asList(imageArray);
+
+                                                   if (s.size() > 3) {
+                                                       s = s.subList(0, 3);
+                                                       images = "";
+                                                       for (String x : s) {
+                                                           images = images + x + ",";
+                                                       }
+                                                       Log.d("NEW IMAGES", images);
+                                                   }
+                                               }
+
+
+                                               if (recentActivities.getString(ACTIVITY_STRING, null) != null) {
+                                                   Log.d("recent", "two");
+                                                   activities = recentActivities.getString(ACTIVITY_STRING, null);
+                                                   String[] tempString = activities.split(",");
+                                                   List<String> s = new ArrayList<String>();
+                                                   s = Arrays.asList(tempString);
+                                                   if (s.size() > 3) {
+                                                       s = s.subList(0, 3);
+                                                       activities = "";
+                                                       for (String x : s) {
+                                                           activities = activities + x + ",";
+                                                       }
+                                                       Log.d("NEW ACTIVITIES", activities);
+                                                   }
+                                               }
+
+                                               if (!activities.equals("")) {
+                                                   Log.d("recent", "three");
+                                                   if (!activities.contains(ma.activityName)) {
+                                                       recentActivities.edit().putString(ACTIVITY_STRING, ma.activityName + "," + activities).commit();
+                                                   }
+                                               } else {
+                                                   Log.d("recent", "four");
+                                                   recentActivities.edit().putString(ACTIVITY_STRING, ma.activityName).commit();
+                                               }
+
+                                               if (!images.equals("")) {
+                                                   Log.d("recent", "five");
+                                                   if (!images.contains(String.valueOf(ma.imageId))) {
+                                                       recentActivities.edit().putString(IMAGE_STRING, ma.imageId + "," + images).commit();
+                                                   }
+                                               } else {
+                                                   Log.d("recent", "six");
+                                                   recentActivities.edit().putString(IMAGE_STRING, String.valueOf(ma.imageId)).commit();
+                                               }
+
+                                           currentSelectedActivity = ma.activityName;
+                                           PersistentModel.getInstance().sendReply(MySearchActivity.this);
+                                       }
+                                   });
+
 
 
         if(recentActivities.getString(ACTIVITY_STRING, null)!=null){
@@ -249,26 +301,43 @@ startRecognizing();
        }
      }
 
-     private String getTheTOken(final String activitySelected){
+     private void teach(){
+         activityConfirm.edit().putBoolean(ACTIVITY_CONFIRMED, false).commit();
+         final Dialog alertDialog = new Dialog(this);
+         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+         alertDialog.setContentView(R.layout.double_tap_instrctions);
+         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+         Button  coolOk = (Button)alertDialog.findViewById(R.id.okbutton);
+         coolOk.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 alertDialog.cancel();
+             }
+         });
+         alertDialog.show();
+     }
+
+     private void getTheTOken(){
 
          reference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users").child(phoneNumber).child("token");
          reference.addListenerForSingleValueEvent(new ValueEventListener() {
              @Override
-             public void onDataChange(DataSnapshot dataSnapshot) {
-                 replyToPing(activitySelected, dataSnapshot.getValue().toString());
+             public void onDataChange(DataSnapshot dataSnapshot){
+                token = dataSnapshot.getValue().toString();
+//                 replyToPing(activitySelected, dataSnapshot.getValue().toString());
              }
 
              @Override
              public void onCancelled(DatabaseError databaseError) {
              }
          });
-         return "";
+
      }
 
 
-     private void replyToPing(final String activitySelected, final String token){
-         new Thread(){
-             public void run(){
+     private void run(){
+
                  JSONObject jPayload = new JSONObject();
                  Log.d("here", token);
                  JSONObject jNotification = new JSONObject();
@@ -278,7 +347,7 @@ startRecognizing();
                      jData.put("phonenumber", UserInformationActivity.phoneNumber);
                      jData.put("ping", "openreply");
                      jNotification.put("title", "PING REPLY");
-                     jNotification.put("body", activitySelected);
+                     jNotification.put("body", currentSelectedActivity);
                      jNotification.put("sound", "default");
                      jNotification.put("badge", "1");
                      jNotification.put("click_action", "PingHomeScreensActivity");
@@ -314,8 +383,7 @@ startRecognizing();
                      Toast.makeText(MySearchActivity.this,"Ping unsuccesfully",Toast.LENGTH_LONG).show();
                      e.printStackTrace();
                  }
-             }
-         }.start();
+
      }
 
      private String convertStreamToString(InputStream is) {
@@ -342,6 +410,19 @@ startRecognizing();
              }
          }
          adapter.notifyDataSetChanged();
+     }
+
+
+
+     @Override
+     public boolean doTask() {
+            run();
+         return true;
+     }
+
+     @Override
+     public void OnTaskfailed() {
+
      }
  }
 

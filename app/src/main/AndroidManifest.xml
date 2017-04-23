@@ -12,6 +12,7 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true"
+        android:icon="@drawable/ping_launcher"
         android:theme="@style/AppTheme"
         >
         <activity
@@ -174,7 +175,7 @@
         <activity
             android:name=".ping.MySearchActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/My_Theme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ping.PingHomeScreenActivity"
             android:label="@string/title_activity_ping_home_screen"
