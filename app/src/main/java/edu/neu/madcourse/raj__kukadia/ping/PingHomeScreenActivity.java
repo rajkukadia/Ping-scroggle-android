@@ -4,6 +4,8 @@ package edu.neu.madcourse.raj__kukadia.ping;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.TabLayout;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import java.util.HashMap;
 
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
@@ -34,6 +37,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    Handler mHandler;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -52,13 +56,15 @@ public class PingHomeScreenActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_my_offers);
         tabLayout.setupWithViewPager(mViewPager);
 
 
 
     }
+
+
+
 
 
     @Override
@@ -83,6 +89,26 @@ public class PingHomeScreenActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void updateOnPing(final ContactUser contactUser) {
+        if(mHandler!=null)
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Fragment fragment=mSectionsPagerAdapter.getMyHashMap().get(0);
+                if(fragment!=null)
+                    if(fragment instanceof TargetsFragment)
+                        contactUser.updateOnPinged();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        mHandler=new Handler(Looper.getMainLooper());
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -90,10 +116,14 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     public static class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         Fragment currentFragment;
-
+        HashMap<Integer,Fragment>myHashMap=new HashMap<Integer,Fragment>();
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+        }
+
+        public HashMap<Integer, Fragment> getMyHashMap() {
+            return myHashMap;
         }
 
         @Override
@@ -101,27 +131,33 @@ public class PingHomeScreenActivity extends AppCompatActivity {
             switch (position){
                 case 0:
                     TargetsFragment t = new TargetsFragment();
-                    currentFragment=t;
+                    myHashMap.put(position,t);
                     return t;
                 case 1:
                     ReceivedFragment r = new ReceivedFragment();
-                    currentFragment=r;
+                    myHashMap.put(position,r);
                     return r;
-                case 3:
+                case 2:
                     FriendsFragment f = new FriendsFragment();
-                    currentFragment=f;
+                    myHashMap.put(position,f);
                     return f;
-                default:
-                    return null;
+
             }
+            return null;
+            //return null;
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
         }
+
 
         @Override
         public int getCount() {
             // Show 3 total pages.
             return 3;
+        }
+        public void destroyItem (ViewGroup container, int position, Object object) {
+            super.destroyItem(container, position, object);
+            myHashMap.remove(position);
         }
 
         @Override
@@ -143,13 +179,39 @@ public class PingHomeScreenActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickViewListiner(int position,ContactUser contactUser){
-        Fragment fragment=mSectionsPagerAdapter.getCurrentFragment();
-        if(fragment instanceof FriendsFragment)((FriendsFragment)fragment).onClickViewListiner(position,contactUser);
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    public void onClickViewListiner(final int position, final ContactUser contactUser){
+        if(mHandler!=null)
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Fragment fragment=mSectionsPagerAdapter.getMyHashMap().get(2);
+                if(fragment!=null)
+                    if(fragment instanceof FriendsFragment)((FriendsFragment)fragment).onClickViewListiner(position,contactUser);            }
+        });
+
+    }
+
+
     public void updateTargetListView(){
-        Fragment fragment=mSectionsPagerAdapter.getCurrentFragment();
-        if(fragment instanceof TargetsFragment) ((TargetsFragment)fragment).contactFunction();
+        if(mHandler!=null)
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Fragment fragment=mSectionsPagerAdapter.getMyHashMap().get(0);
+                    if(fragment!=null)
+                        if(fragment instanceof TargetsFragment)
+                            ((TargetsFragment)fragment).contactFunction();           }
+            });
+
     }
 }

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import edu.neu.madcourse.raj__kukadia.ping.PingHomeScreenActivity;
+import edu.neu.madcourse.raj__kukadia.ping.network.InternetThread;
+import edu.neu.madcourse.raj__kukadia.ping.network.MyInternetQue;
 
 
 /**
@@ -117,6 +119,14 @@ public class PersistentModel {
         }
     }
 
+    public void sendFCM(ContactUser contactUser){
+        InternetThread.getinstance().addTasks(contactUser);
+    }
+    public void pingSuccessfull(ContactUser contactUser){
+        if(context!=null)
+            if(context instanceof PingHomeScreenActivity)
+        ((PingHomeScreenActivity)context).updateOnPing(contactUser);
+    }
 
 
 }

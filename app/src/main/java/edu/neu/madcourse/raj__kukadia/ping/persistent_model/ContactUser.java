@@ -1,5 +1,6 @@
 package edu.neu.madcourse.raj__kukadia.ping.persistent_model;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import edu.neu.madcourse.raj__kukadia.ping.UserInformationActivity;
 import edu.neu.madcourse.raj__kukadia.ping.applicatonlogic.myTasks;
 
 import static edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser.TargetScreenMessage.InvalidStatus;
+import static edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser.TargetScreenMessage.LocallyPinged;
 import static edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser.TargetScreenMessage.Pinged;
 import static edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser.TargetScreenMessage.ShowActivity;
 
@@ -33,8 +35,34 @@ import static edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser.T
  */
 
 public class ContactUser implements Comparable<ContactUser>,myTasks {
+    public void updateOnPinged() {
+                        messageTargetFrament.setText(getMessageTargetScreen());
+                        if(targetScreenMessage==LocallyPinged){
+                            messageTargetFrament.setTextColor(Color.RED);
+                        }
+                        if(targetScreenMessage==Pinged)
+                            messageTargetFrament.setTextColor(Color.WHITE);
+                        if(targetScreenMessage!=LocallyPinged)
+                            if(timeMessage!=null) {
+                                timeMessage.setVisibility(View.VISIBLE);
+                                timeMessage.setText(Long.toString(getPingTime()));
+                            }
+//stuff that updates ui
+    }
+    public Long getTime(){
+        switch (getTargetScreenMessage()){
+            case ShowActivity:
+                return getTime();
+            case Pinged:
+                return getPingTime();
+            default:
+                return null;
+
+        }
+    }
+
     public static enum TargetScreenMessage{
-        ShowActivity,InvalidStatus,Pinged
+        ShowActivity,InvalidStatus,Pinged,LocallyPinged
     }
     private TargetScreenMessage targetScreenMessage;
     private String name;
@@ -52,7 +80,9 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
     String messageTargetScreen;
     TextView timeMessage;
     View targetEntireViewGroup;
-    private long milliseconds;// this actually milliseconds 1 January 1970, 00:00:00.000 UTC
+    private long milliseconds;
+    private long locallyPinged;
+    // this actually milliseconds 1 January 1970, 00:00:00.000 UTC
     public String getName() {
         return name;
     }
@@ -81,17 +111,37 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         if(isActivityRecentThanPinged()){
             targetScreenMessage=ShowActivity;
         }else{
-            if(!isActivityRecent())
-                targetScreenMessage=InvalidStatus;
-            else if(isPingRecent()){
+            if(isPingRecent())
                 targetScreenMessage=Pinged;
+             else if(isLocallyPing()){
+                targetScreenMessage=LocallyPinged;
+            }
+            else if(!isActivityRecent()){
+                targetScreenMessage=InvalidStatus;
             }
 
         }
     }
+
+
+    public long getLocallyPingedTimed() {
+        return locallyPinged;
+    }
+    public void setLocallyPingedTimed(long locallyPinged ) {
+        this.locallyPinged=locallyPinged;
+    }
+
+
+
     public boolean isActivityRecentThanPinged(){
         if(getMilliseconds()-getPingTime()>0){
-            return true;
+            {
+                if(getMilliseconds()-getLocallyPingedTimed()>0){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
         }
         else{
             return false;
@@ -107,6 +157,8 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
              return "Pinged";
          case InvalidStatus:
              return "-----";
+         case LocallyPinged:
+             return "Pinged";
         }
         return "";
      }
@@ -135,7 +187,11 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         else return false;
     }
     public boolean isPingRecent(){
-        if(getCurretTime()-milliseconds<=900000)return true;
+        if(getCurretTime()-getPingTime()<=900000)return true;
+        else return false;
+    }
+    public boolean isLocallyPing(){
+        if(getCurretTime()-getLocallyPingedTimed()<=900000)return true;
         else return false;
     }
     public Button getContactSearchButtonUpdate() {
@@ -317,7 +373,9 @@ try not to put number less than 10 this handles data for greater than 10
         return pushInternetFCM();
     }
     public boolean pushInternetFCM(){
-                JSONObject jPayload = new JSONObject();
+                setLocallyPingedTimed(getCurretTime());
+        PersistentModel.getInstance().pingSuccessfull(ContactUser.this);
+        JSONObject jPayload = new JSONObject();
 
                 JSONObject jNotification = new JSONObject();
                 JSONObject jData=new JSONObject();
@@ -377,6 +435,7 @@ try not to put number less than 10 this handles data for greater than 10
 
     public void setPingedUser(boolean pingedUser) {
         PingedUser = pingedUser;
+        PersistentModel.getInstance().pingSuccessfull(ContactUser.this);
     }
 
     public long getPingTime() {
@@ -395,7 +454,9 @@ try not to put number less than 10 this handles data for greater than 10
 
     @Override
     public void OnTaskfailed() {
-Log.d("Field to ping","Yippee");
+        setLocallyPingedTimed(0);
+        PersistentModel.getInstance().pingSuccessfull(ContactUser.this);
+        Log.d("Field to ping","Yippee");
     }
 }
 
