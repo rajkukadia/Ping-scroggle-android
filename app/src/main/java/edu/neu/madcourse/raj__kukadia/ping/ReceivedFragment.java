@@ -184,8 +184,6 @@ public class ReceivedFragment extends Fragment {
 
         }
     }
-
-
 }
 
 
