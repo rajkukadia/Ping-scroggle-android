@@ -38,10 +38,6 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
 
         TextView time=(TextView)rowView.findViewById(R.id.timeTargetTextView);
         TextView Message=(TextView)rowView.findViewById(R.id.targetTextFieldMessage);
-        //rowView.setPadding(100,100,100,100);
-
-// Get detail element
-
         final ContactUser contactUser = getItem(position);
         userNameTextView.setText(contactUser.getName());
         if(contactUser.isPingRecent())
@@ -51,12 +47,6 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
         contactUser.setMessageTargetFrament(Message);
         contactUser.setTimeMessage(time);
         contactUser.setTargetEntireViewGroup(rowView);
-        if(contactUser.isUsesPing()){
-        }
-        else
-        rowView.setVisibility(View.GONE);
-// 3
-
         return rowView;
     }
 }

@@ -164,7 +164,6 @@ public class TargetsFragment extends Fragment {
         }
         customAdapterTargetPing=new CustomAdapterTargetPing(getActivity(),R.layout.layout_contact_ping,duplicateListViewContacts);
         listViewContacts.setAdapter(customAdapterTargetPing);
-
     }
     public void showMessage(String title,String Message){
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
