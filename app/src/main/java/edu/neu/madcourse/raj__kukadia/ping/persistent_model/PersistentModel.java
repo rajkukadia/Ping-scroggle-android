@@ -8,11 +8,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import edu.neu.madcourse.raj__kukadia.ping.PingHomeScreenActivity;
 import edu.neu.madcourse.raj__kukadia.ping.network.InternetThread;
-import edu.neu.madcourse.raj__kukadia.ping.network.MyInternetQue;
-
 
 /**
  * Created by Dharak on 4/21/2017.
@@ -103,6 +100,7 @@ public class PersistentModel {
         if(pingUser==null) {
             pingUser = new ArrayList<>();
             for (ContactUser contactUser : getAllContactUser()) {
+
                 if (contactUser.isUsesPing()) pingUser.add(contactUser);
             }
         }
@@ -111,7 +109,11 @@ public class PersistentModel {
 
     public void updateTargetFields(ContactUser contactUser){
         if(!pingUser.contains(contactUser)){
+            if(!isdublicate(contactUser))
             pingUser.add(contactUser);
+            else{
+                allContactUser.remove(allContactUser.indexOf(contactUser));
+            }
         }
 
         if(context!=null){
@@ -126,6 +128,15 @@ public class PersistentModel {
         if(context!=null)
             if(context instanceof PingHomeScreenActivity)
         ((PingHomeScreenActivity)context).updateOnPing(contactUser);
+    }
+
+    private boolean isdublicate(ContactUser contactUser){
+        for(ContactUser newContactUser:pingUser){
+            if(newContactUser.getName().equals(contactUser.getName()))
+                if(newContactUser.getNumber().equals(contactUser.getNumber()))
+                    return true;
+        }
+        return false;
     }
 
 
