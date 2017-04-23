@@ -52,7 +52,7 @@
     </string>
 
 
-     <string name="second_instruction_scroggle">
+    <string name="second_instruction_scroggle">
           Great !\n\n
          Minimum length of a word should be 3 letters..\n\n
          Now choose more two letters to form a word..\n\n
@@ -60,12 +60,12 @@
          Choose letters that are connected diagonally, vertically or horizontally only ! \n\n
 
     </string>
-      <string name="third_instruction_scroggle">
+    <string name="third_instruction_scroggle">
 
         Press this button to confirm your word..\n\n
 
     </string>
-     <string name="fourth_instruction_scroggle">
+    <string name="fourth_instruction_scroggle">
 
          Good ! \n\n
 
@@ -74,13 +74,12 @@
          Go ahead and make one more word and you are good to play the game ! \n\n
 
     </string>
-     <string name="fifth_instruction_scroggle">
+    <string name="fifth_instruction_scroggle">
 
          Excellent ! \n\n
 
          You get this now ! \n\n
     </string>
-
 
 
     <string name="search_label">Search</string>
@@ -112,7 +111,7 @@ both sides in the larger game.
         <title>ACKNOWLEDGEMENT \n</title>
     </string>
     <string name="references">\n\nReferences </string>
-<string name="ack_details_label_one">
+    <string name="ack_details_label_one">
     I have mapped every character to 5 bits. Hence compressing from 16 bits Unicode to 5 bits. \n\n
     Used the same binary values for comparing while the look up is in process.
        I have put four 3 letter words in a single Long, three 4 letter words in a Long, two 5 letter words in a Long, two 6 letter words in a Long.
@@ -139,7 +138,6 @@ both sides in the larger game.
 </string>
 
 
-
     <string name="quickstart_message">The Log Token button logs the Registration token to the log. The Send Notification Button sends the notification to the client device.</string>
     <string name="send_notification">Send Notification</string>
     <string name="log_token">Log Token</string>
@@ -158,7 +156,6 @@ both sides in the larger game.
     <string name="web_client_id">139899715041-g3dfdk58afhjvsioqs27v04cjneu6jq8.apps.googleusercontent.com</string>
 
 
-
     <string name="logout_label">Logout</string>
     <string name="score_board_label">Score Board</string>
     <string name="myfriends_label">My friends</string>
@@ -166,13 +163,13 @@ both sides in the larger game.
     <string name="signingoogle_label">Sign in with Google</string>
     <string name="two_player_game_label">Two Player Game</string>
 
-<string name="default_web_id">139899715041-g3dfdk58afhjvsioqs27v04cjneu6jq8.apps.googleusercontent.com</string>
+    <string name="default_web_id">139899715041-g3dfdk58afhjvsioqs27v04cjneu6jq8.apps.googleusercontent.com</string>
     <string name="reply_label">Reply label</string>
     <string name="scroggle_ack_multiplayer_label"> \n\n Firebase demo code helped in understanding the working of
         firebase server and how to create a firebase database. \n Google sign in: https://developers.google.com/identity/sign-in/android/sign-in
     \n </string>
 
-<!-- ...................................PING ................................................................-->
+    <!-- ...................................PING ................................................................-->
 
     <string name="ping_label">Ping</string>
     <string name="jump_in_label">Jump In</string>
@@ -189,12 +186,8 @@ both sides in the larger game.
 
 
     </string-array>
-
-
-
-
-
-
+    <string name="title_activity_ping_home_screen">PingHomeScreenActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 
 </resources>

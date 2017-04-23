@@ -15,11 +15,9 @@ import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.telephony.SmsManager;
@@ -170,6 +168,7 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
                 .create()
                 .show();
     }
+
     private void  handleFirstUser(){
         setContentView(R.layout.activity_user_information_ping);
         checkAndRequestPermissions();

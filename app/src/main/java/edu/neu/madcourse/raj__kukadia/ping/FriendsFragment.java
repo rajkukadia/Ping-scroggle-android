@@ -2,7 +2,7 @@ package edu.neu.madcourse.raj__kukadia.ping;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;

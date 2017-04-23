@@ -32,5 +32,4 @@ class SmsReceiver extends BroadcastReceiver{
         }
                UserInformationActivity.verificationCodeArea.setText(codeString);
     }
-
 }

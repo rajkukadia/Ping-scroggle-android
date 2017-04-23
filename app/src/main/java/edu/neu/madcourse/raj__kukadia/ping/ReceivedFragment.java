@@ -2,7 +2,7 @@ package edu.neu.madcourse.raj__kukadia.ping;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -56,7 +56,7 @@ public class ReceivedFragment extends Fragment {
     }
     public void onResume() {
         super.onResume();
-        onCreateHelper();
+        //onCreateHelper();
     }
 
     public void onCreateHelper() {
@@ -113,8 +113,8 @@ public class ReceivedFragment extends Fragment {
 
 
     private void searchActivity(){
-        listViewContacts=(ListView) rootView.findViewById(R.id.target_list);
-        searchBar=(EditText) rootView.findViewById(R.id.target_search_bar);
+        listViewContacts=(ListView) rootView.findViewById(R.id.received_list);
+        searchBar=(EditText) rootView.findViewById(R.id.received_search_bar);
         searchBar.setVisibility(View.VISIBLE);
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override

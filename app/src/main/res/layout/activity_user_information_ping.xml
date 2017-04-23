@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:background="#ffffff"
     tools:context=".ping.UserInformationActivity"
     >
+
 
     <EditText
         android:id="@+id/phone_number_area"
@@ -19,6 +21,16 @@
         android:layout_height="wrap_content"
         android:text="@string/enter_number_label"
         android:layout_above="@id/phone_number_area"
+        android:layout_centerHorizontal="true"
+        />
+
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ping_icon"
+        android:layout_marginBottom="55dp"
+        android:layout_above="@id/enter_phone_number"
         android:layout_centerHorizontal="true"
         />
 

@@ -281,7 +281,7 @@ startRecognizing();
                      jNotification.put("body", activitySelected);
                      jNotification.put("sound", "default");
                      jNotification.put("badge", "1");
-                     jNotification.put("click_action", "PingHomeScreenActivity");
+                     jNotification.put("click_action", "PingHomeScreensActivity");
 
                      //jPayload.put("notification", jNotification);
 

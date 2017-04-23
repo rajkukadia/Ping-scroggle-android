@@ -10,7 +10,7 @@
 
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 
 
         <!-- Customize your theme here. "Theme.AppCompat.Light.DarkActionBar"-->
@@ -69,6 +69,14 @@
         <item name="android:src">@drawable/tile_background_scroggle</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
 </resources>
 

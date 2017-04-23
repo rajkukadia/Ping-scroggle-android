@@ -9,7 +9,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import edu.neu.madcourse.raj__kukadia.ping.MyContactsActivity;
 import edu.neu.madcourse.raj__kukadia.ping.PingHomeScreenActivity;
 
 
