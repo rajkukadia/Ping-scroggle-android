@@ -8,7 +8,7 @@
     >
 
     <EditText
-        android:id="@+id/receive_search_bar"
+        android:id="@+id/received_search_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Type here to search"
@@ -16,7 +16,7 @@
         android:layout_gravity="center"/>
 
     <ListView
-        android:id="@+id/receive_list"
+        android:id="@+id/received_list"
         android:padding="@dimen/menu_padding"
         android:dividerHeight="@dimen/menu_button_padding"
         android:layout_width="match_parent"

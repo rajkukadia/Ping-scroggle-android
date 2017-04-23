@@ -60,8 +60,8 @@ public class ReceivedFragment extends Fragment {
     }
 
     public void onCreateHelper() {
-        listViewContacts = (ListView) rootView.findViewById(R.id.target_list);
-        searchBar=(EditText)rootView. findViewById(R.id.contact_search_bar);
+        listViewContacts = (ListView) rootView.findViewById(R.id.received_list);
+        searchBar=(EditText)rootView. findViewById(R.id.received_search_bar);
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
