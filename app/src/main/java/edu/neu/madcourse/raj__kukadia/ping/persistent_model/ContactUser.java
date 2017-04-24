@@ -395,9 +395,30 @@ try not to put number less than 10 this handles data for greater than 10
 
     @Override
     public int compareTo(@NonNull ContactUser o) {
+        if(isUsesPing()) {
+            if (isUsesPing()) {
+
+                long value = (o.getTimeMillisecond()-getTimeMillisecond());
+                return (int) value;
+            }
+        }
+
+
         return name.compareTo(o.getName());
     }
 
+    private Long getTimeMillisecond() {
+        updateStatus();
+        long currntTime = getCurretTime();
+        switch (getTargetScreenMessage()) {
+            case ShowActivity:
+                return getMilliseconds();
+            case Pinged:
+                return getPingTime();
+            default:
+                return currntTime;
+        }
+    }
     @Override
     public boolean doTask() {
         return pushInternetFCM();

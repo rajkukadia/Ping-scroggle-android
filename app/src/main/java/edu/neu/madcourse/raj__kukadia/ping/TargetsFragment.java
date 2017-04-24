@@ -23,6 +23,9 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.ping.network.InternetThread;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
@@ -183,6 +186,7 @@ public class TargetsFragment extends Fragment {
         }
         customAdapterTargetPing=new CustomAdapterTargetPing(getActivity(),R.layout.layout_contact_ping,duplicateListViewContacts);
         listViewContacts.setAdapter(customAdapterTargetPing);
+        Collections.sort(pingUsers);
     }
     public void showMessage(String title,String Message){
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
