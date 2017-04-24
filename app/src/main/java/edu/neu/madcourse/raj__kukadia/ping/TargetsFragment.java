@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -41,6 +42,7 @@ public class TargetsFragment extends Fragment {
     EditText searchBar;
     final int REQUEST_PERMISSION=123;
     private boolean permission;
+    private SwipeRefreshLayout swipe;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,6 +52,14 @@ public class TargetsFragment extends Fragment {
         //contactFunction();
         reference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users");
         this.rootView=rootView;
+
+        swipe = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onCreateHelper();
+            }
+        });
         //contactFunction();
 
         return rootView;
@@ -84,6 +94,7 @@ public class TargetsFragment extends Fragment {
             contactFunction();
             searchActivity();//class addes serach activty
         }
+        swipe.setRefreshing(false);
     }
 
     @Override

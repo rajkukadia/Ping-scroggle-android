@@ -400,9 +400,7 @@ return false;
          for(Iterator<String>iterator=activityStringList.iterator();iterator.hasNext();){
              {
                  String value = iterator.next();
-                 Log.d("value", value);
                  if(!value.contains(item)){
-                     Log.d("insidevalue", value);
                      for(int i = 0; i<activityList.size();i++){
                          if(activityList.get(i).activityName.equals(value)){
                              activityList.remove(i);
