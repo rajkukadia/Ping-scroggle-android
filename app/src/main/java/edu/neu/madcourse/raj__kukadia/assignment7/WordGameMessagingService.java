@@ -97,12 +97,13 @@ public class WordGameMessagingService extends FirebaseMessagingService {
 
                 Log.d("number=",phoneNumber);
                 PersistentModel.getInstance().updateReceiveFields(PersistentModel.getInstance().getParticularUserByPhoneNumber(phoneNumber));
+                PersistentModel.getInstance().notifyForMessage();
             }
             else{
                 Log.d("number=",phoneNumber);
                 sendNotificationReply(remoteMessage.getNotification().getBody(),phoneNumber);
                 PersistentModel.getInstance().updateReceiveFields(PersistentModel.getInstance().getParticularUserByPhoneNumber(phoneNumber));
-
+                PersistentModel.getInstance().notifyForMessage();
             }
 
          /*   mRootRef = FirebaseDatabase.getInstance().getReference();

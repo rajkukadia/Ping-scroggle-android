@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.util.Base64;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,8 +38,16 @@ public class MyPreferenceActivity extends PreferenceActivity{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.activity_my_preference);
+
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.mytitlebarforping);
+
+        TextView titleName = (TextView) findViewById(R.id.title_name_for_ping);
+        titleName.setText("Preferences");
+        titleName.setTextSize(20);
         SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         mRootRef = FirebaseDatabase.getInstance().getReference("Ping");
         pref = findPreference("profilepic");
@@ -84,14 +93,14 @@ public class MyPreferenceActivity extends PreferenceActivity{
                 SharedPreferences.Editor edit=SP.edit();
                 edit.putString("image_data",encodedImage);
                 edit.commit();
-                Toast.makeText(MyPreferenceActivity.this, "success", Toast.LENGTH_LONG).show();
+                Toast.makeText(MyPreferenceActivity.this, "Profile picture changed", Toast.LENGTH_LONG).show();
 
 
             } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
+                Toast.makeText(MyPreferenceActivity.this, "File not found", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
+            } catch (Exception e) {
+                Toast.makeText(MyPreferenceActivity.this, "Sorry, can't upload this file", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }

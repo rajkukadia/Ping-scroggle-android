@@ -9,7 +9,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.TabLayout;
@@ -35,11 +37,16 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
 
 public class PingHomeScreenActivity extends AppCompatActivity {
 
+    private static final String FIRST_MSG = "Welcome to PING!";
+    private static final String SECOND_MSG = "'Targets' are your ping friends, double tap on any target to ping";
+    private static final String THIRD_MSG = "'Received' will show your friend's messages, double tap on any message to reply";
+    private static final String NEW_MESSAGE = "New Message";
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -49,9 +56,13 @@ public class PingHomeScreenActivity extends AppCompatActivity {
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private CoordinatorLayout coordinatorLayout;
     Handler mHandler;
     public TextView userName;
+    private ViewPager viewPager;
+    private CircleImageView circleImageView;
     private ImageView imageView;
+    private SharedPreferences SP;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -70,7 +81,8 @@ public class PingHomeScreenActivity extends AppCompatActivity {
         Log.d("mSectionsPagerAdapter","");
 
         userName = (TextView) findViewById(R.id.username);
-        imageView = (ImageView) findViewById(R.id.imageView);
+      //  imageView = (ImageView) findViewById(R.id.imageView);
+        circleImageView = (CircleImageView) findViewById(R.id.circleimageview);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_my_offers);
         tabLayout.setupWithViewPager(mViewPager);
@@ -98,13 +110,13 @@ public class PingHomeScreenActivity extends AppCompatActivity {
                 userName.setText(username);
 
                 String previouslyEncodedImage = SP.getString("image_data", "");
-                imageView = (ImageView) findViewById(R.id.imageView);
+                circleImageView = (CircleImageView) findViewById(R.id.circleimageview);
 
                 if( !previouslyEncodedImage.equalsIgnoreCase("") ){
                     byte[] b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
-                    imageView.setImageBitmap(bitmap);
-                }
+                    circleImageView.setImageBitmap(bitmap);
+                    }
             }
 
             @Override
@@ -136,9 +148,66 @@ public class PingHomeScreenActivity extends AppCompatActivity {
                 return true;
             }
         });
+        viewPager = (ViewPager) findViewById(R.id.container);
+        SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        boolean welcome = SP.getBoolean("welcome", true);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+if(welcome) {
+    SP.edit().putBoolean("welcome", false).commit();
+    final Snackbar snackbar  = Snackbar.make(coordinatorLayout, FIRST_MSG, Snackbar.LENGTH_INDEFINITE);
+    snackbar.setAction("Thanks", new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(snackbar.isShown()) {
+                snackbar.dismiss();
+            }
+            final Snackbar snackbar1 = Snackbar.make(coordinatorLayout, SECOND_MSG, Snackbar.LENGTH_INDEFINITE);
+            snackbar1.setAction("Got it", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  if(snackbar1.isShown()){
+                      snackbar1.dismiss();
+                      final Snackbar snackbar2 = Snackbar.make(coordinatorLayout, THIRD_MSG, Snackbar.LENGTH_INDEFINITE);
+                      snackbar2.setAction("Got it", new View.OnClickListener() {
+                          @Override
+                          public void onClick(View v) {
+                              if(snackbar2.isShown()){
+                                  snackbar2.dismiss();
 
+                              }
+                          }
+                      });
 
-    }
+                      snackbar2.show();
+                  }
+                }
+            });
+
+            snackbar1.show();
+
+        }
+    });
+    snackbar.show();
+    //Snackbar snackbar2 = Snackbar.make(coordinatorLayout, "'Targets' displays your ping friends", Snackbar.LENGTH_LONG);
+    //snackbar2.show();
+}
+}
+
+public void notifyMessage(){
+    coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+    final Snackbar snackbar = Snackbar.make(coordinatorLayout, NEW_MESSAGE, Snackbar.LENGTH_INDEFINITE);
+    snackbar.setAction("SHOW", new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(snackbar.isShown()){
+                viewPager = (ViewPager) findViewById(R.id.container);
+                viewPager.setCurrentItem(1);
+                snackbar.dismiss();
+            }
+        }
+    });
+    snackbar.show();
+}
 
     @Override
     protected void onResumeFragments() {

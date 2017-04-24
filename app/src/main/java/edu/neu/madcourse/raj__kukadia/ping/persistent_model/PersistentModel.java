@@ -171,6 +171,14 @@ public class PersistentModel {
         ((PingHomeScreenActivity)context).updateOnPing(contactUser);
     }
 
+    public void notifyForMessage(){
+        if(context!=null){
+            if(context instanceof PingHomeScreenActivity) {
+               ((PingHomeScreenActivity) context).notifyMessage();
+            }
+        }
+    }
+
     private boolean isdublicate(ContactUser contactUser){
         for(ContactUser newContactUser:pingUser){
             if(newContactUser.getName().equals(contactUser.getName()))
