@@ -63,6 +63,7 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+       // ((PingHomeScreenActivity)getActivity()).setFragment(this);
         onCreateHelper();
     }
 

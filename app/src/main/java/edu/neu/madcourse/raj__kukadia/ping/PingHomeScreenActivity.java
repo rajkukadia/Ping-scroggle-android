@@ -182,7 +182,19 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        mHandler=new Handler(Looper.getMainLooper());
+
+    }
+
+    public void updateReceiveListView() {
+        if(mHandler!=null)
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Fragment fragment=mSectionsPagerAdapter.getMyHashMap().get(1);
+                    if(fragment!=null)
+                        if(fragment instanceof ReceivedFragment)
+                            ((ReceivedFragment)fragment).contactFunction();           }
+            });
     }
 
     /**
@@ -231,10 +243,6 @@ public class PingHomeScreenActivity extends AppCompatActivity {
             // Show 3 total pages.
             return 3;
         }
-        public void destroyItem (ViewGroup container, int position, Object object) {
-            super.destroyItem(container, position, object);
-            myHashMap.remove(position);
-        }
 
         @Override
         public CharSequence getPageTitle(int position) {
@@ -257,11 +265,15 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        mHandler=null;
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        mHandler=new Handler(Looper.getMainLooper());
+
     }
 
     public void onClickViewListiner(final int position, final ContactUser contactUser){

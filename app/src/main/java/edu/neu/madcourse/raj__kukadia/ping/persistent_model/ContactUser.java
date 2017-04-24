@@ -25,6 +25,7 @@ import java.util.Scanner;
 import edu.neu.madcourse.raj__kukadia.ping.UserInformationActivity;
 import edu.neu.madcourse.raj__kukadia.ping.applicatonlogic.myTasks;
 
+import static edu.neu.madcourse.raj__kukadia.ping.UserInformationActivity.phoneNumber;
 import static edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser.TargetScreenMessage.InvalidStatus;
 import static edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser.TargetScreenMessage.LocallyPinged;
 import static edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser.TargetScreenMessage.Pinged;
@@ -50,9 +51,10 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
 //stuff that updates ui
     }
     public Long getTime(){
+        updateStatus();
         switch (getTargetScreenMessage()){
             case ShowActivity:
-                return getTime();
+                return getMilliseconds();
             case Pinged:
                 return getPingTime();
             default:
@@ -339,9 +341,6 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
 
     }
 
-    public void removeContactSearchView(){
-        contactSearchButtonUpdate=null;
-    }
 
 
     @Override
@@ -387,7 +386,8 @@ try not to put number less than 10 this handles data for greater than 10
                     jNotification.put("sound", "default");
                     jNotification.put("badge", "1");
                     jNotification.put("click_action", "MySearchActivity");
-                    jData.put("phonenumber", UserInformationActivity.phoneNumber);
+                    jData.put("phonenumber", phoneNumber);
+                    Log.d("phoneNuLn=",String.valueOf(phoneNumber.length()));
                     //jPayload.put("notification", jNotification);
 
                     jPayload.put("notification", jNotification);

@@ -2,6 +2,7 @@ package edu.neu.madcourse.raj__kukadia.ping;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
         TextView time=(TextView)rowView.findViewById(R.id.timeTargetTextView);
         TextView Message=(TextView)rowView.findViewById(R.id.targetTextFieldMessage);
         final ContactUser contactUser = getItem(position);
+        Log.d("contactUser",contactUser.toString());
         userNameTextView.setText(contactUser.getName());
         if(contactUser.isPingRecent())
             time.setText(String.valueOf(contactUser.getPingTime()));
@@ -52,8 +54,9 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
         contactUser.setTimeMessage(time);
         if(contactUser.getTargetScreenMessage()== ContactUser.TargetScreenMessage.ShowActivity||contactUser.getTargetScreenMessage()== ContactUser.TargetScreenMessage.Pinged) {
             Long timefromContact = contactUser.getTime();
-            if(timefromContact==null){
+            if(timefromContact!=null){
                 time.setText(timefromContact.toString());
+                time.setVisibility(View.VISIBLE);
             }
         }
         contactUser.setTargetEntireViewGroup(rowView);

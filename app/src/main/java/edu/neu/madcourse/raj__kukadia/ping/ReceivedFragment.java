@@ -56,7 +56,8 @@ public class ReceivedFragment extends Fragment {
     }
     public void onResume() {
         super.onResume();
-        //onCreateHelper();
+       // ((PingHomeScreenActivity)getActivity()).setFragment(this);
+        onCreateHelper();
     }
 
     public void onCreateHelper() {
@@ -93,13 +94,13 @@ public class ReceivedFragment extends Fragment {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    permission=true;
+                    permission = true;
 
                     contactFunction();
                     searchActivity();
 
                 } else {
-                    permission=false;
+                    permission = false;
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
@@ -110,7 +111,6 @@ public class ReceivedFragment extends Fragment {
             // permissions this app might request
         }
     }
-
 
     private void searchActivity(){
         listViewContacts=(ListView) rootView.findViewById(R.id.received_list);
@@ -156,10 +156,12 @@ public class ReceivedFragment extends Fragment {
     }
 
     public void contactFunction(){
+        Log.d("ff","safd");
         PersistentModel.getInstance().loadContactFromPhone(getActivity());
-        pingUsers=PersistentModel.getInstance().getPingUser();
+        pingUsers=PersistentModel.getInstance().getReplyUser();
         duplicateListViewContacts=new ArrayList<>();
         for(ContactUser contactUser:pingUsers) {
+            Log.d("got 1","Yipee");
             duplicateListViewContacts.add(contactUser);
         }
         customAdapterTargetPing=new CustomAdapterTargetPing(getActivity(),R.layout.layout_contact_ping,duplicateListViewContacts);

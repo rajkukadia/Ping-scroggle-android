@@ -4,6 +4,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.util.Log;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class PersistentModel {
     private ArrayList<ContactUser> allContactUser ;
     private static final PersistentModel ourInstance = new PersistentModel();
     private ArrayList<ContactUser>pingUser;
+    private ArrayList<ContactUser>receivedUser;
     DatabaseReference reference;
     Context context;
     public static PersistentModel getInstance() {
@@ -66,8 +69,19 @@ public class PersistentModel {
         }
     }
     public ContactUser getParticularUserByPhoneNumber(String phoneNumer){
+        for(ContactUser contactUser:getPingUser()){
+            Log.d("contactUser","contactUser"+contactUser.getName()+contactUser.getNumber());
+            if(contactUser.getNumber().equals(phoneNumer)) {
+                Log.d("contactUser", "contactUser" + contactUser.getName() + contactUser.getNumber());
+                return contactUser;
+            }
+        }
         for(ContactUser contactUser:getAllContactUser()){
-            if(contactUser.getNumber().equals(phoneNumer))return contactUser;
+            Log.d("contactUser","contactUser"+contactUser.getName()+contactUser.getNumber());
+            if(contactUser.getNumber().equals(phoneNumer)) {
+                Log.d("contactUser", "contactUser" + contactUser.getName() + contactUser.getNumber());
+                return contactUser;
+            }
         }
         return null;
     }
@@ -108,6 +122,18 @@ public class PersistentModel {
         }
     return pingUser;
     }
+    public ArrayList<ContactUser>getReplyUser(){
+        if(allContactUser==null) return null;
+
+        if(receivedUser==null) {
+            receivedUser = new ArrayList<>();
+            for (ContactUser contactUser : getAllContactUser()) {
+
+                if (contactUser.isUsesPing()) receivedUser.add(contactUser);
+            }
+        }
+        return receivedUser;
+    }
 
     public void updateTargetFields(ContactUser contactUser){
         if(!pingUser.contains(contactUser)){
@@ -120,6 +146,15 @@ public class PersistentModel {
 
         if(context!=null){
             ((PingHomeScreenActivity)context).updateTargetListView();
+        }
+    }
+    public void updateReceiveFields(ContactUser contactUser){
+        Log.d("adding","8573996996"+contactUser.getName());
+        if(!receivedUser.contains(contactUser)) {
+            receivedUser.add(contactUser);
+        }
+        if(context!=null){
+          ((PingHomeScreenActivity)context).updateReceiveListView();
         }
     }
 
