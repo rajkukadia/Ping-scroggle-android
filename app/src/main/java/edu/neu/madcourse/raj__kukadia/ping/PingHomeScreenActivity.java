@@ -3,6 +3,8 @@ package edu.neu.madcourse.raj__kukadia.ping;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
@@ -19,10 +21,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +50,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     Handler mHandler;
     public TextView userName;
+    private ImageView imageView;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -64,7 +69,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         userName = (TextView) findViewById(R.id.username);
-
+        imageView = (ImageView) findViewById(R.id.imageView);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_my_offers);
         tabLayout.setupWithViewPager(mViewPager);
@@ -90,6 +95,15 @@ public class PingHomeScreenActivity extends AppCompatActivity {
                 userName = (TextView) findViewById(R.id.username);
                 String username = SP.getString("username", "User Name");
                 userName.setText(username);
+
+                String previouslyEncodedImage = SP.getString("image_data", "");
+                imageView = (ImageView) findViewById(R.id.imageView);
+
+                if( !previouslyEncodedImage.equalsIgnoreCase("") ){
+                    byte[] b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+                    imageView.setImageBitmap(bitmap);
+                }
             }
 
             @Override
