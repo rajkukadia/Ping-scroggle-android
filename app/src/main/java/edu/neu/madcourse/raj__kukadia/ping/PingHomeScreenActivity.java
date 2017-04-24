@@ -22,6 +22,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,10 +64,10 @@ public class PingHomeScreenActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        Log.d("mSectionsPagerAdapter","");
 
         userName = (TextView) findViewById(R.id.username);
         imageView = (ImageView) findViewById(R.id.imageView);
@@ -225,6 +226,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
         }
 
         public HashMap<Integer, Fragment> getMyHashMap() {
+
             return myHashMap;
         }
 
@@ -233,6 +235,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
             switch (position){
                 case 0:
                     TargetsFragment t = new TargetsFragment();
+                    Log.d("Targetinscreen","old means");
                     myHashMap.put(position,t);
                     return t;
                 case 1:

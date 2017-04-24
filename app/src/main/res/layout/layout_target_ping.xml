@@ -2,14 +2,13 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
-        android:background="@color/blue_color"
-        android:layout_height="match_parent">
+        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content">
     <TextView
         android:id="@+id/timeTargetTextView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@android:color/darker_gray"
-        android:textSize="20dp"
+        android:textSize="12dp"
         android:visibility="gone"
         android:layout_margin="@dimen/menu_space"
         android:layout_alignParentRight="true"
@@ -21,19 +20,20 @@
         android:layout_height="match_parent"
         android:textColor="@android:color/white"
         android:layout_alignParentLeft="true"
+        android:layout_marginTop="@dimen/menu_space"
+        android:layout_marginRight="@dimen/menu_space"
+        android:layout_marginLeft="@dimen/menu_space"
         android:layout_toLeftOf="@id/timeTargetTextView"
-        android:textSize="25dp"
-        android:layout_margin="@dimen/menu_space"
+        android:textSize="20dp"
         android:text="TextView" />
     <TextView
         android:id="@+id/targetTextFieldMessage"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textColor="@android:color/white"
-        android:layout_below="@id/userNameContact"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/userNameTarget"
         android:textSize="15dp"
+        android:layout_marginBottom="@dimen/menu_space"
         android:layout_marginLeft="@dimen/menu_space"
         android:gravity="center"
         android:text="TextView" />

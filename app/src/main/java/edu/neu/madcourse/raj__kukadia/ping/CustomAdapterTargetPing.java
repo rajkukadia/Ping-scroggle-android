@@ -53,9 +53,9 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
             Message.setTextColor(Color.RED);
         contactUser.setTimeMessage(time);
         if(contactUser.getTargetScreenMessage()== ContactUser.TargetScreenMessage.ShowActivity||contactUser.getTargetScreenMessage()== ContactUser.TargetScreenMessage.Pinged) {
-            Long timefromContact = contactUser.getTime();
+            String timefromContact = contactUser.getTime();
             if(timefromContact!=null){
-                time.setText(timefromContact.toString());
+                time.setText(timefromContact);
                 time.setVisibility(View.VISIBLE);
             }
         }

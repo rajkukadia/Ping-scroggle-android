@@ -2,6 +2,7 @@ package edu.neu.madcourse.raj__kukadia.ping;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -123,6 +124,12 @@ public class TargetsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        Log.d("target","Targets created");
+    }
 
     private void searchActivity(){
         listViewContacts=(ListView) rootView.findViewById(R.id.target_list);

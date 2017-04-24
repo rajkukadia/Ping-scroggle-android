@@ -2,6 +2,7 @@ package edu.neu.madcourse.raj__kukadia.ping;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -52,12 +53,19 @@ public class ReceivedFragment extends Fragment {
         reference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users");
         this.rootView=rootView;
         //contactFunction();
+
         return rootView;
     }
     public void onResume() {
         super.onResume();
        // ((PingHomeScreenActivity)getActivity()).setFragment(this);
         onCreateHelper();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     public void onCreateHelper() {

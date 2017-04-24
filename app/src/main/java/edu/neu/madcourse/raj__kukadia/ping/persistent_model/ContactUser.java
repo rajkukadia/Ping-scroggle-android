@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -46,22 +47,52 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
                         if(targetScreenMessage!=LocallyPinged)
                             if(timeMessage!=null) {
                                 timeMessage.setVisibility(View.VISIBLE);
-                                timeMessage.setText(Long.toString(getPingTime()));
+                                timeMessage.setText(getTime());
                             }
 //stuff that updates ui
     }
-    public Long getTime(){
+    public @Nullable String getTime(){
         updateStatus();
+        long currntTime=getCurretTime();
         switch (getTargetScreenMessage()){
             case ShowActivity:
-                return getMilliseconds();
+                return formatTime(getMilliseconds(),currntTime);
             case Pinged:
-                return getPingTime();
+                return formatTime(getPingTime(),currntTime);
             default:
                 return null;
 
         }
     }
+    private @Nullable String formatTime(Long time, Long currentTime){
+        /*
+        Gives time hour ago two hour age
+         */
+        Long ans=currentTime-time;
+        ans=ans/1000;
+        if(ans<0)return null;
+
+        String []arry={"s","m","h"};
+        for(int i=0;i<arry.length;i++){
+            Long div=ans/60;
+            if(div<1){
+                String value= convertFormatTime(ans%60,arry[i]);
+                return value;
+            }
+            ans=ans/60;
+        }
+        return null;
+
+    }
+
+    public @Nullable String convertFormatTime(Long time,String st){
+        if(time==0){
+            return "now";
+        }
+        return String.valueOf(time)+st;
+    }
+
+
 
     public static enum TargetScreenMessage{
         ShowActivity,InvalidStatus,Pinged,LocallyPinged
@@ -387,7 +418,7 @@ try not to put number less than 10 this handles data for greater than 10
                     jNotification.put("badge", "1");
                     jNotification.put("click_action", "MySearchActivity");
                     jData.put("phonenumber", phoneNumber);
-                    Log.d("phoneNuLn=",String.valueOf(phoneNumber.length()));
+                //    Log.d("phoneNuLn=",String.valueOf(phoneNumber.length()));
                     //jPayload.put("notification", jNotification);
 
                     jPayload.put("notification", jNotification);
