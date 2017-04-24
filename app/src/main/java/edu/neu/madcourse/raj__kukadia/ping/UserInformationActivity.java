@@ -307,6 +307,8 @@ private void verify(){
         firstUser.edit().putBoolean("firstuser", false).commit();
         firstUser.edit().putString("phonenumber", phoneNumber).commit();
         mRootRef.child("All Users").child(phoneNumber).child("token").setValue(token);
+        mRootRef.child("Ping Users").child(phoneNumber).child("token").setValue(token);
+        mRootRef.child("Ping Users").child(phoneNumber).child("username").setValue(" ");
         startActivity(new Intent(UserInformationActivity.this, PingHomeScreenActivity.class));
         finish();
     }

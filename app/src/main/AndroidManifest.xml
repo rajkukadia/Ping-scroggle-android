@@ -180,6 +180,12 @@
             android:name=".ping.PingHomeScreenActivity"
             android:label="@string/title_activity_ping_home_screen"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".ping.MyPreferenceActivity"
+            android:label="@string/title_activity_ping_home_screen"
+            android:theme="@style/AppTheme"></activity>
+
     </application>
 
 </manifest>

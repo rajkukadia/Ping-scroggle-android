@@ -50,6 +50,7 @@
  import java.net.URL;
  import java.util.ArrayList;
  import java.util.Arrays;
+ import java.util.Calendar;
  import java.util.HashMap;
  import java.util.Iterator;
  import java.util.List;
@@ -70,6 +71,7 @@
      private EditText e;
      private ImageButton googleMic;
      private String voiceText;
+     DatabaseReference mRootRef;
      private String currentSelectedActivity;
      private String token;
      private SharedPreferences activityConfirm;
@@ -103,7 +105,7 @@
 
          recentActivities = getSharedPreferences(RECENT_ACTIVITIES, MODE_PRIVATE);
 
-         activityConfirm.edit().remove(ACTIVITY_CONFIRMED).commit();
+        // activityConfirm.edit().remove(ACTIVITY_CONFIRMED).commit();
 
                 googleMic = (ImageButton) findViewById(R.id.mic);
          Log.d("OnCreate", "called");
@@ -325,7 +327,6 @@ startRecognizing();
              @Override
              public void onDataChange(DataSnapshot dataSnapshot){
                 token = dataSnapshot.getValue().toString();
-//                 replyToPing(activitySelected, dataSnapshot.getValue().toString());
              }
 
              @Override
@@ -336,14 +337,14 @@ startRecognizing();
      }
 
 
-     private void run(){
+     private boolean run(){
 
                  JSONObject jPayload = new JSONObject();
                  Log.d("here", token);
                  JSONObject jNotification = new JSONObject();
                  JSONObject jData=new JSONObject();
                  try {
-                     jPayload.put("to",token);
+                     jPayload.put("to", token);
                      jData.put("phonenumber", UserInformationActivity.phoneNumber);
                      jData.put("ping", "openreply");
                      jNotification.put("title", "PING REPLY");
@@ -379,11 +380,14 @@ startRecognizing();
                              Log.e("notifcationf3", "run: " + resp);
                          }
                      });
+                     if (resp.contains("\"success\":1")) {
+                         return true;
+                     }
                  } catch (JSONException | IOException e) {
                      Toast.makeText(MySearchActivity.this,"Ping unsuccesfully",Toast.LENGTH_LONG).show();
                      e.printStackTrace();
                  }
-
+return false;
      }
 
      private String convertStreamToString(InputStream is) {
@@ -413,11 +417,20 @@ startRecognizing();
      }
 
 
+     private void putActivityToServer(){
+
+         mRootRef = FirebaseDatabase.getInstance().getReference("Ping");
+         Long tsLong = System.currentTimeMillis()/1000;
+         String ts = tsLong.toString();
+         edu.neu.madcourse.raj__kukadia.ping.Activity a = new edu.neu.madcourse.raj__kukadia.ping.Activity(currentSelectedActivity, ts);
+         mRootRef.child("Ping Users").child(phoneNumber).child("activity").child("activityname").setValue(a.activityname);
+         mRootRef.child("Ping Users").child(phoneNumber).child("activity").child("activitytimestamp").setValue(a.activitytimestamp);
+     }
 
      @Override
      public boolean doTask() {
-            run();
-         return true;
+         putActivityToServer();
+         return  run();
      }
 
      @Override

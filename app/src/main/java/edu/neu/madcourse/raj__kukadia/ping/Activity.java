@@ -2,11 +2,11 @@ package edu.neu.madcourse.raj__kukadia.ping;
 
 class Activity{
 
-    private String activityName;
-    private String activityTimeStamp;
+    public String activityname;
+    public String activitytimestamp;
 
-    Activity(String activityName, String activityTimeStamp){
-        this.activityName = activityName;
-        this.activityTimeStamp = activityTimeStamp;
+    Activity(String activityname, String activitytimestamp){
+        this.activityname = activityname;
+        this.activitytimestamp = activitytimestamp;
     }
 }

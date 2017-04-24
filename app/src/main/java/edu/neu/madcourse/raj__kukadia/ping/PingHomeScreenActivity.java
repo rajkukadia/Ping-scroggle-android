@@ -1,11 +1,12 @@
 package edu.neu.madcourse.raj__kukadia.ping;
 
 
-import android.app.Activity;
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,14 +19,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.neu.madcourse.raj__kukadia.R;
@@ -43,7 +45,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
     Handler mHandler;
-
+    public TextView userName;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -61,27 +63,57 @@ public class PingHomeScreenActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        userName = (TextView) findViewById(R.id.username);
+
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_my_offers);
         tabLayout.setupWithViewPager(mViewPager);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Ping");
         setSupportActionBar(toolbar);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                userName = (TextView) findViewById(R.id.username);
+                String username = SP.getString("username", "User Name");
+                userName.setText(username);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu m = navigationView.getMenu();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 int id = item.getItemId();
+                //Toast.makeText(PingHomeScreenActivity.this, "pressed", Toast.LENGTH_LONG).show();
+
                 if (id == R.id.nav_preferences) {
-                    // Handle the preference  action
-                } else if (id == R.id.nav_about) {
-                    // Handle the About action
+                    Intent intent = new Intent(PingHomeScreenActivity.this, MyPreferenceActivity.class);
+                    startActivity(intent);
                 }
 
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
@@ -90,10 +122,25 @@ public class PingHomeScreenActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
     }
 
 
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 
     @Override
@@ -193,7 +240,6 @@ public class PingHomeScreenActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-
                     return "TARGETS";
                 case 1:
                     return "RECEIVED";
