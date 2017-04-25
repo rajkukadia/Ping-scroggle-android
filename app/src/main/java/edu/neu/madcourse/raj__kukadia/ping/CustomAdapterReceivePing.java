@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
+import edu.neu.madcourse.raj__kukadia.ping.persistent_model.PersistentModel;
 
 /**
  * Created by Dharak on 4/19/2017.
@@ -56,6 +57,10 @@ public class CustomAdapterReceivePing extends CustomAdapterPing {
                 Intent intent=new Intent(getContext(),MySearchActivity.class);
                 intent.putExtra("phonenumber",contactUser.getNumber());
                 (getContext()).startActivity(intent);
+
+            }else{
+                if(contactUser.getReceivedScreenMessage()== ContactUser.ReceivedScreenMessage.RepliedSuccessfully)
+                PersistentModel.getInstance().notifyActivitySnacks("Replied already");
 
             }
 

@@ -266,7 +266,7 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         else return false;
     }
     public boolean isActivityToRecent(){
-        if(getCurretTime()-getTimeMillisecond()<=900000)return true;
+        if(getCurretTime()-milliseconds<=900000)return true;
         else return false;
     }
     public boolean isPingRecent(){

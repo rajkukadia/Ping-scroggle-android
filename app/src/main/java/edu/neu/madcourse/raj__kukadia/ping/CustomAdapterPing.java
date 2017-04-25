@@ -52,6 +52,7 @@ public class CustomAdapterPing extends ArrayAdapter<ContactUser> {
 
         }
         else{
+            Activity.setText(contactUser.getNumber());
             inviteButton.setVisibility(View.VISIBLE);
         }
             inviteButton.setOnClickListener(new View.OnClickListener() {

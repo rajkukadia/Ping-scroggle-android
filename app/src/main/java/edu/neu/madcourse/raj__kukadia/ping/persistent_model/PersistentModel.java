@@ -135,6 +135,23 @@ public class PersistentModel {
         }
         return receivedUser;
     }
+    public void removeFromReceivedList(String phoneNumber){
+       if(getReplyUser()!=null){
+           for(ContactUser contactUser:getReplyUser()){
+               if(contactUser.getNumber().contains(phoneNumber)){
+                   contactUser.setReceivedScreenMessage(ContactUser.ReceivedScreenMessage.RepliedSuccessfully);
+                   receivedUser.remove(contactUser);
+                   break;
+               }
+           }
+       }
+       if(context!=null){
+           if(context!=null){
+               ((PingHomeScreenActivity)context).updateReceiveListView();
+           }
+       }
+
+    }
 
     public void updateTargetFields(ContactUser contactUser){
         if(pingUser==null){
@@ -187,6 +204,15 @@ public class PersistentModel {
         if(context!=null){
             if(context instanceof PingHomeScreenActivity) {
                ((PingHomeScreenActivity) context).notifyMessage();
+            }
+        }
+    }
+    public void notifyActivitySnacks(String Message){
+        Log.d("PersistentModel","before context");
+        if(context!=null){
+            Log.d("PersistentModel","affter contex");
+            if(context instanceof PingHomeScreenActivity){
+               ((PingHomeScreenActivity)context).notifyTheUser(Message);
             }
         }
     }
