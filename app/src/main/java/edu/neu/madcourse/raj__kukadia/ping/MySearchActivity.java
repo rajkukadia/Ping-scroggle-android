@@ -55,6 +55,7 @@
  import java.util.ArrayList;
  import java.util.Arrays;
  import java.util.Calendar;
+ import java.util.Date;
  import java.util.HashMap;
  import java.util.Iterator;
  import java.util.List;
@@ -444,8 +445,9 @@ return false;
      private void putActivityToServer(){
 
          mRootRef = FirebaseDatabase.getInstance().getReference("Ping");
-         Long tsLong = System.currentTimeMillis()/1000;
-         String ts = tsLong.toString();
+         Date date=new Date();
+
+         long ts = date.getTime();
          edu.neu.madcourse.raj__kukadia.ping.Activity a = new edu.neu.madcourse.raj__kukadia.ping.Activity(currentSelectedActivity, ts);
          mRootRef.child("Ping Users").child(phoneNumber).child("activity").child("activityname").setValue(a.activityname);
          mRootRef.child("Ping Users").child(phoneNumber).child("activity").child("activitytimestamp").setValue(a.activitytimestamp);

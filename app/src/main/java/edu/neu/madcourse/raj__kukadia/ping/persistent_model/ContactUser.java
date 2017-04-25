@@ -1,5 +1,6 @@
 package edu.neu.madcourse.raj__kukadia.ping.persistent_model;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
@@ -40,6 +41,7 @@ import static edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser.T
 
 public class ContactUser implements Comparable<ContactUser>,myTasks {
     public void updateOnPinged() {
+                        if(messageTargetFrament!=null)
                         messageTargetFrament.setText(getMessageTargetScreen());
                         if(targetScreenMessage==LocallyPinged){
                             messageTargetFrament.setTextColor(Color.RED);
@@ -77,6 +79,10 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         String []arry={"s","m","h"};
         for(int i=0;i<arry.length;i++){
             Long div=ans/60;
+            if(i==3){
+                String value= convertFormatTime(ans%60,arry[i]);
+                return value;
+            }
             if(div<1){
                 String value= convertFormatTime(ans%60,arry[i]);
                 return value;
@@ -178,7 +184,11 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
     }
     public void updateStatus() {
         if(isActivityRecentThanPinged()){
+            if(isActivityRecent())
             targetScreenMessage=ShowActivity;
+            else{
+                targetScreenMessage=InvalidStatus;
+            }
         }else{
             if(isPingRecent())
                 targetScreenMessage=Pinged;
@@ -221,7 +231,7 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         updateStatus();
      switch (targetScreenMessage){
         case ShowActivity:
-            return activity;
+            return getActivity();
          case Pinged:
              return "Pinged";
          case InvalidStatus:
@@ -252,7 +262,11 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
     }
 
     public boolean isActivityRecent(){
-        if(getCurretTime()-milliseconds<=900000)return true;
+        if(getCurretTime()-milliseconds<=3600000)return true;
+        else return false;
+    }
+    public boolean isActivityToRecent(){
+        if(getCurretTime()-getTimeMillisecond()<=900000)return true;
         else return false;
     }
     public boolean isPingRecent(){
@@ -276,10 +290,13 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
     }
 
     public long getMilliseconds() {
+
+
         return milliseconds;
     }
 
     public void setMilliseconds(long milliseconds) {
+        Log.d("Milliseconds","set");
         this.milliseconds = milliseconds;
     }
     public boolean setActivityWithTime(String activity, long milliseconds){
@@ -385,10 +402,7 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
                     token=token1;
                     usesPing=true;
                     PersistentModel.getInstance().updateTargetFields(ContactUser.this);
-                    if(getTargetEntireViewGroup()!=null){
-                        getTargetEntireViewGroup().setVisibility(View.VISIBLE);
-                    }
-
+                    attachedFirebase();
                     if(contactSearchButtonUpdate!=null){
                         Log.d("Inside","the the thing");
                         contactSearchButtonUpdate.setText("Ping");
@@ -407,8 +421,54 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
 
 
     }
+    private boolean firstTimeRecent(Long first,Long second){
+        return first>second? true:false;
+    }
+
+    public void attachedFirebase(){
+        DatabaseReference reference2=FirebaseDatabase.getInstance().getReference("Ping").child("Ping Users").child(getNumber()).child("username");
+        reference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+            String userName=dataSnapshot.getValue(String.class);
+                    if(userName!=null){
+                        if(userName.length()>3){
+                            setName(userName);
+                        }
+                    }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Ping").child("Ping Users").child(getNumber()).child("activity");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MyActivity usersActivity=dataSnapshot.getValue(MyActivity.class);
+                if(usersActivity!=null){
+                        if(usersActivity.getActivityname()!=null)
+
+                            if(firstTimeRecent(usersActivity.activitytimestamp,getMilliseconds())) {
+                                setMilliseconds((usersActivity.getActivitytimestamp()));
+                                setActivity(usersActivity.getActivityname());
+                                PersistentModel.getInstance().pingSuccessfull(ContactUser.this);
+                            }
+                        }
+
+                    }
 
 
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     @Override
     public String toString() {
@@ -471,6 +531,9 @@ try not to put number less than 10 this handles data for greater than 10
                     jPayload.put("to",token);
                     jData.put("ping", "open");
                     jNotification.put("title", "PING");
+
+                    get
+
                     jNotification.put("body", "PING FROM YOUR BUDDY ");
                     jNotification.put("sound", "default");
                     jNotification.put("badge", "1");

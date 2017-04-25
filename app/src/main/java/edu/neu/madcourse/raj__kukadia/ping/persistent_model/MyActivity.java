@@ -1,6 +1,6 @@
-package edu.neu.madcourse.raj__kukadia.ping;
+package edu.neu.madcourse.raj__kukadia.ping.persistent_model;
 
-class Activity{
+class MyActivity {
 
     public String activityname;
     public long activitytimestamp;
@@ -20,9 +20,8 @@ class Activity{
     public void setActivitytimestamp(long activitytimestamp) {
         this.activitytimestamp = activitytimestamp;
     }
+    public MyActivity(){
 
-    Activity(String activityname, long activitytimestamp){
-        this.activityname = activityname;
-        this.activitytimestamp = activitytimestamp;
     }
+
 }

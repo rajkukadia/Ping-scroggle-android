@@ -47,8 +47,6 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
         final ContactUser contactUser = getItem(position);
         Log.d("contactUser",contactUser.toString());
         userNameTextView.setText(contactUser.getName());
-        if(contactUser.isPingRecent())
-            time.setText(String.valueOf(contactUser.getPingTime()));
         Message.setText(contactUser.getMessageTargetScreen());
         userNameTextView.setText(contactUser.getName());
         contactUser.setMessageTargetFrament(Message);
@@ -72,7 +70,23 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
 
             @Override
             public void onDoubleClick(View v) {
-                InternetThread.getinstance().addTasks(contactUser);
+                if(contactUser.isActivityToRecent()){
+                    //do something is Activity is too recent
+                }
+                else{
+                   if(contactUser.isLocallyPing()) {
+                       //do something if is locall pings
+
+                   }else {
+                       if (contactUser.isPingRecent()){
+                           //show something if is recently pinged
+                       }
+                       else{
+                           InternetThread.getinstance().addTasks(contactUser);
+                       }
+                   }
+                }
+
             }
         });
         return rowView;
