@@ -1,16 +1,22 @@
 package edu.neu.madcourse.raj__kukadia.ping;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -52,6 +58,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     private static final String NEW_MESSAGE = "New Message";
     private static final String GONE = "GONE";
     private static final String CONNECTIVITY_MESSAGE = "Internet connection lost!";
+    private static final String CONNECTIVITY_MESSAGE_START = "No internet connection found!";
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -62,6 +69,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
      */
     private Snackbar connectionSnackbar;
+    private Snackbar connectionSnackbarStart;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private CoordinatorLayout coordinatorLayout;
     private ConnectionProctor connectionProctor;
@@ -77,6 +85,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -204,8 +213,23 @@ if(welcome) {
         }
     });
     snackbar.show();
+
+        }
+        ConnectivityManager c = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = c.getActiveNetworkInfo();//Active network info
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+
+        }else{
+            coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+            connectionSnackbarStart = Snackbar.make(coordinatorLayout, CONNECTIVITY_MESSAGE_START, Snackbar.LENGTH_INDEFINITE);
+            View v = connectionSnackbarStart.getView();
+            TextView t = (TextView) v.findViewById(android.support.design.R.id.snackbar_text);
+            t.setTextColor(Color.RED);
+            t.setTextSize(20);
+            connectionSnackbarStart.show();        }
 }
-}
+
 
 public void notifyConnectionStatus(String status){
     coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -218,7 +242,9 @@ public void notifyConnectionStatus(String status){
         t.setTextSize(20);
         connectionSnackbar.show();
     }else{
-        if(connectionSnackbar.isShown()) connectionSnackbar.dismiss();
+        if(connectionSnackbar!=null) if(connectionSnackbar.isShown()) connectionSnackbar.dismiss();
+
+        if(connectionSnackbarStart!=null) if(connectionSnackbarStart.isShown()) connectionSnackbarStart.dismiss();
 
     }
 
