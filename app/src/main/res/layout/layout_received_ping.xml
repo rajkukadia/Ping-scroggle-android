@@ -2,13 +2,13 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/targets_ping"
         android:layout_height="wrap_content">
     <TextView
         android:id="@+id/timeReceivedTextView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textSize="12dp"
+        android:textSize="11dp"
         android:layout_margin="@dimen/menu_space"
         android:layout_alignParentRight="true"
         android:textColor="@android:color/background_light"
@@ -23,7 +23,7 @@
         android:layout_marginRight="@dimen/menu_space"
         android:layout_marginLeft="@dimen/menu_space"
         android:layout_toLeftOf="@id/timeReceivedTextView"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:text="TextView" />
     <TextView
         android:id="@+id/receivedTextFieldMessage"

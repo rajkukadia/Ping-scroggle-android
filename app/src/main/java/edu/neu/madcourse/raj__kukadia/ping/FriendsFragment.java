@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -189,10 +190,12 @@ public class FriendsFragment extends Fragment {
     }
     public void onClickViewListiner(int position,ContactUser contactUser){
         if(contactUser.isUsesPing()){
-            InternetThread.getinstance().addTasks(contactUser);
-            Toast.makeText(getActivity(),"Pinged to "+contactUser.getName(),Toast.LENGTH_SHORT).show();
+            //InternetThread.getinstance().addTasks(contactUser);
+
+            //Toast.makeText(getActivity(),"Pinged to "+contactUser.getName(),Toast.LENGTH_SHORT).show();
 
         }else{
+            SmsManager.getDefault().sendTextMessage(contactUser.getNumber(), null,"Invited you to ping", null, null);
             Toast.makeText(getActivity(),"SMS send to "+contactUser.getName(),Toast.LENGTH_SHORT).show();
 
         }

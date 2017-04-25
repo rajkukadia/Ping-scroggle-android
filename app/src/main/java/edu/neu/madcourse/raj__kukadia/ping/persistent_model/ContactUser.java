@@ -532,9 +532,9 @@ try not to put number less than 10 this handles data for greater than 10
                     jData.put("ping", "open");
                     jNotification.put("title", "PING");
 
-                    get
 
-                    jNotification.put("body", "PING FROM YOUR BUDDY ");
+
+                    jNotification.put("body", "Pinged you");
                     jNotification.put("sound", "default");
                     jNotification.put("badge", "1");
                     jNotification.put("click_action", "MySearchActivity");

@@ -39,16 +39,17 @@ public class CustomAdapterPing extends ArrayAdapter<ContactUser> {
 
         Button inviteButton=(Button)rowView.findViewById(R.id.isUsesPingFieldButton);
         //rowView.setPadding(100,100,100,100);
-
+        TextView Activity=(TextView) rowView.findViewById(R.id.contactActivity);
 // Get detail element
-
         final ContactUser contactUser = getItem(position);
-
         userNameTextView.setText(contactUser.getName());
         contactUser.setButtonUpate(inviteButton);
         if(contactUser.isUsesPing()){
-        inviteButton.setText("Ping");
-            inviteButton.setVisibility(View.VISIBLE);
+        //inviteButton.setText("Ping");
+            Activity.setText(contactUser.getMessageTargetScreen());
+            Activity.setVisibility(View.VISIBLE);
+            inviteButton.setVisibility(View.INVISIBLE);
+
         }
         else{
             inviteButton.setVisibility(View.VISIBLE);
