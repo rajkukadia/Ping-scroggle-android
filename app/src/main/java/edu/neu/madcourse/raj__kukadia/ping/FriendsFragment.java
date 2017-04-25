@@ -2,6 +2,7 @@ package edu.neu.madcourse.raj__kukadia.ping;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -69,6 +70,7 @@ public class FriendsFragment extends Fragment {
 
     public void onCreateHelper() {
         listViewContacts = (ListView) rootView.findViewById(R.id.contact_list);
+       // listViewContacts.setBackgroundColor(Color.WHITE);
         searchBar=(EditText)rootView. findViewById(R.id.contact_search_bar);
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.READ_CONTACTS)

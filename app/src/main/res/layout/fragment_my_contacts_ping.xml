@@ -19,6 +19,8 @@
         android:id="@+id/contact_list"
         android:padding="@dimen/menu_padding"
         android:dividerHeight="@dimen/menu_button_padding"
+        android:background="@android:color/transparent"
+        android:divider="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ListView>
 
