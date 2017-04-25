@@ -445,10 +445,9 @@ return false;
      private void putActivityToServer(){
 
          mRootRef = FirebaseDatabase.getInstance().getReference("Ping");
-         Date date=new Date();
-
-         long ts = date.getTime();
-         edu.neu.madcourse.raj__kukadia.ping.Activity a = new edu.neu.madcourse.raj__kukadia.ping.Activity(currentSelectedActivity, ts);
+         Date date = new Date();
+         long longTime = date.getTime();
+         edu.neu.madcourse.raj__kukadia.ping.Activity a = new edu.neu.madcourse.raj__kukadia.ping.Activity(currentSelectedActivity, longTime);
          mRootRef.child("Ping Users").child(phoneNumber).child("activity").child("activityname").setValue(a.activityname);
          mRootRef.child("Ping Users").child(phoneNumber).child("activity").child("activitytimestamp").setValue(a.activitytimestamp);
      }
