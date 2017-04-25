@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -175,6 +176,14 @@ public class PersistentModel {
         if(context!=null){
             if(context instanceof PingHomeScreenActivity) {
                ((PingHomeScreenActivity) context).notifyMessage();
+            }
+        }
+    }
+
+    public void notifyForConnectivity(String connection){
+        if(context!= null){
+            if (context instanceof PingHomeScreenActivity) {
+                ((PingHomeScreenActivity) context).notifyConnectionStatus(connection);
             }
         }
     }

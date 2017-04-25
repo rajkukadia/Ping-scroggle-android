@@ -2,9 +2,11 @@ package edu.neu.madcourse.raj__kukadia.ping;
 
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
@@ -41,12 +43,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
 
+
 public class PingHomeScreenActivity extends AppCompatActivity {
 
     private static final String FIRST_MSG = "Welcome to PING!";
     private static final String SECOND_MSG = "'Targets' are your ping friends, double tap on any target to ping";
     private static final String THIRD_MSG = "'Received' will show your friend's messages, double tap on any message to reply";
     private static final String NEW_MESSAGE = "New Message";
+    private static final String GONE = "GONE";
+    private static final String CONNECTIVITY_MESSAGE = "Internet connection lost!";
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -55,13 +61,16 @@ public class PingHomeScreenActivity extends AppCompatActivity {
      * may be best to switch to a
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
      */
+    private Snackbar connectionSnackbar;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private CoordinatorLayout coordinatorLayout;
+    private ConnectionProctor connectionProctor;
     Handler mHandler;
     public TextView userName;
     private ViewPager viewPager;
     private CircleImageView circleImageView;
     private ImageView imageView;
+
     private SharedPreferences SP;
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -74,6 +83,13 @@ public class PingHomeScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ping_home_screen);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+     //      <intent-filter>
+       //         <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+         //       <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+           // </intent-filter>
+       // IntentFilter intentFilter = new IntentFilter("edu.neu.madcourse.raj__kukadia.ping.android.net.conn.CONNECTIVITY_CHANGE");
+        //intentFilter.addAction("edu.neu.madcourse.raj__kukadia.ping.android.net.wifi.WIFI_STATE_CHANGED");
+        //registerReceiver(connectionProctor,intentFilter );
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -188,10 +204,26 @@ if(welcome) {
         }
     });
     snackbar.show();
-    //Snackbar snackbar2 = Snackbar.make(coordinatorLayout, "'Targets' displays your ping friends", Snackbar.LENGTH_LONG);
-    //snackbar2.show();
 }
 }
+
+public void notifyConnectionStatus(String status){
+    coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+    if(status.equals(GONE)){
+        connectionSnackbar = Snackbar.make(coordinatorLayout, CONNECTIVITY_MESSAGE, Snackbar.LENGTH_INDEFINITE);
+        View v = connectionSnackbar.getView();
+        TextView t = (TextView) v.findViewById(android.support.design.R.id.snackbar_text);
+        t.setTextColor(Color.RED);
+        t.setTextSize(20);
+        connectionSnackbar.show();
+    }else{
+        if(connectionSnackbar.isShown()) connectionSnackbar.dismiss();
+
+    }
+
+}
+
 
 public void notifyMessage(){
     coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
