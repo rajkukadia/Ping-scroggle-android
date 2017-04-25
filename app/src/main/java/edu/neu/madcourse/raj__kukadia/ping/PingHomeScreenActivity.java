@@ -318,7 +318,7 @@ public void notifyMessage(){
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                "Speak your activity...");
+                "Speak out the name...");
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE_HOME);
     }
 
