@@ -2,6 +2,7 @@ package edu.neu.madcourse.raj__kukadia.ping;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.content.pm.PackageManager;
@@ -27,6 +28,7 @@ import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.ping.network.InternetThread;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.PersistentModel;
+import android.support.v4.widget.SwipeRefreshLayout;
 
 /**
  * Created by Dharak on 4/22/2017.
@@ -38,9 +40,10 @@ public class ReceivedFragment extends Fragment {
     ArrayList <ContactUser>pingUsers;
     View rootView;
     ListView listViewPingUsers;
-    CustomAdapterTargetPing customAdapterTargetPing;
+    CustomAdapterReceivePing customAdapterReceivedPing;
     ArrayList<ContactUser> duplicateListViewContacts;
     EditText searchBar;
+    private SwipeRefreshLayout swipe;
     final int REQUEST_PERMISSION=123;
     private boolean permission;
 
@@ -91,6 +94,15 @@ public class ReceivedFragment extends Fragment {
 
             contactFunction();
             searchActivity();//class addes serach activty
+            swipe = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+            swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    contactFunction();
+                    swipe.setRefreshing(false);
+                }
+            });
+
         }
     }
 
@@ -106,6 +118,15 @@ public class ReceivedFragment extends Fragment {
 
                     contactFunction();
                     searchActivity();
+                    swipe = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+                    swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            contactFunction();
+                            swipe.setRefreshing(false);
+                        }
+                    });
+
 
                 } else {
                     permission = false;
@@ -158,8 +179,8 @@ public class ReceivedFragment extends Fragment {
             duplicateListViewContacts.remove(j);
         }
         Log.d("removal=",Integer.toString(remove.size())+ duplicateListViewContacts.size());
-        customAdapterTargetPing=new CustomAdapterTargetPing(getActivity(),android.R.layout.simple_list_item_1,duplicateListViewContacts);
-        listViewContacts.setAdapter(customAdapterTargetPing);
+        customAdapterReceivedPing=new CustomAdapterReceivePing(getActivity(),android.R.layout.simple_list_item_1,duplicateListViewContacts);
+        listViewContacts.setAdapter(customAdapterReceivedPing);
         //contactsAdapter.notifyDataSetChanged();
     }
 
@@ -172,8 +193,8 @@ public class ReceivedFragment extends Fragment {
             Log.d("got 1","Yipee");
             duplicateListViewContacts.add(contactUser);
         }
-        customAdapterTargetPing=new CustomAdapterTargetPing(getActivity(),R.layout.layout_contact_ping,duplicateListViewContacts);
-        listViewContacts.setAdapter(customAdapterTargetPing);
+        customAdapterReceivedPing=new CustomAdapterReceivePing((Context)getActivity(),R.layout.layout_target_ping,duplicateListViewContacts);
+        listViewContacts.setAdapter(customAdapterReceivedPing);
 
     }
     public void showMessage(String title,String Message){

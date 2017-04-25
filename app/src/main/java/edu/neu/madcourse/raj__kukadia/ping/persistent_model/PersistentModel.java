@@ -137,6 +137,10 @@ public class PersistentModel {
     }
 
     public void updateTargetFields(ContactUser contactUser){
+        if(pingUser==null){
+            pingUser=new ArrayList<>();
+        }
+
         if(!pingUser.contains(contactUser)){
             if(!isdublicate(contactUser))
             pingUser.add(contactUser);
@@ -151,9 +155,16 @@ public class PersistentModel {
     }
     public void updateReceiveFields(ContactUser contactUser){
         Log.d("adding","8573996996"+contactUser.getName());
-        if(!receivedUser.contains(contactUser)) {
-            receivedUser.add(contactUser);
+        if(receivedUser==null){
+            receivedUser=new ArrayList<>();
         }
+        if(!receivedUser.contains(contactUser)) {
+            receivedUser.add(0,contactUser);
+        }else{
+            receivedUser.remove(contactUser);
+            receivedUser.add(0,contactUser);
+        }
+
         if(context!=null){
           ((PingHomeScreenActivity)context).updateReceiveListView();
         }

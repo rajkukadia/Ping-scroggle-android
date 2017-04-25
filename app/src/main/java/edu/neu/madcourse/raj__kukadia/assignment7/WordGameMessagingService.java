@@ -22,6 +22,7 @@ import edu.neu.madcourse.raj__kukadia.MainActivity;
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.ping.MySearchActivity;
 import edu.neu.madcourse.raj__kukadia.ping.PingHomeScreenActivity;
+import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.PersistentModel;
 
 public class WordGameMessagingService extends FirebaseMessagingService {
@@ -96,13 +97,23 @@ public class WordGameMessagingService extends FirebaseMessagingService {
                 Log.d("recee", "yoo");
 
                 Log.d("number=",phoneNumber);
-                PersistentModel.getInstance().updateReceiveFields(PersistentModel.getInstance().getParticularUserByPhoneNumber(phoneNumber));
+                        ContactUser contactUser=PersistentModel.getInstance().getParticularUserByPhoneNumber(phoneNumber);
+                if(contactUser!=null) {
+                    contactUser.setReceivedScreenMessage(ContactUser.ReceivedScreenMessage.YetToReply);
+                    contactUser.setReceiveScreenMessage(remoteMessage.getNotification().getBody());
+                    PersistentModel.getInstance().updateReceiveFields(contactUser);
+                }
                 PersistentModel.getInstance().notifyForMessage();
             }
             else{
                 Log.d("number=",phoneNumber);
                 sendNotificationReply(remoteMessage.getNotification().getBody(),phoneNumber);
-                PersistentModel.getInstance().updateReceiveFields(PersistentModel.getInstance().getParticularUserByPhoneNumber(phoneNumber));
+                ContactUser contactUser=PersistentModel.getInstance().getParticularUserByPhoneNumber(phoneNumber);
+                if(contactUser!=null) {
+                    contactUser.setReceivedScreenMessage(ContactUser.ReceivedScreenMessage.RepliedYou);
+                    contactUser.setReceiveScreenMessage(remoteMessage.getNotification().getBody());
+                    PersistentModel.getInstance().updateReceiveFields(contactUser);
+                }
                 PersistentModel.getInstance().notifyForMessage();
             }
 

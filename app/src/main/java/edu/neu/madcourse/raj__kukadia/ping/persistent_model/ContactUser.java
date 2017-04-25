@@ -23,6 +23,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.Scanner;
+
+import edu.neu.madcourse.raj__kukadia.ping.ReceivedFragment;
 import edu.neu.madcourse.raj__kukadia.ping.UserInformationActivity;
 import edu.neu.madcourse.raj__kukadia.ping.applicatonlogic.myTasks;
 
@@ -92,17 +94,32 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         return String.valueOf(time)+st;
     }
 
-
+    public static enum ReceivedScreenMessage{
+        RepliedSuccessfully,Replying,YetToReply,RepliedYou
+    }
 
     public static enum TargetScreenMessage{
         ShowActivity,InvalidStatus,Pinged,LocallyPinged
     }
+
+    public ReceivedScreenMessage getReceivedScreenMessage() {
+        return receivedScreenMessage;
+    }
+
+    public void setReceivedScreenMessage(ReceivedScreenMessage receivedScreenMessage) {
+        this.receivedScreenMessage = receivedScreenMessage;
+    }
+
     private TargetScreenMessage targetScreenMessage;
+    private ReceivedScreenMessage receivedScreenMessage;
+    private long receivedScreenTimeMilli;
     private String name;
     private String number;
     private String allowedNumber="1234567890";
     private boolean usesPing;
     private boolean PingedUser;
+    private String receiveScreenMessage;
+    private String receiveScreenTime;
     private long pingTime;
     private String token;
     private Button contactSearchButtonUpdate;
@@ -124,6 +141,23 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         return date.getTime();
     }
 
+    public String getReceiveScreenMessage() {
+        return receiveScreenMessage;
+    }
+
+    public void setReceiveScreenMessage(String receiveScreenMessage) {
+        this.receiveScreenMessage = receiveScreenMessage;
+        this.receivedScreenTimeMilli=getCurretTime();
+    }
+
+    public String getReceiveScreenTime() {
+        return formatTime(receivedScreenTimeMilli,getCurretTime());
+    }
+
+    public void setReceiveScreenTime(String receiveScreenTime) {
+        this.receiveScreenTime = receiveScreenTime;
+    }
+
     public TargetScreenMessage getTargetScreenMessage() {
 
         return targetScreenMessage;
@@ -139,6 +173,8 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
 
     public void setTargetScreenMessage(TargetScreenMessage targetScreenMessage) {
         this.targetScreenMessage = targetScreenMessage;
+
+
     }
     public void updateStatus() {
         if(isActivityRecentThanPinged()){
@@ -416,7 +452,8 @@ try not to put number less than 10 this handles data for greater than 10
             case Pinged:
                 return getPingTime();
             default:
-                return currntTime;
+                Long val=new Long(0);
+                return val;
         }
     }
     @Override

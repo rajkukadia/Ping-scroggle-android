@@ -14,12 +14,16 @@
         android:hint="Type here to search"
         android:visibility="gone"
         android:layout_gravity="center"/>
-
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ListView
         android:id="@+id/received_list"
         android:padding="@dimen/menu_padding"
         android:dividerHeight="@dimen/menu_button_padding"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ListView>
-
+</android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

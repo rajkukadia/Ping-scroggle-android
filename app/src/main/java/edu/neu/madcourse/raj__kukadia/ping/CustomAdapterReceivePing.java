@@ -31,34 +31,16 @@ public class CustomAdapterReceivePing extends CustomAdapterPing {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // Get view for row item
-        View rowView = mInflater.inflate(R.layout.layout_contact_ping, parent, false);
+        View rowView = mInflater.inflate(R.layout.layout_received_ping, parent, false);
         TextView userNameTextView =
-                (TextView) rowView.findViewById(R.id.userNameContact);
+                (TextView) rowView.findViewById(R.id.userNameReceived);
 
-
-
-        Button inviteButton=(Button)rowView.findViewById(R.id.isUsesPingFieldButton);
-        //rowView.setPadding(100,100,100,100);
-
-// Get detail element
-
+        TextView time=(TextView)rowView.findViewById(R.id.timeReceivedTextView);
+        TextView Message=(TextView)rowView.findViewById(R.id.receivedTextFieldMessage);
         final ContactUser contactUser = getItem(position);
-
         userNameTextView.setText(contactUser.getName());
-        contactUser.setButtonUpate(inviteButton);
-        if(contactUser.isUsesPing()){
-        inviteButton.setText("Ping");
-            inviteButton.setVisibility(View.VISIBLE);
-        }
-        else{
-            inviteButton.setVisibility(View.VISIBLE);
-        }
-            inviteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((PingHomeScreenActivity)mContext).onClickViewListiner(position,contactUser);
-                }
-            });
+        time.setText(contactUser.getReceiveScreenTime());
+        Message.setText(contactUser.getReceiveScreenMessage());
 
         return rowView;
     }

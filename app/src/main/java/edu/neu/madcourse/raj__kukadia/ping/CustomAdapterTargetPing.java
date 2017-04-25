@@ -55,7 +55,7 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
         if(contactUser.getTargetScreenMessage()== ContactUser.TargetScreenMessage.ShowActivity||contactUser.getTargetScreenMessage()== ContactUser.TargetScreenMessage.Pinged) {
             String timefromContact = contactUser.getTime();
             if(timefromContact!=null){
-                time.setText(timefromContact);
+                time.setText(timefromContact.toString());
                 time.setVisibility(View.VISIBLE);
             }
         }
