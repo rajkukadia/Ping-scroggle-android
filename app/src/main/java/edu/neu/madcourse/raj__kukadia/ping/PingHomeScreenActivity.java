@@ -68,6 +68,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     private static final String CONNECTIVITY_MESSAGE = "Internet connection lost!";
     private static final String CONNECTIVITY_MESSAGE_START = "No internet connection found!";
     private static final int VOICE_RECOGNITION_REQUEST_CODE_HOME = 11111;
+    private static final String NOTIFICATION_MANAGER = "notification_manager";
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -88,8 +89,8 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     private CircleImageView circleImageView;
     private ImageView imageView;
     private String voiceText;
-
     private SharedPreferences SP;
+    private SharedPreferences notificationManager;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -114,6 +115,8 @@ public class PingHomeScreenActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         Log.d("mSectionsPagerAdapter","");
+
+        notificationManager = getSharedPreferences(NOTIFICATION_MANAGER, MODE_PRIVATE);
 
         userName = (TextView) findViewById(R.id.username);
       //  imageView = (ImageView) findViewById(R.id.imageView);
@@ -383,6 +386,7 @@ public void notifyMessage(){
                 .setNegativeButton("No", dialogClickListener).show();
     }
 
+
     public void updateOnPing(final ContactUser contactUser) {
         if(mHandler!=null)
         mHandler.post(new Runnable() {
@@ -498,6 +502,9 @@ public void notifyMessage(){
     protected void onPause() {
         super.onPause();
         mHandler=null;
+        notificationManager.edit().putBoolean("online", false).commit();
+        Log.d(String.valueOf(notificationManager.getBoolean("online", false)), "onnnPause");
+
 
     }
 
@@ -505,6 +512,11 @@ public void notifyMessage(){
     protected void onResume() {
         super.onResume();
         mHandler=new Handler(Looper.getMainLooper());
+
+         notificationManager.edit().putBoolean("online", true).commit();
+        Log.d(String.valueOf(notificationManager.getBoolean("online", false)), "onnnResume");
+
+
 
     }
 

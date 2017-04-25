@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -574,7 +576,7 @@ try not to put number less than 10 this handles data for greater than 10
                         setPingedUser(true);
                         return true;}
                 } catch (JSONException | IOException e) {
-                    //Toast.makeText(getActivity(),"Ping unsuccesfully",Toast.LENGTH_LONG).show();
+Log.d("error", "pingunsc");
                     e.printStackTrace();
                 }
                 return false;

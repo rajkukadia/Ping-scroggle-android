@@ -4,8 +4,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -28,10 +30,12 @@ import edu.neu.madcourse.raj__kukadia.ping.persistent_model.PersistentModel;
 public class WordGameMessagingService extends FirebaseMessagingService {
 
     private static final String KEY_TEXT_REPLY = "key_text_reply";
+    private static final String NOTIFICATION_MANAGER = "notification_manager";
 
     private DatabaseReference mRootRef;
     private HashMap<Integer, String> gameMode = new HashMap<Integer, String>();
     private FirebaseAuth mAuth;
+    private SharedPreferences notificationManager;
 
     private static final String TAG = WordGameMessagingService.class.getSimpleName();
 
@@ -64,15 +68,20 @@ public class WordGameMessagingService extends FirebaseMessagingService {
         String ping="";
         String gameOver ="";
         String phoneNumber="";
+        Log.d("ping", "PINGVALUE");
+
+
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
+        notificationManager = getSharedPreferences(NOTIFICATION_MANAGER, MODE_PRIVATE);
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             Map jData = remoteMessage.getData();
             Log.d("recee", "asda11");
             ping = jData.get("ping").toString();
-            phoneNumber=jData.get("phonenumber").toString();
+            Log.d(ping, "PINGVALUE");
+            if(jData.get("phonenumber")!=null) phoneNumber=jData.get("phonenumber").toString();
           // gameID = jData.get("GameKey").toString();
             // userOne = jData.get("userOne").toString();
              //userTwo = jData.get("userTwo").toString();
@@ -95,6 +104,12 @@ public class WordGameMessagingService extends FirebaseMessagingService {
 
             if(ping.equals("open")){
                 Log.d("recee", "yoo");
+                Log.d(String.valueOf((notificationManager.getBoolean("online", false))), "checkTHis");
+                if(notificationManager.getBoolean("online", false)==false){
+                    Log.d("in", "asdf");
+                    sendNotification(remoteMessage.getNotification().getBody(),phoneNumber);
+                }
+
 
                 Log.d("number=",phoneNumber);
                         ContactUser contactUser=PersistentModel.getInstance().getParticularUserByPhoneNumber(phoneNumber);
@@ -107,7 +122,11 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             }
             else{
                 Log.d("number=",phoneNumber);
-                sendNotificationReply(remoteMessage.getNotification().getBody(),phoneNumber);
+                Log.d(String.valueOf((notificationManager.getBoolean("online", false))), "checkTHis2");
+
+                if(notificationManager.getBoolean("online", false)==false){
+                    sendNotificationReply(remoteMessage.getNotification().getBody(),phoneNumber);
+                }
                 ContactUser contactUser=PersistentModel.getInstance().getParticularUserByPhoneNumber(phoneNumber);
                 if(contactUser!=null) {
                     contactUser.setReceivedScreenMessage(ContactUser.ReceivedScreenMessage.RepliedYou);

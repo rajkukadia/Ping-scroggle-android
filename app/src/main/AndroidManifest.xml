@@ -21,7 +21,6 @@
             android:theme="@style/MainActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -181,11 +180,26 @@
         <activity
             android:name=".ping.MySearchActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+    <intent-filter>
+        <action android:name="MySearchActivity" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+
+    </intent-filter>
+
+    </activity>
         <activity
             android:name=".ping.PingHomeScreenActivity"
             android:label="@string/title_activity_ping_home_screen"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="PingHomeScreensActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ping.MyPreferenceActivity"
