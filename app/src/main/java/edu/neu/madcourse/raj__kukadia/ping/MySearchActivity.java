@@ -1,8 +1,10 @@
  package edu.neu.madcourse.raj__kukadia.ping;
 
  import android.app.Activity;
+ import android.app.AlertDialog;
  import android.app.Dialog;
  import android.content.Context;
+ import android.content.DialogInterface;
  import android.content.Intent;
  import android.content.SharedPreferences;
  import android.graphics.Color;
@@ -13,6 +15,8 @@
  import android.provider.ContactsContract;
  import android.speech.RecognizerIntent;
  import android.support.annotation.Nullable;
+ import android.support.design.widget.CoordinatorLayout;
+ import android.support.design.widget.Snackbar;
  import android.support.v7.app.AppCompatActivity;
  import android.support.v7.widget.Toolbar;
  import android.text.Editable;
@@ -60,17 +64,20 @@
  import edu.neu.madcourse.raj__kukadia.MainActivity;
  import edu.neu.madcourse.raj__kukadia.R;
  import edu.neu.madcourse.raj__kukadia.ping.applicatonlogic.myTasks;
+ import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
  import edu.neu.madcourse.raj__kukadia.ping.persistent_model.PersistentModel;
 
  public class MySearchActivity extends AppCompatActivity implements myTasks {
 
      public static final String ACTIVITY_CONFIRM = "activity_confirm";
      public static final String ACTIVITY_CONFIRMED = "activity_confirmed";
+     private static final String TEACH = "Always double tap to confirm";
      private GridView gv;
      private GridView rgv;
      private EditText e;
      private ImageButton googleMic;
      private String voiceText;
+     private CoordinatorLayout coordinatorLayout;
      DatabaseReference mRootRef;
      private String currentSelectedActivity;
      private String token;
@@ -104,6 +111,8 @@
          activityConfirm = getSharedPreferences(ACTIVITY_CONFIRM, MODE_PRIVATE);
 
          recentActivities = getSharedPreferences(RECENT_ACTIVITIES, MODE_PRIVATE);
+
+         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayoutSearch);
 
         // activityConfirm.edit().remove(ACTIVITY_CONFIRMED).commit();
 
@@ -161,17 +170,45 @@ startRecognizing();
 
              Log.d("Result", voiceText);
 
-
+            boolean found =false;
              //  mList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, matches));
-             if (activityStringList.contains(voiceText)) {
-                 currentSelectedActivity = voiceText;
-                 PersistentModel.getInstance().sendReply(MySearchActivity.this);
-             }
-             else{
-                  Toast.makeText(this, "Try again!",
+
+           for(String activityList: activityStringList) {
+               for (String temp : matches) {
+                   if (activityList.contains(temp)) {
+                       confirm(temp);
+                       found = true;
+
+                   }
+               }
+           }
+            if(!found) Toast.makeText(this, "Try again!",
                     Toast.LENGTH_LONG).show();
-             }
+
          }
+     }
+
+     private void confirm(final String bet){
+         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+             @Override
+             public void onClick(DialogInterface dialog, int which) {
+                 switch (which){
+                     case DialogInterface.BUTTON_POSITIVE:
+                         //Yes button clicked
+                         currentSelectedActivity = bet;
+                         PersistentModel.getInstance().sendReply(MySearchActivity.this);
+                         break;
+
+                     case DialogInterface.BUTTON_NEGATIVE:
+                         //No button clicked
+                         break;
+                 }
+             }
+         };
+
+         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+         builder.setMessage("Do you mean "+bet+" ?").setPositiveButton("Yes", dialogClickListener)
+                 .setNegativeButton("No", dialogClickListener).show();
      }
 
      private void initList(){
@@ -304,20 +341,9 @@ startRecognizing();
      }
 
      private void teach(){
-         activityConfirm.edit().putBoolean(ACTIVITY_CONFIRMED, false).commit();
-         final Dialog alertDialog = new Dialog(this);
-         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-         alertDialog.setContentView(R.layout.double_tap_instrctions);
-         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-         Button  coolOk = (Button)alertDialog.findViewById(R.id.okbutton);
-         coolOk.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 alertDialog.cancel();
-             }
-         });
-         alertDialog.show();
+         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayoutSearch);
+         Snackbar snackbar  = Snackbar.make(coordinatorLayout, TEACH, Snackbar.LENGTH_LONG);
+         snackbar.show();
      }
 
      private void getTheTOken(){
@@ -547,8 +573,10 @@ return false;
          this.c = c;
          activityList = new ArrayList<MyActivity>() ;
          String [ ] tempActivityName =c.getResources().getStringArray(R.array.activity_array);
-         int [] tempImageId = {R.drawable.running, R.drawable.walking, R.drawable.bathing, R.drawable.cooking, R.drawable.dancing, R.drawable.biking, R.drawable.sitting};
-         for(int i = 0; i<7;i++){
+         int [] tempImageId = {R.drawable.running, R.drawable.walking, R.drawable.bathing, R.drawable.cooking, R.drawable.dancing, R.drawable.biking, R.drawable.sitting, R.drawable.badminton,
+         R.drawable.soccer, R.drawable.guitar,R.drawable.baseball, R.drawable.gymming, R.drawable.bowling, R.drawable.skipping, R.drawable.treadmill,
+         R.drawable.volleyball, R.drawable.music, R.drawable.brushing};
+         for(int i = 0; i<tempImageId.length;i++){
              MyActivity tempActivity = new MyActivity(tempActivityName[i], tempImageId[i]);
              activityList.add(tempActivity);
          }

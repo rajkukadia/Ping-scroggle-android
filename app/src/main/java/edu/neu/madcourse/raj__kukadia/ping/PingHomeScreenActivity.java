@@ -192,6 +192,9 @@ public class PingHomeScreenActivity extends AppCompatActivity {
 if(welcome) {
     SP.edit().putBoolean("welcome", false).commit();
     final Snackbar snackbar  = Snackbar.make(coordinatorLayout, FIRST_MSG, Snackbar.LENGTH_INDEFINITE);
+    View v1 = snackbar.getView();
+    TextView t = (TextView) v1.findViewById(android.support.design.R.id.snackbar_text);
+    t.setTextSize(18);
     snackbar.setAction("Thanks", new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -199,12 +202,18 @@ if(welcome) {
                 snackbar.dismiss();
             }
             final Snackbar snackbar1 = Snackbar.make(coordinatorLayout, SECOND_MSG, Snackbar.LENGTH_INDEFINITE);
+            View v1 = snackbar1.getView();
+            TextView t = (TextView) v1.findViewById(android.support.design.R.id.snackbar_text);
+            t.setTextSize(17);
             snackbar1.setAction("Got it", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                   if(snackbar1.isShown()){
                       snackbar1.dismiss();
                       final Snackbar snackbar2 = Snackbar.make(coordinatorLayout, THIRD_MSG, Snackbar.LENGTH_INDEFINITE);
+                      View v1 = snackbar2.getView();
+                      TextView t = (TextView) v1.findViewById(android.support.design.R.id.snackbar_text);
+                      t.setTextSize(16);
                       snackbar2.setAction("Got it", new View.OnClickListener() {
                           @Override
                           public void onClick(View v) {

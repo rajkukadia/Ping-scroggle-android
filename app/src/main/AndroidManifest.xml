@@ -8,8 +8,7 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-
-    <application
+<application>
         android:allowBackup="true"
         android:supportsRtl="true"
         android:icon="@drawable/ping_launcher"
@@ -153,21 +152,27 @@
 
         <!-- ..................PING........................................ -->
 
-        <activity
-            android:name=".ping.UserInformationActivity"
+        <activity android:name=".ping.WelcomeActivity"
             android:icon="@mipmap/ping_icon"
             android:label="NUMAD17S-RajKukadia"
+            android:theme="@style/AppTheme.NoActionBar">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+
+            <action android:name="ping.action.PingHome" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name=".ping.UserInformationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitle">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-
-                <action android:name="ping.action.PingHome" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ping.MyContactsActivity"

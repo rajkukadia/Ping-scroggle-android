@@ -183,6 +183,24 @@ both sides in the larger game.
         <item>dancing</item>
         <item>biking</item>
         <item>sitting</item>
+        <item>badminton</item>
+        <item>soccer</item>
+        <item>guitar</item>
+        <item>baseball</item>
+        <item>gymming</item>
+        <item>bowling</item>
+     <!--   <item>football</item>-->
+        <item>skipping</item>
+        <item>treadmill</item>
+        <item>volleyball</item>
+        <item>music</item>
+        <item>brushing</item>
+
+
+
+
+
+
     </string-array>
 
 
@@ -193,6 +211,30 @@ both sides in the larger game.
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+
+
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Stay updated</string>
+    <string name="slide_1_desc">The easiest way to know what friends and family are upto!</string>
+
+    <string name="slide_2_title">Share updates</string>
+    <string name="slide_2_desc">Share your status for your friends and family!</string>
+
+    <string name="slide_3_title">Speak</string>
+    <string name="slide_3_desc">It is that easy! Speak the name of your friend whom you want to ping</string>
+
+    <string name="slide_4_title">Double tap</string>
+    <string name="slide_4_desc">If not by voice, you can ping by double taps</string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">Play Again</string>
+
 </resources>
 
 
