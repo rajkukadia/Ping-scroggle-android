@@ -1,7 +1,9 @@
 package edu.neu.madcourse.raj__kukadia.ping;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -49,6 +51,7 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.assignment7.ScroggleMultiplayerAsyncFragment;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.PersistentModel;
 
@@ -325,32 +328,49 @@ public void notifyMessage(){
             ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             voiceText = matches.get(0);
             boolean found = false;
-            Log.d("Result", voiceText);
+           // Log.d("Result", voiceText);
             ArrayList<ContactUser> pingUsers = PersistentModel.getInstance().getPingUser();
             for(ContactUser c : pingUsers){
                 String temp = c.getName().toLowerCase();
-                if(temp.contains(voiceText)){
-                    found = true;
-                    PersistentModel.getInstance().sendFCM(c);
+                for(String voice:matches) {
+                    if (temp.contains(voice)) {
+                        found = true;
+                        confirm(c, temp);
+                        break;
+                    }
                 }
-            }
+                }
+
             if(!found) Toast.makeText(this, "Try Again!",
                     Toast.LENGTH_LONG).show();
 
-
             //  mList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, matches));
-         //   if (activityStringList.contains(voiceText)) {
-           //     currentSelectedActivity = voiceText;
-             //   PersistentModel.getInstance().sendReply(MySearchActivity.this);
-           // }
-            //else{
-              //  Toast.makeText(this, "Try again!",
-                //        Toast.LENGTH_LONG).show();
-            //}
+
         }
     }
 
+    private void confirm(final ContactUser user, String bet){
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        PersistentModel.getInstance().sendFCM(user);
 
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you mean "+bet+" ?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+    }
 
     public void updateOnPing(final ContactUser contactUser) {
         if(mHandler!=null)
