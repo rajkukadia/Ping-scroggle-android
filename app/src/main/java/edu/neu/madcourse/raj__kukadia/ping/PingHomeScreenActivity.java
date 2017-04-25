@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.speech.RecognizerIntent;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -37,6 +38,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +50,9 @@ import java.util.HashMap;
 import de.hdodenhof.circleimageview.CircleImageView;
 import edu.neu.madcourse.raj__kukadia.R;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
+import edu.neu.madcourse.raj__kukadia.ping.persistent_model.PersistentModel;
+
+import static edu.neu.madcourse.raj__kukadia.ping.MySearchActivity.VOICE_RECOGNITION_REQUEST_CODE;
 
 
 public class PingHomeScreenActivity extends AppCompatActivity {
@@ -59,6 +64,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     private static final String GONE = "GONE";
     private static final String CONNECTIVITY_MESSAGE = "Internet connection lost!";
     private static final String CONNECTIVITY_MESSAGE_START = "No internet connection found!";
+    private static final int VOICE_RECOGNITION_REQUEST_CODE_HOME = 11111;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -78,6 +84,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private CircleImageView circleImageView;
     private ImageView imageView;
+    private String voiceText;
 
     private SharedPreferences SP;
     /**
@@ -114,6 +121,8 @@ public class PingHomeScreenActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Ping");
+
+
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
@@ -198,22 +207,17 @@ if(welcome) {
                           public void onClick(View v) {
                               if(snackbar2.isShown()){
                                   snackbar2.dismiss();
-
                               }
                           }
                       });
-
                       snackbar2.show();
                   }
                 }
             });
-
             snackbar1.show();
-
         }
     });
     snackbar.show();
-
         }
         ConnectivityManager c = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = c.getActiveNetworkInfo();//Active network info
@@ -245,9 +249,7 @@ public void notifyConnectionStatus(String status){
         if(connectionSnackbar!=null) if(connectionSnackbar.isShown()) connectionSnackbar.dismiss();
 
         if(connectionSnackbarStart!=null) if(connectionSnackbarStart.isShown()) connectionSnackbarStart.dismiss();
-
     }
-
 }
 
 
@@ -300,12 +302,48 @@ public void notifyMessage(){
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.voice_ping) {
+                startRecognizing();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void startRecognizing(){
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                "Speak your activity...");
+        startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE_HOME);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == VOICE_RECOGNITION_REQUEST_CODE_HOME && resultCode == RESULT_OK) {
+            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            voiceText = matches.get(0);
+
+            Log.d("Result", voiceText);
+
+              Toast.makeText(this, voiceText,
+                    Toast.LENGTH_LONG).show();
+
+
+            //  mList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, matches));
+         //   if (activityStringList.contains(voiceText)) {
+           //     currentSelectedActivity = voiceText;
+             //   PersistentModel.getInstance().sendReply(MySearchActivity.this);
+           // }
+            //else{
+              //  Toast.makeText(this, "Try again!",
+                //        Toast.LENGTH_LONG).show();
+            //}
+        }
+    }
+
+
 
     public void updateOnPing(final ContactUser contactUser) {
         if(mHandler!=null)

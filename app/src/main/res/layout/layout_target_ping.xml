@@ -8,7 +8,7 @@
         android:id="@+id/timeTargetTextView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textSize="12dp"
+        android:textSize="11dp"
         android:visibility="gone"
         android:layout_margin="@dimen/menu_space"
         android:layout_alignParentRight="true"
@@ -24,7 +24,7 @@
         android:layout_marginRight="@dimen/menu_space"
         android:layout_marginLeft="@dimen/menu_space"
         android:layout_toLeftOf="@id/timeTargetTextView"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:text="TextView" />
     <TextView
         android:id="@+id/targetTextFieldMessage"
