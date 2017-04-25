@@ -320,6 +320,20 @@ public void notifyMessage(){
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.voice_ping) {
+            SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            if(SP.getBoolean("firstvoice", true)) {
+                coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+                Snackbar s = Snackbar.make(coordinatorLayout, "Speak the name in one word only", Snackbar.LENGTH_INDEFINITE).setAction("OK",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        });
+                SP.edit().putBoolean("firstvoice", false).commit();
+                    s.show();
+            }
                 startRecognizing();
             return true;
         }

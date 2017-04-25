@@ -53,6 +53,7 @@
         android:layout_below="@id/verification_code_area"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
+        android:background="@drawable/button_style"
         />
     <Button
         android:layout_width="wrap_content"
@@ -60,6 +61,7 @@
         android:text="Back Door Entery"
         android:layout_alignParentBottom="true"
         android:gravity="center"
+        android:visibility="gone"
         android:id="@+id/backdoorEntry"/>
 
 </RelativeLayout>

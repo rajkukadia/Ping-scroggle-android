@@ -35,6 +35,7 @@ import java.util.HashMap;
 import edu.neu.madcourse.raj__kukadia.assignment5.UT3MainActivityScroggleAssignment5;
 import edu.neu.madcourse.raj__kukadia.assignment7.GoogleSignInActivity;
 import edu.neu.madcourse.raj__kukadia.ping.UserInformationActivity;
+import edu.neu.madcourse.raj__kukadia.ping.WelcomeActivity;
 
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -199,6 +200,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         viewMap.put(8, v);
         v = (Button) findViewById(R.id.ping_button);
         viewMap.put(9, v);
+        v = (Button) findViewById(R.id.final_project);
+        viewMap.put(10, v);
 
     }
 
@@ -286,6 +289,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, UserInformationActivity.class));
+            }
+        });
+
+        v=(Button) button.get(10);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
             }
         });
 
