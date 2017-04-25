@@ -70,16 +70,19 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
 
             @Override
             public void onDoubleClick(View v) {
+                Log.d("Inside double click","YIpee");
                 if(contactUser.isActivityToRecent()){
+                    PersistentModel.getInstance().notifyActivitySnacks("Activity is recent");
                     //do something is Activity is too recent
                 }
                 else{
-                   if(contactUser.isLocallyPing()) {
+                    Log.d("Inside the thing"," after activity too recent");
+                   if(contactUser.isPingRecent()) {
                        //do something if is locall pings
-
+                       PersistentModel.getInstance().notifyActivitySnacks("Pinged recently");
                    }else {
                        if (contactUser.isPingRecent()){
-                           //show something if is recently pinged
+                           PersistentModel.getInstance().notifyActivitySnacks("Trying to ping");
                        }
                        else{
                            InternetThread.getinstance().addTasks(contactUser);

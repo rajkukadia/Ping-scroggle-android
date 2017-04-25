@@ -456,7 +456,11 @@ return false;
      @Override
      public boolean doTask() {
          putActivityToServer();
-         return  run();
+         boolean result= run();
+         if(result){
+             PersistentModel.getInstance().removeFromReceivedList(phoneNumber);
+         }
+         return result;
      }
 
      @Override

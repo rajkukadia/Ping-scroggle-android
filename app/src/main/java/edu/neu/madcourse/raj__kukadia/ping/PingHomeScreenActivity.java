@@ -246,7 +246,6 @@ if(welcome) {
             connectionSnackbarStart.show();        }
 }
 
-
 public void notifyConnectionStatus(String status){
     coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
@@ -421,6 +420,11 @@ public void notifyMessage(){
         intent.putExtra("phonenumber",contactUser.getNumber());
         startActivity(intent);
 
+    }
+
+    public void notifyTheUser(String Message) {
+        final Snackbar snackbar  = Snackbar.make(coordinatorLayout, Message, Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     /**
