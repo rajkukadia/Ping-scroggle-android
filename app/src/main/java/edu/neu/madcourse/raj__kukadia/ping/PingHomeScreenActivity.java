@@ -263,6 +263,9 @@ public void notifyConnectionStatus(String status){
         if(connectionSnackbarStart!=null) if(connectionSnackbarStart.isShown()) connectionSnackbarStart.dismiss();
     }
 }
+public void TellForDoubleClick(){
+
+}
 
 
 public void notifyMessage(){
