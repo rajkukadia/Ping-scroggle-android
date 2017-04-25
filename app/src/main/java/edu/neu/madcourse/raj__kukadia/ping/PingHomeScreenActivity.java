@@ -404,6 +404,13 @@ public void notifyMessage(){
             });
     }
 
+    public void onDoubleClickReceiveListener(ContactUser contactUser) {
+        Intent intent=new Intent();
+        intent.putExtra("phonenumber",contactUser.getNumber());
+        startActivity(intent);
+
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.

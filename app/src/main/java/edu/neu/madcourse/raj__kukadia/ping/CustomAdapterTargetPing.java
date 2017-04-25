@@ -6,13 +6,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.ping.network.InternetThread;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.ContactUser;
 import edu.neu.madcourse.raj__kukadia.ping.persistent_model.PersistentModel;
 
@@ -60,11 +63,16 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
             }
         }
         contactUser.setTargetEntireViewGroup(rowView);
-        rowView.setOnClickListener(new View.OnClickListener() {
+
+        rowView.setOnClickListener(new DoubleClickListenerView() {
             @Override
-            public void onClick(View v) {
-                if(contactUser.getTargetScreenMessage()== ContactUser.TargetScreenMessage.InvalidStatus)
-                PersistentModel.getInstance().sendFCM(contactUser);
+            public void onSingleClick(View v) {
+
+            }
+
+            @Override
+            public void onDoubleClick(View v) {
+                InternetThread.getinstance().addTasks(contactUser);
             }
         });
         return rowView;

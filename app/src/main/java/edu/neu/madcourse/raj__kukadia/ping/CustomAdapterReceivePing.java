@@ -1,9 +1,11 @@
 package edu.neu.madcourse.raj__kukadia.ping;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -41,7 +43,24 @@ public class CustomAdapterReceivePing extends CustomAdapterPing {
         userNameTextView.setText(contactUser.getName());
         time.setText(contactUser.getReceiveScreenTime());
         Message.setText(contactUser.getReceiveScreenMessage());
+        rowView.setOnClickListener(new DoubleClickListenerView() {
+            @Override
+            public void onSingleClick(View v) {
 
+            }
+
+            @Override
+            public void onDoubleClick(View v) {
+            if(contactUser.getReceivedScreenMessage()== ContactUser.ReceivedScreenMessage.YetToReply)
+            {
+                Intent intent=new Intent(getContext(),MySearchActivity.class);
+                intent.putExtra("phonenumber",contactUser.getNumber());
+                (getContext()).startActivity(intent);
+
+            }
+
+            }
+        });
         return rowView;
     }
 }
