@@ -79,7 +79,7 @@
         <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
     </style>
     <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
-        <item name="android:src">@drawable/google_mic</item>
+        <item name="android:src">@drawable/google_mic_big</item>
         <item name="android:background">?android:attr/actionBarItemBackground</item>
     </style>
 

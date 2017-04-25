@@ -324,10 +324,17 @@ public void notifyMessage(){
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE_HOME && resultCode == RESULT_OK) {
             ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             voiceText = matches.get(0);
-
+            boolean found = false;
             Log.d("Result", voiceText);
-
-              Toast.makeText(this, voiceText,
+            ArrayList<ContactUser> pingUsers = PersistentModel.getInstance().getPingUser();
+            for(ContactUser c : pingUsers){
+                String temp = c.getName().toLowerCase();
+                if(temp.contains(voiceText)){
+                    found = true;
+                    PersistentModel.getInstance().sendFCM(c);
+                }
+            }
+            if(!found) Toast.makeText(this, "Try Again!",
                     Toast.LENGTH_LONG).show();
 
 
