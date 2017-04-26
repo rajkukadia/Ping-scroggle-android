@@ -1,16 +1,21 @@
 package edu.neu.madcourse.raj__kukadia.ping;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,8 +25,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.neu.madcourse.raj__kukadia.R;
 
@@ -34,7 +43,9 @@ public class MyPreferenceActivity extends PreferenceActivity{
     private static final int GET_FROM_GALLERY = 99999;
     DatabaseReference mRootRef;
     Preference pref;
+    Uri mCapturedImageURI;
     SharedPreferences SP;
+    File file;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +65,9 @@ public class MyPreferenceActivity extends PreferenceActivity{
         pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
+
+                Intent chooser = getPickImageIntent(MyPreferenceActivity.this);
+                startActivityForResult(chooser, GET_FROM_GALLERY);
 
                 return false;
             }
@@ -74,15 +87,71 @@ public class MyPreferenceActivity extends PreferenceActivity{
 
     }
 
+    public Intent getPickImageIntent(Context context) {
+        File imageStorageDir = new File(
+                Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_PICTURES)
+                , "PingFolder");
+
+        if (!imageStorageDir.exists()) {
+            imageStorageDir.mkdirs();
+        }
+
+        file = new File(
+                imageStorageDir + File.separator + "IMG_"
+                        + String.valueOf(System.currentTimeMillis())
+                        + ".jpg");
+
+        Intent chooserIntent = null;
+
+        Log.d("FileStorage", file.toString());
+
+        List<Intent> intentList = new ArrayList<>();
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePhotoIntent.putExtra("return-data", true);
+        takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+        intentList = addIntentsToList(context, intentList, pickIntent);
+        intentList = addIntentsToList(context, intentList, takePhotoIntent);
+
+        if (intentList.size() > 0) {
+            chooserIntent = Intent.createChooser(intentList.remove(intentList.size() - 1),
+                    "Choose");
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentList.toArray(new Parcelable[]{}));
+        }
+
+        return chooserIntent;
+    }
+
+
+    private static List<Intent> addIntentsToList(Context context, List<Intent> list, Intent intent) {
+        List<ResolveInfo> resInfo = context.getPackageManager().queryIntentActivities(intent, 0);
+        for (ResolveInfo resolveInfo : resInfo) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            Intent targetedIntent = new Intent(intent);
+            targetedIntent.setPackage(packageName);
+            list.add(targetedIntent);
+        }
+        return list;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
-        //Detects request codes
         if(requestCode==GET_FROM_GALLERY && resultCode == RESULT_OK) {
-            Uri selectedImage = data.getData();
+            Uri selectedImage;
+            if(data==null) {
+                selectedImage = Uri.fromFile(file);
+            }
+            else{
+                selectedImage = data.getData();
+            }
+
             Bitmap bitmap = null;
+
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();

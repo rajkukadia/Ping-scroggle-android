@@ -87,6 +87,8 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
         int permissionReadMessage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS);
         int permissionReadContacts = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_CONTACTS);
+        int permissionWriteExternal = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
         List<String> listPermissionsNeeded = new ArrayList<>();
         if (permissionReadMessage != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_SMS);
@@ -100,8 +102,11 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
         if (permissionReceiveMessage != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.RECEIVE_SMS);
         }
-        if (permissionReceiveMessage != PackageManager.PERMISSION_GRANTED) {
+        if (permissionReadContacts != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_CONTACTS);
+        }
+        if (permissionWriteExternal != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
         if(!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_ID_MULTIPLE_PERMISSIONS);
@@ -123,6 +128,7 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
                 perms.put(Manifest.permission.READ_SMS, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.READ_PHONE_STATE, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.READ_CONTACTS, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
 
 
                 if (grantResults.length > 0) {
@@ -131,7 +137,8 @@ public class UserInformationActivity extends Activity implements View.OnClickLis
                     // Check for both permissions
                     if (perms.get(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
                             && perms.get(Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED && perms.get(Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED
-                            && perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED&& perms.get(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                            && perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED&& perms.get(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
+                            && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                        grabPhoneNumber();
                         permission = true;
                     } else {
