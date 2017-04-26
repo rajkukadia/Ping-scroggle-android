@@ -423,6 +423,9 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
 
 
     }
+    public ContactUser(){
+
+    }
     private boolean firstTimeRecent(Long first,Long second){
         return first>second? true:false;
     }

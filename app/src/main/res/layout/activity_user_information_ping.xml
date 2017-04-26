@@ -61,7 +61,6 @@
         android:text="Back Door Entery"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:visibility="gone"
         android:id="@+id/backdoorEntry"/>
 
 </RelativeLayout>

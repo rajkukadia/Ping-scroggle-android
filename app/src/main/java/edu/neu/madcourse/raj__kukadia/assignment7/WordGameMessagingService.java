@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -90,6 +91,24 @@ public class WordGameMessagingService extends FirebaseMessagingService {
             //gameOver = jData.get("gameOver").toString();
         }
 
+        ContactUser contactUser=PersistentModel.getInstance().getParticularUserByPhoneNumber(phoneNumber);
+
+        if(contactUser!=null) {
+            if(ping.equals("open")) {
+                contactUser.setReceivedScreenMessage(ContactUser.ReceivedScreenMessage.YetToReply);
+                contactUser.setReceiveScreenMessage("Pinged you");
+                PersistentModel.getInstance().updateReceiveFields(contactUser);
+            }
+            else {
+                ContactUser contactUser1=new ContactUser();
+                contactUser1.setName(contactUser.getName());
+                contactUser1.setNumber(contactUser.getNumber());
+                contactUser1.setReceivedScreenMessage(ContactUser.ReceivedScreenMessage.RepliedYou);
+                contactUser1.setReceiveScreenMessage(remoteMessage.getNotification().getBody());
+                PersistentModel.getInstance().updateReceiveFields(contactUser1);
+            }
+        }
+
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d("recee", "asda1111");
@@ -111,13 +130,8 @@ public class WordGameMessagingService extends FirebaseMessagingService {
                 }
 
 
-                Log.d("number=",phoneNumber);
-                        ContactUser contactUser=PersistentModel.getInstance().getParticularUserByPhoneNumber(phoneNumber);
-                if(contactUser!=null) {
-                    contactUser.setReceivedScreenMessage(ContactUser.ReceivedScreenMessage.YetToReply);
-                    contactUser.setReceiveScreenMessage(remoteMessage.getNotification().getBody());
-                    PersistentModel.getInstance().updateReceiveFields(contactUser);
-                }
+              //  Log.d("number=",phoneNumber);
+
                 PersistentModel.getInstance().notifyForMessage();
             }
             else{
@@ -127,12 +141,7 @@ public class WordGameMessagingService extends FirebaseMessagingService {
                 if(notificationManager.getBoolean("online", false)==false){
                     sendNotificationReply(remoteMessage.getNotification().getBody(),phoneNumber);
                 }
-                ContactUser contactUser=PersistentModel.getInstance().getParticularUserByPhoneNumber(phoneNumber);
-                if(contactUser!=null) {
-                    contactUser.setReceivedScreenMessage(ContactUser.ReceivedScreenMessage.RepliedYou);
-                    contactUser.setReceiveScreenMessage(remoteMessage.getNotification().getBody());
-                    PersistentModel.getInstance().updateReceiveFields(contactUser);
-                }
+
                 PersistentModel.getInstance().notifyForMessage();
             }
 

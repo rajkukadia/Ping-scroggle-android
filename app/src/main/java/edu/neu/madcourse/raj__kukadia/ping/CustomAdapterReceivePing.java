@@ -61,6 +61,8 @@ public class CustomAdapterReceivePing extends CustomAdapterPing {
             }else{
                 if(contactUser.getReceivedScreenMessage()== ContactUser.ReceivedScreenMessage.RepliedSuccessfully)
                 PersistentModel.getInstance().notifyActivitySnacks("Replied already");
+                if(contactUser.getReceivedScreenMessage()== ContactUser.ReceivedScreenMessage.RepliedSuccessfully)
+                    PersistentModel.getInstance().notifyActivitySnacks("");
 
             }
 

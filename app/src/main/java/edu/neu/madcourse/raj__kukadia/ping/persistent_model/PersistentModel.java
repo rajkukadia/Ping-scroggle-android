@@ -139,9 +139,8 @@ public class PersistentModel {
        if(getReplyUser()!=null){
            for(ContactUser contactUser:getReplyUser()){
                if(contactUser.getNumber().contains(phoneNumber)){
-                   contactUser.setReceivedScreenMessage(ContactUser.ReceivedScreenMessage.RepliedSuccessfully);
-                   receivedUser.remove(contactUser);
-                   break;
+                   if(contactUser.getReceivedScreenMessage()!=ContactUser.ReceivedScreenMessage.RepliedYou)
+                    receivedUser.remove(contactUser);
                }
            }
        }
