@@ -195,8 +195,8 @@ public class FriendsFragment extends Fragment {
             //Toast.makeText(getActivity(),"Pinged to "+contactUser.getName(),Toast.LENGTH_SHORT).show();
 
         }else{
-            SmsManager.getDefault().sendTextMessage(contactUser.getNumber(), null,"Invited you to ping", null, null);
-            Toast.makeText(getActivity(),"SMS send to "+contactUser.getName(),Toast.LENGTH_SHORT).show();
+            SmsManager.getDefault().sendTextMessage(contactUser.getNumber(), null,"You have been invited to our new app 'PING':\n"+"https://play.google.com/apps/testing/edu.neu.madcourse.raj__kukadia", null, null);
+            Toast.makeText(getActivity(),"SMS sent to "+contactUser.getName(),Toast.LENGTH_SHORT).show();
 
         }
     }
