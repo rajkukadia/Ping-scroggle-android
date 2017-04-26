@@ -40,6 +40,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -90,6 +91,8 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     private ImageView imageView;
     private String voiceText;
     private SharedPreferences SP;
+    private ArrayList<ContactUser> predictedUsers;
+    private ArrayAdapter<String> predictedUsersAdapter;
     private SharedPreferences notificationManager;
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -247,7 +250,11 @@ if(welcome) {
             t.setTextColor(Color.RED);
             t.setTextSize(20);
             connectionSnackbarStart.show();        }
-}
+        predictedUsers = new ArrayList<>();
+
+        predictedUsersAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item);
+
+    }
 
 public void notifyConnectionStatus(String status){
     coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -346,7 +353,7 @@ public void notifyMessage(){
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                "Speak out the name...");
+                "Speak the name in one word...");
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE_HOME);
     }
 
@@ -356,18 +363,45 @@ public void notifyMessage(){
             ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             voiceText = matches.get(0);
             boolean found = false;
-           // Log.d("Result", voiceText);
+
+            predictedUsers.clear();
+            predictedUsersAdapter.clear();
+            // Log.d("Result", voiceText);
             ArrayList<ContactUser> pingUsers = PersistentModel.getInstance().getPingUser();
             for(ContactUser c : pingUsers){
                 String temp = c.getName().toLowerCase();
                 for(String voice:matches) {
                     if (temp.contains(voice)) {
                         found = true;
-                        confirm(c, temp);
-                        break;
+                        predictedUsersAdapter.add(c.getName());
+
+                     predictedUsers.add(c);
+                        //   confirm(c, temp);
+                       // break;
                     }
                 }
                 }
+
+           // predictedUsers = new ArrayList<>();
+if(found) {
+    if(predictedUsers.size()==1){
+        confirm(predictedUsers.get(0), predictedUsersAdapter.getItem(0));
+    }
+    else {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select what you meant");
+        builder.setAdapter(predictedUsersAdapter, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+
+                PersistentModel.getInstance().sendFCM(predictedUsers.get(item));
+
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+}
+
 
             if(!found) Toast.makeText(this, "Try Again!",
                     Toast.LENGTH_LONG).show();
@@ -375,6 +409,7 @@ public void notifyMessage(){
             //  mList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, matches));
 
         }
+
     }
 
     private void confirm(final ContactUser user, String bet){

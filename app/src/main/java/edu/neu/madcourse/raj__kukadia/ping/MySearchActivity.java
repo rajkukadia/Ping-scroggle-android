@@ -411,7 +411,7 @@ startRecognizing();
                          return true;
                      }
                  } catch (JSONException | IOException e) {
-                     Toast.makeText(MySearchActivity.this,"Ping unsuccesfully",Toast.LENGTH_LONG).show();
+                     Toast.makeText(MySearchActivity.this,"Ping unsuccesfull",Toast.LENGTH_LONG).show();
                      e.printStackTrace();
                  }
 return false;
