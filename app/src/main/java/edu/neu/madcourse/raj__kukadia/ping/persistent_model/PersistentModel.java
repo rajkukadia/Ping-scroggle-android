@@ -70,6 +70,8 @@ public class PersistentModel {
         }
     }
     public ContactUser getParticularUserByPhoneNumber(String phoneNumer){
+
+
         for(ContactUser contactUser:getPingUser()){
             Log.d("contactUser","contactUser"+contactUser.getName()+contactUser.getNumber());
             if(contactUser.getNumber().equals(phoneNumer)) {
@@ -79,6 +81,10 @@ public class PersistentModel {
         }
         for(ContactUser contactUser:getAllContactUser()){
             Log.d("contactUser","contactUser"+contactUser.getName()+contactUser.getNumber());
+            if(contactUser.getNumber()==null)
+            {
+                continue;
+            }
             if(contactUser.getNumber().equals(phoneNumer)) {
                 Log.d("contactUser", "contactUser" + contactUser.getName() + contactUser.getNumber());
                 return contactUser;

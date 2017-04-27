@@ -1,14 +1,17 @@
 package edu.neu.madcourse.raj__kukadia.ping;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +41,7 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // Get view for row item
-        View rowView = mInflater.inflate(R.layout.layout_target_ping, parent, false);
+        final View rowView = mInflater.inflate(R.layout.layout_target_ping, parent, false);
         TextView userNameTextView =
                 (TextView) rowView.findViewById(R.id.userNameTarget);
 
@@ -68,6 +71,7 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
 
             }
 
+
             @Override
             public void onDoubleClick(View v) {
                 Log.d("Inside double click","YIpee");
@@ -89,6 +93,34 @@ public class CustomAdapterTargetPing extends CustomAdapterPing {
                        }
                    }
                 }
+
+            }
+        });
+        rowView.setLongClickable(true);
+        rowView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //Toast.makeText(getContext(),"Long Click",Toast.LENGTH_LONG).show();
+                final PopupWindow popup = new PopupWindow(mContext);
+                View layout = ((PingHomeScreenActivity)mContext).getLayoutInflater().inflate(R.layout.layout_pop_up, null);
+                TextView popUpText=(TextView) layout.findViewById(R.id.textViewPopup);
+                popUpText.setText("show all activities of "+contactUser);
+                layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    Intent intent=new Intent(getContext(),ShowAllActivity.class);
+                        intent.putExtra("userName", contactUser.getName());
+                        intent.putExtra("phoneNumber",contactUser.getNumber());
+                        getContext().startActivity(intent);
+                        popup.dismiss();
+                    }
+                });
+                popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+                popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+                popup.setContentView(layout);
+                popup.setOutsideTouchable(true);
+                popup.showAsDropDown(rowView);
+                return true;
 
             }
         });

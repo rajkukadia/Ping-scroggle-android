@@ -26,6 +26,7 @@ class DoubleClickListenerView implements View.OnClickListener {
         }
     }
 
+
     public abstract void onSingleClick(View v);
 
     public abstract void onDoubleClick(View v);
