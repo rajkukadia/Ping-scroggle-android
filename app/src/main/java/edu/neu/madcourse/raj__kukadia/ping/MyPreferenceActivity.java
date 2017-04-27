@@ -48,7 +48,7 @@ public class MyPreferenceActivity extends PreferenceActivity{
     File file;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 
         super.onCreate(savedInstanceState);
@@ -118,7 +118,7 @@ public class MyPreferenceActivity extends PreferenceActivity{
 
         if (intentList.size() > 0) {
             chooserIntent = Intent.createChooser(intentList.remove(intentList.size() - 1),
-                    "Choose");
+                    "Choose source");
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentList.toArray(new Parcelable[]{}));
         }
 
@@ -162,6 +162,7 @@ public class MyPreferenceActivity extends PreferenceActivity{
                 SharedPreferences.Editor edit=SP.edit();
                 edit.putString("image_data",encodedImage);
                 edit.commit();
+                mRootRef.child("Ping Users").child(UserInformationActivity.phoneNumber).child("profilepic").setValue(encodedImage);
                 Toast.makeText(MyPreferenceActivity.this, "Profile picture changed", Toast.LENGTH_LONG).show();
 
 
@@ -178,6 +179,7 @@ public class MyPreferenceActivity extends PreferenceActivity{
 
     private void notifyFireBase(String username){
         mRootRef.child("Ping Users").child(UserInformationActivity.phoneNumber).child("username").setValue(username);
+        Toast.makeText(MyPreferenceActivity.this, "User name changed", Toast.LENGTH_LONG).show();
 
     }
 

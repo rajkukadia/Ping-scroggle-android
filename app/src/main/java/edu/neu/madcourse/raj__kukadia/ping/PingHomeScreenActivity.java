@@ -2,6 +2,7 @@ package edu.neu.madcourse.raj__kukadia.ping;
 
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -159,12 +161,24 @@ public class PingHomeScreenActivity extends AppCompatActivity {
                     byte[] b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
                     circleImageView.setImageBitmap(bitmap);
-                    }
+                }
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
+                SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                userName = (TextView) findViewById(R.id.username);
+                String username = SP.getString("username", "User Name");
+                userName.setText(username);
 
+                String previouslyEncodedImage = SP.getString("image_data", "");
+                circleImageView = (CircleImageView) findViewById(R.id.circleimageview);
+
+                if( !previouslyEncodedImage.equalsIgnoreCase("") ){
+                    byte[] b = Base64.decode(previouslyEncodedImage, Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+                    circleImageView.setImageBitmap(bitmap);
+                }
             }
 
             @Override
@@ -184,6 +198,21 @@ public class PingHomeScreenActivity extends AppCompatActivity {
                 if (id == R.id.nav_preferences) {
                     Intent intent = new Intent(PingHomeScreenActivity.this, MyPreferenceActivity.class);
                     startActivity(intent);
+                }
+                if(id == R.id.nav_rateapp){
+                    Uri uri = Uri.parse("market://details?id=" + getPackageName());
+                    Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                    // To count with Play market backstack, After pressing back button,
+                    // to taken back to our application, we need to add following flags to intent.
+                    goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                            Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                    try {
+                        startActivity(goToMarket);
+                    } catch (ActivityNotFoundException e) {
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("http://play.google.com/store/apps/details?id=" +getPackageName())));
+                    }
                 }
 
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);

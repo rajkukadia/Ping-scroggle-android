@@ -50,6 +50,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/jump_in_label"
+        android:layout_margin="@dimen/menu_button_margin"
+        android:padding="@dimen/menu_button_padding"
         android:layout_below="@id/verification_code_area"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
