@@ -88,8 +88,13 @@ public class MyPreferenceActivity extends PreferenceActivity{
                         if(key.equals("username"))
                         notifyFireBase(sharedPreferences.getString("username", null));
                         if(key.equals("notification_updates")||key.equals("pref_key_profile_settings")) {
-                            if (checkBox.isChecked()) handleNotificationSettings();
-                            if(!checkBox.isChecked()) removeService();
+                            try {
+                                if (checkBox.isChecked()) handleNotificationSettings();
+                                if (!checkBox.isChecked()) removeService();
+                            }
+                            catch (Exception e){
+
+                            }
                         }
 
                     }
