@@ -87,7 +87,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     private CoordinatorLayout coordinatorLayout;
     private ConnectionProctor connectionProctor;
     Handler mHandler;
-    public TextView userName;
+    public static TextView userName;
     private ViewPager viewPager;
     private CircleImageView circleImageView;
     private ImageView imageView;

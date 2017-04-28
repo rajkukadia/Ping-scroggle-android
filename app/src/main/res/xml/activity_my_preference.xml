@@ -3,12 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-
+    <PreferenceCategory
+        android:title="User Profile"
+        android:key="pref_key_profile_settings">
     <EditTextPreference android:title="Your Name"
         android:key="username"
         android:summary="Please provide your username"></EditTextPreference>
     <Preference android:title="Profile Picture"
         android:key="profilepic"
         android:summary="Click to change your profile picture"></Preference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Updates"
+        android:key="pref_key_profile_settings">
+        <CheckBoxPreference
+            android:key="notification_updates"
+            android:summary="Get updates from your friends"
+            android:title="Notification"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+
 
 </PreferenceScreen>

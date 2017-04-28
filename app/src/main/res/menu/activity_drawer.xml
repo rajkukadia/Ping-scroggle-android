@@ -7,7 +7,7 @@
         <item android:id="@+id/nav_about" android1:icon="@drawable/about"
             android1:title="About"/>
         <item android1:id="@+id/nav_preferences" android1:icon="@drawable/preferences"
-        android1:title="Preferences"/>
+        android1:title="Settings"/>
         <item android1:id="@+id/nav_rateapp" android1:icon="@drawable/rate"
             android1:title="Rate PING"/>
         <item android:id="@+id/nav_help" android1:icon="@drawable/help"

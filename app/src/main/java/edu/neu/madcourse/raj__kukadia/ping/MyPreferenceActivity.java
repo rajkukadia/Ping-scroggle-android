@@ -1,14 +1,18 @@
 package edu.neu.madcourse.raj__kukadia.ping;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -33,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.neu.madcourse.raj__kukadia.R;
+import edu.neu.madcourse.raj__kukadia.ping.persistent_model.PersistentModel;
 
 /**
  * Created by rajku on 4/23/2017.
@@ -44,7 +49,8 @@ public class MyPreferenceActivity extends PreferenceActivity{
     DatabaseReference mRootRef;
     Preference pref;
     Uri mCapturedImageURI;
-    SharedPreferences SP;
+    static SharedPreferences SP;
+    CheckBoxPreference checkBox;
     File file;
 
     @Override
@@ -57,11 +63,12 @@ public class MyPreferenceActivity extends PreferenceActivity{
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.mytitlebarforping);
 
         TextView titleName = (TextView) findViewById(R.id.title_name_for_ping);
-        titleName.setText("Preferences");
+        titleName.setText("Settings");
         titleName.setTextSize(20);
         SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         mRootRef = FirebaseDatabase.getInstance().getReference("Ping");
         pref = findPreference("profilepic");
+        checkBox = (CheckBoxPreference) findPreference("notification_updates");
         pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -78,13 +85,42 @@ public class MyPreferenceActivity extends PreferenceActivity{
                     @Override
                     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                                           String key) {
+                        if(key.equals("username"))
                         notifyFireBase(sharedPreferences.getString("username", null));
+                        if(key.equals("notification_updates")||key.equals("pref_key_profile_settings"))
+                            if(checkBox.isChecked())handleNotificationSettings();
                     }
                 };
 
         SP.registerOnSharedPreferenceChangeListener(spChanged);
 
 
+    }
+
+    private void handleNotificationSettings() {
+        confirm();
+    }
+
+    private void confirm() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        startService(new Intent(MyPreferenceActivity.this, FirebaseBackgroundService.class));
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        checkBox.setChecked(false);
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("This may consume more battery, do you still want to continue?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
     public Intent getPickImageIntent(Context context) {
@@ -158,7 +194,8 @@ public class MyPreferenceActivity extends PreferenceActivity{
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] b = baos.toByteArray();
                 String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-
+              //  byte [] de =  Base64.decode(encodedImage, Base64.DEFAULT);
+               // bitmap = BitmapFactory.decodeByteArray(de, 0, de.length);
                 SharedPreferences.Editor edit=SP.edit();
                 edit.putString("image_data",encodedImage);
                 edit.commit();

@@ -158,7 +158,6 @@
         <activity android:name=".ping.WelcomeActivity"
             android:icon="@mipmap/ping_icon"
             android:label="NUMAD17S-RajKukadia"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -206,18 +205,27 @@
             </intent-filter>
         </activity>
 
+
         <activity
             android:name=".ping.MyPreferenceActivity"
             android:label="@string/title_activity_ping_home_screen"
             android:theme="@style/MainActivityTheme"></activity>
-    <activity android:name=".ping.ShowAllActivity" />
 
-    <receiver android:name=".ping.ConnectionProctor">
+        <receiver android:name=".ping.ConnectionProctor">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
+
+       <service
+            android:name=".ping.FirebaseBackgroundService"
+            android:exported="false"
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="edu.neu.madcourse.raj__kukadia.ping.FirebaseBackgroundService" />
+            </intent-filter>
+        </service>
 
     </application>
 

@@ -452,6 +452,18 @@ return false;
          mRootRef.child("Ping Users").child(UserInformationActivity.phoneNumber).child("activity").child("activitytimestamp").setValue(a.activitytimestamp);
          mRootRef.child("Ping Users").child(UserInformationActivity.phoneNumber).child("all activities").child(String.valueOf(a.activitytimestamp)).setValue(a);
 
+
+         if(PingHomeScreenActivity.userName!=null) {
+             if (PingHomeScreenActivity.userName.getText().toString().equals("User Name")) {
+                 mRootRef.child("recent").child(String.valueOf(a.activitytimestamp)).child(UserInformationActivity.phoneNumber.toString()).setValue(a);
+             } else {
+                 String temp[] = PingHomeScreenActivity.userName.toString().split(" ");
+                 mRootRef.child("recent").child(String.valueOf(a.activitytimestamp)).child(temp[0]).setValue(a);
+
+             }
+         }else {
+             mRootRef.child("recent").child(String.valueOf(a.activitytimestamp)).child(UserInformationActivity.phoneNumber.toString()).setValue(a);
+         }
      }
 
      @Override
