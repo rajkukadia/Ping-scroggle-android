@@ -184,9 +184,9 @@ public class TargetsFragment extends Fragment {
         for(ContactUser contactUser:pingUsers) {
             duplicateListViewContacts.add(contactUser);
         }
+        Collections.sort(duplicateListViewContacts);
         customAdapterTargetPing=new CustomAdapterTargetPing(getActivity(),R.layout.layout_contact_ping,duplicateListViewContacts);
         listViewContacts.setAdapter(customAdapterTargetPing);
-        Collections.sort(pingUsers);
     }
     public void showMessage(String title,String Message){
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());

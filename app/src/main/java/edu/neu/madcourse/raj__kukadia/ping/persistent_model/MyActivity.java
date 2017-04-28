@@ -36,7 +36,7 @@ public class MyActivity implements Comparable<MyActivity>
 
     @Override
     public int compareTo(@NonNull MyActivity o) {
-        return (int) (getActivitytimestamp()-o.getActivitytimestamp());
+        return (int) (o.getActivitytimestamp()-getActivitytimestamp());
     }
 
     public String getTimeString(){

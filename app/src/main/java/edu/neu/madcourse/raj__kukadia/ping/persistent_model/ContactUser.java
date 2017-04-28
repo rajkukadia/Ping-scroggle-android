@@ -1,9 +1,11 @@
 package edu.neu.madcourse.raj__kukadia.ping.persistent_model;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -27,6 +29,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.Scanner;
 
+import edu.neu.madcourse.raj__kukadia.ping.PingHomeScreenActivity;
 import edu.neu.madcourse.raj__kukadia.ping.ReceivedFragment;
 import edu.neu.madcourse.raj__kukadia.ping.UserInformationActivity;
 import edu.neu.madcourse.raj__kukadia.ping.applicatonlogic.myTasks;
@@ -395,8 +398,8 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
         }
 
 
-        DatabaseReference newReference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users").child(this.number).child("token");
-        newReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        final DatabaseReference newReference= FirebaseDatabase.getInstance().getReference("Ping").child("All Users").child(this.number).child("token");
+        newReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String token1=dataSnapshot.getValue(String.class);
@@ -408,6 +411,7 @@ public class ContactUser implements Comparable<ContactUser>,myTasks {
                     if(contactSearchButtonUpdate!=null){
                         Log.d("Inside","the the thing");
                         contactSearchButtonUpdate.setText("Ping");
+                    newReference.removeEventListener(this);
                     }
                 }
                 else{
@@ -536,8 +540,6 @@ try not to put number less than 10 this handles data for greater than 10
                     jPayload.put("to",token);
                     jData.put("ping", "open");
                     jNotification.put("title", "PING");
-
-
 
                     jNotification.put("body", "Pinged you");
                     jNotification.put("sound", "default");

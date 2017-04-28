@@ -210,7 +210,8 @@
             android:name=".ping.MyPreferenceActivity"
             android:label="@string/title_activity_ping_home_screen"
             android:theme="@style/MainActivityTheme"></activity>
-
+        <activity android:name=".ping.ShowAllActivity"
+            android:theme="@style/MainActivityTheme" />
         <receiver android:name=".ping.ConnectionProctor">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
