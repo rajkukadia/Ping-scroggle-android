@@ -185,7 +185,16 @@ public class TargetsFragment extends Fragment {
             duplicateListViewContacts.add(contactUser);
         }
         Collections.sort(duplicateListViewContacts);
-        customAdapterTargetPing=new CustomAdapterTargetPing(getActivity(),R.layout.layout_contact_ping,duplicateListViewContacts);
+        for(ContactUser contactUser:pingUsers){
+            if(contactUser.getTargetScreenMessage()== ContactUser.TargetScreenMessage.InvalidStatus){
+                duplicateListViewContacts.remove(contactUser);
+                duplicateListViewContacts.add(contactUser);
+            }
+            else{
+
+            }
+        }
+      customAdapterTargetPing=new CustomAdapterTargetPing(getActivity(),R.layout.layout_contact_ping,duplicateListViewContacts);
         listViewContacts.setAdapter(customAdapterTargetPing);
     }
     public void showMessage(String title,String Message){

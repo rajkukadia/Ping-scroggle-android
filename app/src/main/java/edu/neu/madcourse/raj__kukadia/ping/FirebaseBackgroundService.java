@@ -28,7 +28,6 @@ import edu.neu.madcourse.raj__kukadia.R;
 
 public class FirebaseBackgroundService extends Service {
 
-
     private ValueEventListener handler;
     private DatabaseReference reference;
     private String latestActivity;

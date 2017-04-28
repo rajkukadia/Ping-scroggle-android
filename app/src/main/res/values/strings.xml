@@ -88,6 +88,24 @@
     <string name="clear_label">Clear</string>
     <string name="ack_label">Acknowledgement</string>
     <string name="ack_info_label">Info</string>
+    <string name="design_label">Design</string>
+    <string name="design_help_content">
+Coding architecture from http://bit.ly/2oVMv8L\n
+Special thanks to Professor Stephen Intille for design suggestion\n
+https://bulkresizephotos.com/\n
+</string>
+    <string name="coding_label">Coding</string>
+    <string name="coding_help_content_ping">
+http://bit.ly/2ptjx0f\n
+http://bit.ly/2qex2Pn\n
+ http://bit.ly/2oEVsUT\n
+http://bit.ly/2oPIgbe\n
+https://developer.android.com/index.html\n
+</string>
+    <string name="third_party_library">Third party libraries</string>
+    <string name="coding_third_party_library">
+CircleImageView : http://bit.ly/2oPZbKK
+</string>
     <string name="communication_label">Communication</string>
 
     <string name="about_text">\
@@ -136,6 +154,21 @@ both sides in the larger game.
 
 
 </string>
+
+<string name="ack_details_label_two_ping">
+
+    <p>
+
+    Code for TicTacToe: Hello, Android text by Ed Burnette \n \n
+    Code for requesting run time permission: https://developer.android.com/training/permissions/requesting.html \n \n
+    App icon: Google Images \n \n
+    Sound: http://www.tannerhelland.com/music-directory/ \n\n
+    Special thanks to my friend Dharak Savalia who helped me coming with a better idea for loading the dictionary efficiently.
+</p>
+
+
+</string>
+
 
 
     <string name="quickstart_message">The Log Token button logs the Registration token to the log. The Send Notification Button sends the notification to the client device.</string>

@@ -200,6 +200,10 @@ public class PingHomeScreenActivity extends AppCompatActivity {
                     Intent intent = new Intent(PingHomeScreenActivity.this, MyPreferenceActivity.class);
                     startActivity(intent);
                 }
+                if(id==R.id.nav_ack){
+                    Intent intent=new Intent(PingHomeScreenActivity.this,AcknowledgementPing.class);
+                    startActivity(intent);
+                }
                 if(id == R.id.nav_rateapp){
                     Uri uri = Uri.parse("market://details?id=" + getPackageName());
                     Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);

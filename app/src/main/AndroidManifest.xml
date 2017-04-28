@@ -212,6 +212,8 @@
             android:theme="@style/MainActivityTheme"></activity>
         <activity android:name=".ping.ShowAllActivity"
             android:theme="@style/MainActivityTheme" />
+        <activity android:name=".ping.AcknowledgementPing" />
+
         <receiver android:name=".ping.ConnectionProctor">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
