@@ -97,17 +97,11 @@
     <string name="ack_info_label">Info</string>
     <string name="design_label">Design</string>
     <string name="design_help_content">
-Coding architecture from http://bit.ly/2oVMv8L\n
-Special thanks to Professor Stephen Intille for design suggestion\n
-https://bulkresizephotos.com/\n
+Coding architecture from http://bit.ly/2oVMv8L\nSpecial thanks to Professor Stephen Intille for design suggestion\nhttps://bulkresizephotos.com/\n
 </string>
     <string name="coding_label">Coding</string>
     <string name="coding_help_content_ping">
-http://bit.ly/2ptjx0f\n
-http://bit.ly/2qex2Pn\n
- http://bit.ly/2oEVsUT\n
-http://bit.ly/2oPIgbe\n
-https://developer.android.com/index.html\n
+http://bit.ly/2ptjx0f\nhttp://bit.ly/2qex2Pn\nhttp://bit.ly/2oEVsUT\nhttp://bit.ly/2oPIgbe\nhttp://bit.ly/1NobuZI
 </string>
     <string name="third_party_library">Third party libraries</string>
     <string name="coding_third_party_library">

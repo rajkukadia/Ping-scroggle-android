@@ -212,7 +212,10 @@
             android:theme="@style/MainActivityTheme"></activity>
         <activity android:name=".ping.ShowAllActivity"
             android:theme="@style/MainActivityTheme" />
-        <activity android:name=".ping.AcknowledgementPing" />
+        <activity android:name=".ping.AcknowledgementPing"
+            android:theme="@style/MainActivityTheme"/>
+        <activity android:name=".ping.About"
+            android:theme="@style/MainActivityTheme"/>
 
         <receiver android:name=".ping.ConnectionProctor">
             <intent-filter>

@@ -191,10 +191,21 @@ public class PingHomeScreenActivity extends AppCompatActivity {
         });
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu m = navigationView.getMenu();
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
+                String str=String.valueOf(item.getTitle());
+                if(str.equals("About")){
+                    Intent intent=new Intent(PingHomeScreenActivity.this,About.class);
+                    startActivity(intent);
+                }
+
+                if(str.equals("Acknowledgements")){
+                    Intent intent=new Intent(PingHomeScreenActivity.this,AcknowledgementPing.class);
+                    startActivity(intent);
+                }
                 int id = item.getItemId();
                 //Toast.makeText(PingHomeScreenActivity.this, "pressed", Toast.LENGTH_LONG).show();
 
@@ -202,14 +213,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
                     Intent intent = new Intent(PingHomeScreenActivity.this, MyPreferenceActivity.class);
                     startActivity(intent);
                 }
-                if(id==R.id.nav_ack){
-                    Intent intent=new Intent(PingHomeScreenActivity.this,AcknowledgementPing.class);
-                    startActivity(intent);
-                }
-                if(id==R.id.nav_about){
-                    Intent intent=new Intent(PingHomeScreenActivity.this,About.class);
-                    startActivity(intent);
-                }
+
                 if(id == R.id.nav_rateapp){
                     Uri uri = Uri.parse("market://details?id=" + getPackageName());
                     Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
