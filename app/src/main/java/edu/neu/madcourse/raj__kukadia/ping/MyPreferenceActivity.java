@@ -87,14 +87,21 @@ public class MyPreferenceActivity extends PreferenceActivity{
                                                           String key) {
                         if(key.equals("username"))
                         notifyFireBase(sharedPreferences.getString("username", null));
-                        if(key.equals("notification_updates")||key.equals("pref_key_profile_settings"))
-                            if(checkBox.isChecked())handleNotificationSettings();
+                        if(key.equals("notification_updates")||key.equals("pref_key_profile_settings")) {
+                            if (checkBox.isChecked()) handleNotificationSettings();
+                            if(!checkBox.isChecked()) removeService();
+                        }
+
                     }
                 };
 
         SP.registerOnSharedPreferenceChangeListener(spChanged);
 
 
+    }
+
+    private void removeService() {
+        stopService(new Intent(MyPreferenceActivity.this, FirebaseBackgroundService.class));
     }
 
     private void handleNotificationSettings() {
