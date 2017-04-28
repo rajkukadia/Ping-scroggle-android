@@ -171,6 +171,17 @@ public class TargetsFragment extends Fragment {
         for(ContactUser j:remove){
             duplicateListViewContacts.remove(j);
         }
+        for(ContactUser contactUser:pingUsers){
+            if(contactUser.getTargetScreenMessage()== ContactUser.TargetScreenMessage.InvalidStatus){
+                if(duplicateListViewContacts.contains(contactUser)) {
+                    duplicateListViewContacts.remove(contactUser);
+                    duplicateListViewContacts.add(contactUser);
+                }
+            }
+            else{
+
+            }
+        }
         Log.d("removal=",Integer.toString(remove.size())+ duplicateListViewContacts.size());
         customAdapterTargetPing=new CustomAdapterTargetPing(getActivity(),android.R.layout.simple_list_item_1,duplicateListViewContacts);
         listViewContacts.setAdapter(customAdapterTargetPing);
@@ -187,8 +198,10 @@ public class TargetsFragment extends Fragment {
         Collections.sort(duplicateListViewContacts);
         for(ContactUser contactUser:pingUsers){
             if(contactUser.getTargetScreenMessage()== ContactUser.TargetScreenMessage.InvalidStatus){
-                duplicateListViewContacts.remove(contactUser);
-                duplicateListViewContacts.add(contactUser);
+                if(duplicateListViewContacts.contains(contactUser)) {
+                    duplicateListViewContacts.remove(contactUser);
+                    duplicateListViewContacts.add(contactUser);
+                }
             }
             else{
 

@@ -42,6 +42,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -106,6 +107,7 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.activity_ping_home_screen);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -202,6 +204,10 @@ public class PingHomeScreenActivity extends AppCompatActivity {
                 }
                 if(id==R.id.nav_ack){
                     Intent intent=new Intent(PingHomeScreenActivity.this,AcknowledgementPing.class);
+                    startActivity(intent);
+                }
+                if(id==R.id.nav_about){
+                    Intent intent=new Intent(PingHomeScreenActivity.this,About.class);
                     startActivity(intent);
                 }
                 if(id == R.id.nav_rateapp){

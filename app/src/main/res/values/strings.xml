@@ -12,6 +12,13 @@
            Telecommunication Systems Management \n
 
     </string>
+    <string name="about_mainactivity_text_dharak">
+            Dharak Savalia \n
+        savalia.d@husky.neu.edu \n
+        1st year M.S \n
+           Telecommunication Systems Management \n
+
+    </string>
     <string name="IMEI_label">IMEI</string>
     <string name="ok_label">OK</string>
     <string name="titlebar_label">Raj Kukadia</string>
