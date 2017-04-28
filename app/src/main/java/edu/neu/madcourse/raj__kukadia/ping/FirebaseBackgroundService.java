@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +32,7 @@ public class FirebaseBackgroundService extends Service {
     private ValueEventListener handler;
     private DatabaseReference reference;
     private String latestActivity;
+    private boolean serviceStopped;
 
     @Nullable
     @Override
@@ -41,7 +43,7 @@ public class FirebaseBackgroundService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        serviceStopped = false;
         FirebaseApp.initializeApp(this);
 
         reference = FirebaseDatabase.getInstance().getReference("Ping").child("recent");
@@ -54,11 +56,11 @@ public class FirebaseBackgroundService extends Service {
         for(DataSnapshot finalVal : dataSnapshot.getChildren()){
             for(DataSnapshot middle : finalVal.getChildren()) {
                 for (DataSnapshot d : middle.getChildren()) {
-                    if (d.getKey().equals("activityname")) latestActivity = middle.getKey().toString()+" is "+(String) d.getValue();
+                    if (d.getKey().equals("activityname")) latestActivity = middle.getKey().toString()+": "+(String) d.getValue();
                 }
             }
         }
-
+if(!serviceStopped)
 postNotif(latestActivity);
     }
 
@@ -97,5 +99,12 @@ postNotif(latestActivity);
     }
 
 
+    @Override
+    public void onDestroy() {
+        serviceStopped = true;
+        Toast.makeText(this, "Stopping", Toast.LENGTH_LONG).show();
+        super.onDestroy();
 
+
+    }
 }

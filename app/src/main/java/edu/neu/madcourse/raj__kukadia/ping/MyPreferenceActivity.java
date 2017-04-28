@@ -101,11 +101,16 @@ public class MyPreferenceActivity extends PreferenceActivity{
     }
 
     private void removeService() {
+       // Toast.makeText(this, "Stopping", Toast.LENGTH_LONG).show();
         stopService(new Intent(MyPreferenceActivity.this, FirebaseBackgroundService.class));
     }
 
     private void handleNotificationSettings() {
-        confirm();
+       if(checkBox.isChecked()){
+        confirm();}
+        else{
+           removeService();
+       }
     }
 
     private void confirm() {

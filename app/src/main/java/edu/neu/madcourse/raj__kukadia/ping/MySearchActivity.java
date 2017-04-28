@@ -457,8 +457,9 @@ return false;
              if (PingHomeScreenActivity.userName.getText().toString().equals("User Name")) {
                  mRootRef.child("recent").child(String.valueOf(a.activitytimestamp)).child(UserInformationActivity.phoneNumber.toString()).setValue(a);
              } else {
-                 String temp[] = PingHomeScreenActivity.userName.toString().split(" ");
-                 mRootRef.child("recent").child(String.valueOf(a.activitytimestamp)).child(temp[0]).setValue(a);
+                 String temp[] = PingHomeScreenActivity.userName.getText().toString().split(" ");
+
+                 mRootRef.child("recent").child(String.valueOf(a.activitytimestamp)).child(temp[0].toLowerCase()).setValue(a);
 
              }
          }else {

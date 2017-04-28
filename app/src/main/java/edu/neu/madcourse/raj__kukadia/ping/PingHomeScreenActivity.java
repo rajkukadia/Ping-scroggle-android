@@ -64,14 +64,15 @@ import static edu.neu.madcourse.raj__kukadia.ping.MySearchActivity.VOICE_RECOGNI
 public class PingHomeScreenActivity extends AppCompatActivity {
 
     private static final String FIRST_MSG = "Welcome to PING!";
-    private static final String SECOND_MSG = "'Targets' are your ping friends, double tap on any target to ping";
-    private static final String THIRD_MSG = "'Received' will show your friend's messages, double tap on any message to reply";
+    private static final String SECOND_MSG = "'Targets' are your ping friends, double tap to ping";
+    private static final String THIRD_MSG = "'Received' has incoming messages, double tap to reply";
     private static final String NEW_MESSAGE = "New Message";
     private static final String GONE = "GONE";
     private static final String CONNECTIVITY_MESSAGE = "Internet connection lost!";
     private static final String CONNECTIVITY_MESSAGE_START = "No internet connection found!";
     private static final int VOICE_RECOGNITION_REQUEST_CODE_HOME = 11111;
     private static final String NOTIFICATION_MANAGER = "notification_manager";
+    private static final String FOURTH_MSG = "It is best to provide a user name";
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -254,6 +255,19 @@ if(welcome) {
                           public void onClick(View v) {
                               if(snackbar2.isShown()){
                                   snackbar2.dismiss();
+                                  final Snackbar snackbar3 = Snackbar.make(coordinatorLayout, FOURTH_MSG, Snackbar.LENGTH_INDEFINITE);
+                                  View v1 = snackbar3.getView();
+                                  TextView t = (TextView) v1.findViewById(android.support.design.R.id.snackbar_text);
+                                  t.setTextSize(16);
+                                  snackbar3.setAction("Got it", new View.OnClickListener() {
+                                      @Override
+                                      public void onClick(View v) {
+                                          if(snackbar3.isShown()){
+                                              snackbar3.dismiss();
+                                          }
+                                      }
+                                  });
+                                  snackbar3.show();
                               }
                           }
                       });
