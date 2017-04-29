@@ -97,11 +97,11 @@
     <string name="ack_info_label">Info</string>
     <string name="design_label">Design</string>
     <string name="design_help_content">
-Coding architecture from http://bit.ly/2oVMv8L\nSpecial thanks to Professor Stephen Intille for design suggestion\nhttps://bulkresizephotos.com/\n
+1. Coding architecture from http://bit.ly/2oVMv8L\n2. Special thanks to Professor Stephen Intille for design suggestion\n3. https://bulkresizephotos.com/\n4. Icons and Images:https://thenounproject.com/term
 </string>
     <string name="coding_label">Coding</string>
     <string name="coding_help_content_ping">
-http://bit.ly/2ptjx0f\nhttp://bit.ly/2qex2Pn\nhttp://bit.ly/2oEVsUT\nhttp://bit.ly/2oPIgbe\nhttp://bit.ly/1NobuZI
+1. CircleImageView:http://bit.ly/2ptjx0f\n2. Slidenerd:http://bit.ly/2qex2Pn\n3. http://bit.ly/2oEVsUT\n4. Intro slider:http://bit.ly/2oPIgbe\n5. Preferece screen:http://bit.ly/1NobuZI
 </string>
     <string name="third_party_library">Third party libraries</string>
     <string name="coding_third_party_library">
