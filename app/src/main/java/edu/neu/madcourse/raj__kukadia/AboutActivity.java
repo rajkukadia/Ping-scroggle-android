@@ -32,7 +32,6 @@ public class AboutActivity extends Activity implements View.OnClickListener {
         titleName.setTextSize(20);
         View v = findViewById(R.id.IMEI_button);
         builder = new AlertDialog.Builder(AboutActivity.this);
-
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
