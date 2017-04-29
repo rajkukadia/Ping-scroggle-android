@@ -600,7 +600,10 @@ return false;
          String [ ] tempActivityName =c.getResources().getStringArray(R.array.activity_array);
          int [] tempImageId = {R.drawable.running, R.drawable.walking, R.drawable.bathing, R.drawable.cooking, R.drawable.dancing, R.drawable.biking, R.drawable.sitting, R.drawable.badminton,
          R.drawable.soccer, R.drawable.guitar,R.drawable.baseball, R.drawable.gymming, R.drawable.bowling, R.drawable.skipping, R.drawable.treadmill,
-         R.drawable.volleyball, R.drawable.music, R.drawable.brushing};
+         R.drawable.volleyball, R.drawable.music, R.drawable.brushing, R.drawable.boating, R.drawable.bus, R.drawable.cleaning, R.drawable.cricket
+         ,R.drawable.dusting, R.drawable.fishing, R.drawable.jumpingjacks, R.drawable.pingpong, R.drawable.sailing,
+                 R.drawable.shopping, R.drawable.skiing, R.drawable.swimming, R.drawable.tea, R.drawable.vaccum, R.drawable.yoga
+         };
          for(int i = 0; i<tempImageId.length;i++){
              MyActivity tempActivity = new MyActivity(tempActivityName[i], tempImageId[i]);
              activityList.add(tempActivity);
