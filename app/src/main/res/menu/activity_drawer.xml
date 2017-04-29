@@ -10,8 +10,6 @@
         android1:title="Settings"/>
         <item android1:id="@+id/nav_rateapp" android1:icon="@drawable/rate"
             android1:title="Rate PING"/>
-        <item android:id="@+id/nav_help" android1:icon="@drawable/help"
-            android1:title="Help"/>
         <item android:id="@+id/nav_ack" android1:icon="@drawable/acknowledgement"
             android1:title="Acknowledgements"/>
         <item android:id="@+id/nav_sign_out" android1:icon="@drawable/signout"
