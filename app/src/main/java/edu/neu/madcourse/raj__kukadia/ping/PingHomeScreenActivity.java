@@ -74,6 +74,8 @@ public class PingHomeScreenActivity extends AppCompatActivity {
     private static final int VOICE_RECOGNITION_REQUEST_CODE_HOME = 11111;
     private static final String NOTIFICATION_MANAGER = "notification_manager";
     private static final String FOURTH_MSG = "It is best to provide a user name";
+    private static final String FIFTH_MSG = "Swipe down to refresh";
+    private static final String SIXTH_MSG = "Long press on any target to view all activities";
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -278,6 +280,47 @@ if(welcome) {
                                       public void onClick(View v) {
                                           if(snackbar3.isShown()){
                                               snackbar3.dismiss();
+                                              final Snackbar snackbar4 = Snackbar.make(coordinatorLayout, FOURTH_MSG, Snackbar.LENGTH_INDEFINITE);
+                                              View v1 = snackbar4.getView();
+                                              TextView t = (TextView) v1.findViewById(android.support.design.R.id.snackbar_text);
+                                              t.setTextSize(16);
+                                              snackbar4.setAction("Got it", new View.OnClickListener() {
+                                                  @Override
+                                                  public void onClick(View v) {
+                                                      if(snackbar4.isShown()){
+                                                          snackbar4.dismiss();
+                                                          final Snackbar snackbar5 = Snackbar.make(coordinatorLayout, FIFTH_MSG, Snackbar.LENGTH_INDEFINITE);
+                                                          View v1 = snackbar5.getView();
+                                                          TextView t = (TextView) v1.findViewById(android.support.design.R.id.snackbar_text);
+                                                          t.setTextSize(16);
+                                                          snackbar5.setAction("Got it", new View.OnClickListener() {
+                                                              @Override
+                                                              public void onClick(View v) {
+                                                                  if(snackbar5.isShown()){
+                                                                      snackbar5.dismiss();
+                                                                      final Snackbar snackbar6 = Snackbar.make(coordinatorLayout, SIXTH_MSG, Snackbar.LENGTH_INDEFINITE);
+                                                                      View v1 = snackbar6.getView();
+                                                                      TextView t = (TextView) v1.findViewById(android.support.design.R.id.snackbar_text);
+                                                                      t.setTextSize(16);
+                                                                      snackbar6.setAction("Got it", new View.OnClickListener() {
+                                                                          @Override
+                                                                          public void onClick(View v) {
+                                                                              if(snackbar6.isShown()){
+                                                                                  snackbar6.dismiss();
+
+                                                                              }
+                                                                          }
+                                                                      });
+                                                                      snackbar6.show();
+
+                                                                  }
+                                                              }
+                                                          });
+                                                          snackbar5.show();
+                                                      }
+                                                  }
+                                              });
+                                              snackbar4.show();
                                           }
                                       }
                                   });

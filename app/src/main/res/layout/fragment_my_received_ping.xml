@@ -11,7 +11,7 @@
         android:id="@+id/received_search_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Type here to search"
+        android:hint="Search received messages..."
         android:visibility="gone"
         android:layout_gravity="center"/>
     <android.support.v4.widget.SwipeRefreshLayout
