@@ -96,13 +96,9 @@ public class MyPreferenceActivity extends PreferenceActivity{
 
                             }
                         }
-
                     }
                 };
-
         SP.registerOnSharedPreferenceChangeListener(spChanged);
-
-
     }
 
     private void removeService() {

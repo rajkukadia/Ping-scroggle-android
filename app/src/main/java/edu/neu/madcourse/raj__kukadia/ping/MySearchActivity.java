@@ -12,6 +12,7 @@
  import android.os.Bundle;
  import android.os.Handler;
  import android.os.Looper;
+ import android.preference.PreferenceManager;
  import android.provider.ContactsContract;
  import android.speech.RecognizerIntent;
  import android.support.annotation.Nullable;
@@ -36,6 +37,7 @@
  import android.widget.ImageButton;
  import android.widget.ImageView;
  import android.widget.ListView;
+ import android.widget.TextView;
  import android.widget.Toast;
 
  import com.google.firebase.database.DataSnapshot;
@@ -453,18 +455,20 @@ return false;
          mRootRef.child("Ping Users").child(UserInformationActivity.phoneNumber).child("all activities").child(String.valueOf(a.activitytimestamp)).setValue(a);
 
 
-         if(PingHomeScreenActivity.userName!=null) {
-             if (PingHomeScreenActivity.userName.getText().toString().equals("User Name")) {
+
+         SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+         String username = SP.getString("username", "User Name");
+
+             if (username.equals("User Name")) {
                  mRootRef.child("recent").child(String.valueOf(a.activitytimestamp)).child(UserInformationActivity.phoneNumber.toString()).setValue(a);
              } else {
-                 String temp[] = PingHomeScreenActivity.userName.getText().toString().split(" ");
+                 String temp[] = username.split(" ");
 
                  mRootRef.child("recent").child(String.valueOf(a.activitytimestamp)).child(temp[0].toLowerCase()).setValue(a);
 
              }
-         }else {
-             mRootRef.child("recent").child(String.valueOf(a.activitytimestamp)).child(UserInformationActivity.phoneNumber.toString()).setValue(a);
-         }
+            //mRootRef.child("recent").child(String.valueOf(a.activitytimestamp)).child(UserInformationActivity.phoneNumber.toString()).setValue(a);
+
      }
 
      @Override
