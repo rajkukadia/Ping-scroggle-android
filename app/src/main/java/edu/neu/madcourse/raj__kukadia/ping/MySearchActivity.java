@@ -144,8 +144,13 @@ startRecognizing();
 
              @Override
              public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                  initList();
+                 rgv.setVisibility(View.GONE);
                     searchItem(s.toString());
+                 if(e.getText().toString().equals("")||e.getText().toString().equals(" ")||e.getText()==null){
+                     rgv.setVisibility(View.VISIBLE);
+                 }
 
              }
 
